@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 #include "CANIMAL.h"
 #include "CPEOPLE.h"
-#include "CVEHICLE.h"
+#include "CANIMAL.h"
 #include "CGAME.h"
 #include "CTRAFFIC.h"
 using namespace std;
@@ -15,3 +15,27 @@ void CANIMAL::Move(int, int) {
 void CANIMAL::Tell() {
 
 };
+void CANIMAL::stop() {
+
+}
+void CANIMAL::resume() {
+
+}
+CANIMAL::CANIMAL(int mode) {
+
+}
+CANIMAL::~CANIMAL() {
+
+}
+CDINAUSOR::CDINAUSOR(int mode) : CANIMAL(mode) {
+
+}
+CDINAUSOR::~CDINAUSOR() {
+
+}
+CBIRD::CBIRD(int mode) : CANIMAL(mode) {
+
+}
+CBIRD::~CBIRD() {
+
+}

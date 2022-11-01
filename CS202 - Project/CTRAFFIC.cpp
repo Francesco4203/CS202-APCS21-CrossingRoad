@@ -9,3 +9,9 @@
 #include "CTRAFFIC.h"
 using namespace std;
 using namespace sf;
+LIGHT::LIGHT(int mode) {
+
+}
+LINE::LINE(int mode) : light(mode) {
+	
+}

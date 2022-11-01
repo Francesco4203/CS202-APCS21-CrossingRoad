@@ -10,15 +10,22 @@
 #include "CTRAFFIC.h"
 using namespace std;
 using namespace sf;
-class LIGHT {
-	int state;//0 red - 1 yellow - 2 green
-public:
-	LIGHT();
 
+//Constructor set image for object
+
+
+class LIGHT {
+	int state;//1 red - 2 yellow - 3 green
+	int red, yellow, green;//time of a state, 2-3s for yellow
+public:
+	LIGHT() = delete;//default NOT available
+	LIGHT(int mode);// 1 2 3 - easy medium hard
 };
+
 class LINE {
 	LIGHT light;
+	int direction;//1 left --> right; 2 left <-- right
 public:
-	LINE();
-
+	LINE() = delete;//default NOT available
+	LINE(int mode);// 1 2 3 - easy medium hard
 };
