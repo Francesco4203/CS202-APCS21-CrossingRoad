@@ -38,3 +38,5 @@ Release/
 installer
 Debug/
 .vs
+## test file
+Interface Testing.cpp

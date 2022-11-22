@@ -9,7 +9,7 @@
 #include "CTRAFFIC.h"
 using namespace std;
 using namespace sf;
-void CANIMAL::Move(int, int) {
+void CANIMAL::Move() {
 
 };
 void CANIMAL::Tell() {

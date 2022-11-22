@@ -11,14 +11,18 @@
 using namespace std;
 using namespace sf;
 class CVEHICLE {
-	int mX, mY;
+protected:
 	int speed;//step per second, or seconds needed for 1 step
+	bool isStop;
+	Sprite object;
+	Texture vehicle;
 public:
 	CVEHICLE() = delete;//default NOT available
-	CVEHICLE(int mode);
-	virtual void Move(int, int);
-	virtual void stop();//stop when red light
-	virtual void resume();//move again when green light
+	CVEHICLE(int x, int y, int mode);
+	virtual void Move() = 0;
+	void stop();//stop when red light
+	void resume();//move again when green light
+	Sprite getObject();
 };
 
 //Constructor set image for object
@@ -27,13 +31,15 @@ class CTRUCK : public CVEHICLE {
 	// image
 public:
 	CTRUCK() = delete;//default NOT available
-	CTRUCK(int mode);//1 2 3 -> easy medium hard
+	CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
+	void Move();
 	~CTRUCK();//1 2 3 -> easy medium hard
 };
 class CCAR : public CVEHICLE {
 	// image
 public:
 	CCAR() = delete;//default NOT available
-	CCAR(int mode);//1 2 3 -> easy medium hard
+	CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
+	void Move();
 	~CCAR();
 };
