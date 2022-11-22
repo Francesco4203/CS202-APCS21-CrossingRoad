@@ -10,40 +10,49 @@
 using namespace std;
 using namespace sf;
 
+
 void CVEHICLE::stop() {
-	isStop = true;
+    isStop = true;
 }
 void CVEHICLE::resume() {
-	isStop = false;
+    isStop = false;
 }
 Sprite CVEHICLE::getObject() {
-	return object;
+    return object;
 }
 CVEHICLE::CVEHICLE(int x, int y, int mode) {
-	speed = (mode == 1 ? 5 : (mode == 2 ? 7 : 10));
-	isStop = 1;
-	object.setPosition(x, y);
-	object.scale(0.3, 0.3);
+    speed = (mode == 1 ? 5 : (mode == 2 ? 7 : 10));
+    isStop = 1;
+    object.setPosition(x, y);
+    object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-	vehicle.loadFromFile("Resource/truck.png");
-	object.setTexture(vehicle);
-	if (object.getPosition().x >= 1500) {
-		object.setPosition(-200, object.getPosition().y);
-	}
+    if (x > 0) vehicle.loadFromFile("Resource/Rtruck.png");
+    else vehicle.loadFromFile("Resource/truck.png");
+    object.setTexture(vehicle);
 }
 void CTRUCK::Move(bool reverse) {
-	if (isStop) return;
-	object.move((reverse ? -1 : 1) * (speed / 50.0), 0);
+    if (isStop) return;
+    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500 && !reverse) {
+        object.setPosition(-350, object.getPosition().y);
+    }
+    if (object.getPosition().x <= -200 && reverse) {
+        object.setPosition(1500 + 350, object.getPosition().y);
+    }
 }
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-	vehicle.loadFromFile("Resource/car.png");
-	object.setTexture(vehicle);
-	if (object.getPosition().x >= 1500) {
-		object.setPosition(-200, object.getPosition().y);
-	}
+    if (x > 0) vehicle.loadFromFile("Resource/Rcar.png");
+    else vehicle.loadFromFile("Resource/car.png");
+    object.setTexture(vehicle);
 }
 void CCAR::Move(bool reverse) {
-	if (isStop) return;
-	object.move((reverse ? -1 : 1) * ((speed + 3) / 50.0), 0);
+    if (isStop) return;
+    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500 && !reverse) {
+        object.setPosition(-350, object.getPosition().y);
+    }
+    if (object.getPosition().x <= -200 && reverse) {
+        object.setPosition(1500 + 350, object.getPosition().y);
+    }
 }

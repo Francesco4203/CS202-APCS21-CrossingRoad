@@ -55,4 +55,5 @@ public:
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
+    void draw(sf::RenderWindow& window);
 };

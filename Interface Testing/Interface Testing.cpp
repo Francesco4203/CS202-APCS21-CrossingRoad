@@ -64,27 +64,33 @@ CVEHICLE::CVEHICLE(int x, int y, int mode) {
     object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    vehicle.loadFromFile("Resource/truck.png");
+    if (x > 0) vehicle.loadFromFile("Resource/Rtruck.png");
+    else vehicle.loadFromFile("Resource/truck.png");
     object.setTexture(vehicle);
 }
 void CTRUCK::Move(bool reverse) {
     if (isStop) return;
-    srand(time(NULL));
     object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500) {
+    if (object.getPosition().x >= 1500 && !reverse) {
         object.setPosition(-350, object.getPosition().y);
+    }
+    if (object.getPosition().x <= -200 && reverse) {
+        object.setPosition(1500 + 350, object.getPosition().y);
     }
 }
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    vehicle.loadFromFile("Resource/car.png");
+    if (x > 0) vehicle.loadFromFile("Resource/Rcar.png");
+    else vehicle.loadFromFile("Resource/car.png");
     object.setTexture(vehicle);
 }
 void CCAR::Move(bool reverse) {
     if (isStop) return;
-    srand(time(NULL));
-    object.move((reverse ? -1 : 1) * (speed + 5 + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500) {
+    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500 && !reverse) {
         object.setPosition(-350, object.getPosition().y);
+    }
+    if (object.getPosition().x <= -200 && reverse) {
+        object.setPosition(1500 + 350, object.getPosition().y);
     }
 }
 
@@ -180,7 +186,9 @@ LINE::LINE(int y, int direction, int mode) : light(mode) {
         int num = mode + 3;
         CVEHICLE* car = NULL;
         while (num > 0) {
-            car = new CCAR(num*(-250), y, mode);
+            int type = rand() % 2;
+            if (type) car = new CCAR(num * (-250), y, mode);
+            else car = new CTRUCK(num * (-250), y, mode);
             list.push_back(car);
             num--;
         }
@@ -188,6 +196,16 @@ LINE::LINE(int y, int direction, int mode) : light(mode) {
         light.setPosition(WIDTH - 120, y - 30);
     }
     else {
+        list.clear();
+        int num = mode + 3;
+        CVEHICLE* car = NULL;
+        while (num > 0) {
+            int type = rand() % 2;
+            if (type) car = new CCAR(1500 + num * 250, y, mode);
+            else car = new CTRUCK(1500 + num * 250, y, mode);
+            list.push_back(car);
+            num--;
+        }
         light.setPosition(-50, y - 30);
     }
 }
@@ -217,8 +235,9 @@ void LINE::draw(sf::RenderWindow& window) {
 
 int main()
 {
+    srand(time(NULL));
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-    LINE line(50, 1, 3);
+    LINE line(50, 1, 1), line2(300, 2, 3);
     clock_t start, end;
     start = clock();
     end = clock();
@@ -231,9 +250,12 @@ int main()
             line.getLight().changeLight();
             start = clock();
         }
-
+        if ((end - start) / CLOCKS_PER_SEC >= line2.getLight().getTime()) {
+            line2.getLight().changeLight();
+            start = clock();
+        }
         line.draw(window);
-
+        line2.draw(window);
         window.display();
     }
 

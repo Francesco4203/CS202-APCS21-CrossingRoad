@@ -12,32 +12,32 @@ using namespace std;
 using namespace sf;
 class CVEHICLE {
 protected:
-	int speed;//step per second, or seconds needed for 1 step
-	bool isStop;
-	Sprite object;
-	Texture vehicle;
+    int speed;//step per second, or seconds needed for 1 step
+    bool isStop;
+    Sprite object;
+    Texture vehicle;
 public:
-	CVEHICLE() = delete;//default NOT available
-	CVEHICLE(int x, int y, int mode);
-	virtual void Move(bool reverse) = 0;
-	void stop();//stop when red light
-	void resume();//move again when green light
-	Sprite getObject();
+    CVEHICLE() = delete;//default NOT available
+    CVEHICLE(int x, int y, int mode);
+    virtual void Move(bool reverse) = 0;
+    void stop();//stop when red light
+    void resume();//move again when green light
+    Sprite getObject();
 };
 
 //Constructor set image for object
 
-class CTRUCK : public CVEHICLE { 
-	// image
+class CTRUCK : public CVEHICLE {
+    // image
 public:
-	CTRUCK() = delete;//default NOT available
-	CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
-	void Move(bool reverse);//if reverse, move right to left
+    CTRUCK() = delete;//default NOT available
+    CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
+    void Move(bool reverse);//if reverse, move right to left
 };
 class CCAR : public CVEHICLE {
-	// image
+    // image
 public:
-	CCAR() = delete;//default NOT available
-	CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
-	void Move(bool reverse);//if reverse, move right to left
+    CCAR() = delete;//default NOT available
+    CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
+    void Move(bool reverse);//if reverse, move right to left
 };

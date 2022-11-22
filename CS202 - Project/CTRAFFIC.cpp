@@ -60,11 +60,29 @@ LINE::LINE(int y, int direction, int mode) : light(mode) {
     this->direction = direction;
     if (direction == 1) {
         list.clear();
-        CVEHICLE* car = new CCAR(0, y, mode);
-        list.push_back(car);
+        int num = mode + 3;
+        CVEHICLE* car = NULL;
+        while (num > 0) {
+            int type = rand() % 2;
+            if (type) car = new CCAR(num * (-250), y, mode);
+            else car = new CTRUCK(num * (-250), y, mode);
+            list.push_back(car);
+            num--;
+        }
+
         light.setPosition(WIDTH - 120, y - 30);
     }
     else {
+        list.clear();
+        int num = mode + 3;
+        CVEHICLE* car = NULL;
+        while (num > 0) {
+            int type = rand() % 2;
+            if (type) car = new CCAR(1500 + num * 250, y, mode);
+            else car = new CTRUCK(1500 + num * 250, y, mode);
+            list.push_back(car);
+            num--;
+        }
         light.setPosition(-50, y - 30);
     }
 }
@@ -76,4 +94,18 @@ void LINE::stop() {
     for (auto p : list) {
         p->stop();
     }
+}
+
+void LINE::draw(sf::RenderWindow& window) {
+
+    window.draw(line);
+
+    for (auto p : list) {
+        p->resume();
+        if (this->getLight().getState() == 1) p->stop();
+        p->Move(direction == 2);
+        window.draw(p->getObject());
+    }
+
+    window.draw(this->getLight().getSpriteLight());
 }
