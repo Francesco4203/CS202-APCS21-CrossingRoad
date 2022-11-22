@@ -52,8 +52,10 @@ void LIGHT::setPosition(int x, int y) {
     light.setPosition(x, y);
 }
 
-LINE::LINE(int y, int direction, int mode) : light(mode) {
-    Tline.loadFromFile(linePath);
+LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
+    if (isLane) Tline.loadFromFile(lanePath);
+    else Tline.loadFromFile(grassPath);
+
     line.setTexture(Tline);
     line.scale(3, 0.4);
     line.setPosition(0, y);

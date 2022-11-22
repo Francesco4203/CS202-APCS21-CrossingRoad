@@ -42,7 +42,8 @@ public:
 class LINE {
 private:
     vector <CVEHICLE*> list;
-    string linePath = "Resource/line.png";
+    string lanePath = "Resource/lane.png";
+    string grassPath = "Resource/grass.png";
     LIGHT light;
     int direction;//1 left --> right; 2 left <-- right
     Texture Tline;
@@ -50,7 +51,7 @@ private:
 
 public:
     LINE() = delete;//default NOT available
-    LINE(int y, int dirction, int mode);// 1 2 3 - easy medium hard
+    LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
 
     LIGHT& getLight();
     Sprite getSpriteLine();
