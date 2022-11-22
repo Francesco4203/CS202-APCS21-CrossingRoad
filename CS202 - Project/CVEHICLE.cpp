@@ -28,18 +28,22 @@ CVEHICLE::CVEHICLE(int x, int y, int mode) {
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 	vehicle.loadFromFile("Resource/truck.png");
 	object.setTexture(vehicle);
+	if (object.getPosition().x >= 1500) {
+		object.setPosition(-200, object.getPosition().y);
+	}
 }
 void CTRUCK::Move(bool reverse) {
 	if (isStop) return;
-	srand(time(NULL));
-	object.move((reverse ? -1 : 1) * ((rand() % (speed - 2) + 3) % speed + 3) / 50.0, 0);
+	object.move((reverse ? -1 : 1) * (speed / 50.0), 0);
 }
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 	vehicle.loadFromFile("Resource/car.png");
 	object.setTexture(vehicle);
+	if (object.getPosition().x >= 1500) {
+		object.setPosition(-200, object.getPosition().y);
+	}
 }
 void CCAR::Move(bool reverse) {
 	if (isStop) return;
-	srand(time(NULL));
-	object.move((reverse ? -1 : 1) * ((rand() % (speed + 3) + 3) % (speed + 5) + 3) / 50.0, 0);
+	object.move((reverse ? -1 : 1) * ((speed + 3) / 50.0), 0);
 }
