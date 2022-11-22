@@ -13,10 +13,11 @@ using namespace sf;
 class CVEHICLE {
 	int mX, mY;
 	int speed;//step per second, or seconds needed for 1 step
+	Sprite object;
 public:
 	CVEHICLE() = delete;//default NOT available
 	CVEHICLE(int mode);
-	virtual void Move(int, int);
+	virtual void Move();
 	virtual void stop();//stop when red light
 	virtual void resume();//move again when green light
 };

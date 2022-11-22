@@ -9,7 +9,7 @@
 #include "CTRAFFIC.h"
 using namespace std;
 using namespace sf;
-void CVEHICLE::Move(int, int) {
+void CVEHICLE::Move() {
 
 }
 void CVEHICLE::stop() {
@@ -24,16 +24,10 @@ CVEHICLE::CVEHICLE() {
 CVEHICLE::CVEHICLE(int mode) {
 
 }
-CTRUCK::CTRUCK() : CVEHICLE() {
-
-}
 CTRUCK::CTRUCK(int mode) : CVEHICLE(mode) {
 
 }
 CTRUCK::~CTRUCK() {
-
-}
-CCAR::CCAR() : CVEHICLE() {
 
 }
 CCAR::CCAR(int mode) : CVEHICLE(mode) {

@@ -13,13 +13,13 @@ using namespace sf;
 class CANIMAL {
 	int mX, mY;
 	int speed;//step per second, or seconds needed for 1 step
+	Sprite object;
 public:
-	virtual void Move(int, int);
+	virtual void Move();
 	virtual void Tell();//sound during game? dunno
 	CANIMAL() = delete;//default NOT available
 	CANIMAL(int mode);
 	~CANIMAL();
-	virtual void Move(int, int);
 	virtual void stop();//stop when red light
 	virtual void resume();//move again when green light
 };
