@@ -41,6 +41,7 @@ public:
 
 class LINE {
 private:
+    vector <CVEHICLE*> list;
     string linePath = "Resource/line.png";
     LIGHT light;
     int direction;//1 left --> right; 2 left <-- right
@@ -53,4 +54,5 @@ public:
 
     LIGHT& getLight();
     Sprite getSpriteLine();
+    void stop();
 };

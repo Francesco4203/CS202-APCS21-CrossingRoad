@@ -11,181 +11,228 @@
 
 using namespace std;
 using namespace sf;
+
+const int WIDTH = 1500;
+const int HEIGHT = 800;
+
 class CVEHICLE {
 protected:
-	int speed;//step per second, or seconds needed for 1 step
-	bool isStop;
-	Sprite object;
-	Texture vehicle;
+    int speed;//step per second, or seconds needed for 1 step
+    bool isStop;
+    Sprite object;
+    Texture vehicle;
 public:
-	CVEHICLE() = delete;//default NOT available
-	CVEHICLE(int x, int y, int mode);
-	virtual void Move() = 0;
-	void stop();//stop when red light
-	void resume();//move again when green light
-	Sprite getObject();
+    CVEHICLE() = delete;//default NOT available
+    CVEHICLE(int x, int y, int mode);
+    virtual void Move(bool reverse) = 0;
+    void stop();//stop when red light
+    void resume();//move again when green light
+    Sprite getObject();
 };
+
+//Constructor set image for object
+
+class CTRUCK : public CVEHICLE {
+    // image
+public:
+    CTRUCK() = delete;//default NOT available
+    CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
+    void Move(bool reverse);//if reverse, move right to left
+};
+class CCAR : public CVEHICLE {
+    // image
+public:
+    CCAR() = delete;//default NOT available
+    CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
+    void Move(bool reverse);//if reverse, move right to left
+};
+
+
+void CVEHICLE::stop() {
+    isStop = true;
+}
+void CVEHICLE::resume() {
+    isStop = false;
+}
+Sprite CVEHICLE::getObject() {
+    return object;
+}
+CVEHICLE::CVEHICLE(int x, int y, int mode) {
+    speed = (mode == 1 ? 5 : (mode == 2 ? 7 : 10));
+    isStop = 1;
+    object.setPosition(x, y);
+    object.scale(0.3, 0.3);
+}
+CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
+    vehicle.loadFromFile("Resource/truck.png");
+    object.setTexture(vehicle);
+}
+void CTRUCK::Move(bool reverse) {
+    if (isStop) return;
+    srand(time(NULL));
+    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500) {
+        object.setPosition(-350, object.getPosition().y);
+    }
+}
+CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
+    vehicle.loadFromFile("Resource/car.png");
+    object.setTexture(vehicle);
+}
+void CCAR::Move(bool reverse) {
+    if (isStop) return;
+    srand(time(NULL));
+    object.move((reverse ? -1 : 1) * (speed + 5 + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500) {
+        object.setPosition(-350, object.getPosition().y);
+    }
+}
+
+class LIGHT {
+private:
+    string redPath = "Resource/red_light.png";
+    string yellowPath = "Resource/yellow_light.png";
+    string greenPath = "Resource/green_light.png";
+    int time;
+    int state;//1 red - 2 yellow - 3 green
+    int red, yellow, green;//time of a state, 2-3s for yellow
+    Texture red_light;
+    Texture green_light;
+    Texture yellow_light;
+    Sprite light;
+public:
+    LIGHT() = delete;//default NOT available
+    LIGHT(int mode);// 1 2 3 - easy medium hard
+
+    int getTime();
+    int getState();
+    Sprite getSpriteLight();
+    void changeLight();
+    void setPosition(int x, int y);
+};
+
+class LINE {
+private:
+    vector <CVEHICLE*> list;
+    string linePath = "Resource/line.png";
+    LIGHT light;
+    int direction;//1 left --> right; 2 left <-- right
+    Texture Tline;
+    Sprite line;
+
+public:
+    LINE() = delete;//default NOT available
+    LINE(int y, int dirction, int mode);// 1 2 3 - easy medium hard
+
+    LIGHT& getLight();
+    Sprite getSpriteLine();
+    void stop();
+    void draw(sf::RenderWindow& window);
+};
+
+LIGHT::LIGHT(int mode) {
+    red_light.loadFromFile(redPath);
+    yellow_light.loadFromFile(yellowPath);
+    green_light.loadFromFile(greenPath);
+    light.setTexture(green_light);
+    light.scale(0.3, 0.3);
+    time = 3 * (4 - mode);
+    state = 3;
+}
+
+int LIGHT::getTime() {
+    return time;
+}
+int LIGHT::getState() {
+    return state;
+}
+Sprite LIGHT::getSpriteLight() {
+    return light;
+}
+
+void LIGHT::changeLight() {
+    if (state == 1) {
+        state = 3;
+        light.setTexture(green_light);
+        return;
+    }
+    if (state == 2) {
+        state = 1;
+        light.setTexture(red_light);
+        return;
+    }
+    state = 2;
+    light.setTexture(yellow_light);
+}
+
+void LIGHT::setPosition(int x, int y) {
+    light.setPosition(x, y);
+}
+
+LINE::LINE(int y, int direction, int mode) : light(mode) {
+    Tline.loadFromFile(linePath);
+    line.setTexture(Tline);
+    line.scale(3, 0.4);
+    line.setPosition(0, y);
+    this->direction = direction;
+    if (direction == 1) {
+        list.clear();
+        int num = mode + 3;
+        CVEHICLE* car = NULL;
+        while (num > 0) {
+            car = new CCAR(num*(-250), y, mode);
+            list.push_back(car);
+            num--;
+        }
+     
+        light.setPosition(WIDTH - 120, y - 30);
+    }
+    else {
+        light.setPosition(-50, y - 30);
+    }
+}
+
+LIGHT& LINE::getLight() { return light; }
+Sprite LINE::getSpriteLine() { return line; }
+
+void LINE::stop() {
+    for (auto p : list) {
+        p->stop();
+    }
+}
+
+void LINE::draw(sf::RenderWindow& window) {
+
+    window.draw(line);
+
+    for (auto p : list) {
+        p->resume();
+        if (this->getLight().getState() == 1) p->stop();
+        p->Move(direction == 2);
+        window.draw(p->getObject());
+    }
+
+    window.draw(this->getLight().getSpriteLight());
+}
 
 int main()
 {
-    string resourcePath = "Resource/";
-
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-
-    Font font;
-    font.loadFromFile(resourcePath + "arial.ttf");
-    Text loseT, winT;
-    loseT.setFont(font);
-    loseT.setString("LOSE");
-    loseT.setCharacterSize(60);
-    loseT.setPosition(500, 500);
-
-    winT.setFont(font);
-    winT.setString("WIN");
-    winT.setCharacterSize(60);
-    winT.setPosition(500, 500);
-
-    Texture Tcar, Ttruck, Troad, Tman, Tline;
-    Tcar.loadFromFile(resourcePath + "car.png");
-    Ttruck.loadFromFile(resourcePath + "truck.png");
-    Troad.loadFromFile(resourcePath + "road.png");
-    Tman.loadFromFile(resourcePath + "man.png");
-    Tline.loadFromFile(resourcePath + "line.png");
-
-    Sprite car1(Tcar);
-    Sprite car2(Tcar);
-    Sprite truck1(Ttruck);
-    Sprite truck2(Ttruck);
-    Sprite road1(Troad);
-    Sprite road2(Troad);
-    Sprite road3(Troad);
-    Sprite road4(Troad);
-    Sprite man(Tman);
-    Sprite line(Tline);
-
-    car1.scale(0.3, 0.3);
-    car2.scale(0.3, 0.3);
-    truck1.scale(0.3, 0.3);
-    truck2.scale(0.3, 0.3);
-    road1.scale(3, 0.4);
-    road2.scale(3, 0.4);
-    road3.scale(3, 0.4);
-    road4.scale(3, 0.4);
-    man.scale(0.1, 0.1);
-    line.scale(4, 0.1);
-
-    car1.setPosition(0, 100);
-    road1.setPosition(0, 100);
-    truck1.setPosition(1350, 250);
-    road2.setPosition(0, 250);
-    car2.setPosition(0, 400);
-    road3.setPosition(0, 400);
-    truck2.setPosition(1350, 550);
-    road4.setPosition(0, 550);
-    man.setPosition(750, 700);
-    line.setPosition(-10, 10);
-
-
-    srand(time(NULL));
-    int speed = 30;
-    float x = rand() % 7 + 3, y = rand() % 7 + 3 , z = rand() % 7 + 3, t = rand() % 7 + 3;
-    bool win = false, lose = false;
-
-    while (window.isOpen() && (!win || !lose)) {
-
-        Event event;
-        while (window.pollEvent(event)) 
-        {
-
-            switch (event.type) 
-            {
-
-            case Event::Closed:
-                window.close();
-                break;
-
-            case Event::KeyPressed:
-                switch (event.key.code)
-                {
-                case Keyboard::W:
-                    if(man.getPosition().y - speed >= 0) man.move(0, -speed);
-                    break;
-                case Keyboard::S:
-                    if (man.getPosition().y + speed <= 700) man.move(0, speed);
-                    break;
-                case Keyboard::A:
-                    if (man.getPosition().x - speed >= 0) man.move(-speed, 0);
-                    break;
-                case Keyboard::D:
-                    if (man.getPosition().x + speed <= 1450) man.move(speed, 0);
-                    break;
-                }
-                break;
-
-            }
-
-        }
-
-        car1.move(x/10, 0);
-        car2.move(y/10, 0);
-        truck1.move(-z/10, 0);
-        truck2.move(-t/10, 0);
-        
-        if (car1.getPosition().x >= 1500) {
-            car1.setPosition(0, 100);
-            x = rand() % 7 + 3;
-        }
-        if (car2.getPosition().x >= 1500) {
-            car2.setPosition(0, 400);
-            y = rand() % 7 + 3;
-        }
-        if (truck1.getPosition().x <= -150) {
-            truck1.setPosition(1350, 250);
-            z = rand() % 7 + 3;
-        }
-        if (truck2.getPosition().x <= -150) {
-            truck2.setPosition(1350, 550);
-            t = rand() % 7 + 3;
-        }
+    LINE line(50, 1, 3);
+    clock_t start, end;
+    start = clock();
+    end = clock();
+    while (window.isOpen()) {
+        end = clock();
 
         window.clear();
-
-        window.draw(line);
-        window.draw(road1);
-        window.draw(road2);
-        window.draw(road3);
-        window.draw(road4);
-        window.draw(car1);
-        window.draw(car2);
-        window.draw(truck1);
-        window.draw(truck2);
-        window.draw(man);
-
-        if (man.getGlobalBounds().intersects(car1.getGlobalBounds())) {
-            lose = true;
-        }
-        if (man.getGlobalBounds().intersects(car2.getGlobalBounds())) {
-            lose = true;
-        }
-        if (man.getGlobalBounds().intersects(truck1.getGlobalBounds())) {
-            lose = true;
-        }
-        if (man.getGlobalBounds().intersects(truck2.getGlobalBounds())) {
-            lose = true;
-        }
-        if (man.getGlobalBounds().intersects(line.getGlobalBounds())) {
-            win = true;
-        }
         
-        if (lose || win) {
-            window.clear();
-            if (win) {
-                window.draw(winT);
-            }
-            if (lose) {
-                window.draw(loseT);
-            }
+        if ((end - start) / CLOCKS_PER_SEC >= line.getLight().getTime()) {
+            line.getLight().changeLight();
+            start = clock();
         }
+
+        line.draw(window);
 
         window.display();
     }

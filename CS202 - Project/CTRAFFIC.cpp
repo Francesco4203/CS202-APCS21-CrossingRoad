@@ -59,6 +59,9 @@ LINE::LINE(int y, int direction, int mode) : light(mode) {
     line.setPosition(0, y);
     this->direction = direction;
     if (direction == 1) {
+        list.clear();
+        CVEHICLE* car = new CCAR(0, y, mode);
+        list.push_back(car);
         light.setPosition(WIDTH - 120, y - 30);
     }
     else {
@@ -68,3 +71,9 @@ LINE::LINE(int y, int direction, int mode) : light(mode) {
 
 LIGHT& LINE::getLight() { return light; }
 Sprite LINE::getSpriteLine() { return line; }
+
+void LINE::stop() {
+    for (auto p : list) {
+        p->stop();
+    }
+}
