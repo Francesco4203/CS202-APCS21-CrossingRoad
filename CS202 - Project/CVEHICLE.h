@@ -19,7 +19,7 @@ protected:
 public:
 	CVEHICLE() = delete;//default NOT available
 	CVEHICLE(int x, int y, int mode);
-	virtual void Move() = 0;
+	virtual void Move(bool reverse) = 0;
 	void stop();//stop when red light
 	void resume();//move again when green light
 	Sprite getObject();
@@ -32,14 +32,12 @@ class CTRUCK : public CVEHICLE {
 public:
 	CTRUCK() = delete;//default NOT available
 	CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
-	void Move();
-	~CTRUCK();//1 2 3 -> easy medium hard
+	void Move(bool reverse);//if reverse, move right to left
 };
 class CCAR : public CVEHICLE {
 	// image
 public:
 	CCAR() = delete;//default NOT available
 	CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
-	void Move();
-	~CCAR();
+	void Move(bool reverse);//if reverse, move right to left
 };

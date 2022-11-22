@@ -11,17 +11,19 @@
 using namespace std;
 using namespace sf;
 class CANIMAL {
-	int mX, mY;
+protected:
 	int speed;//step per second, or seconds needed for 1 step
+	bool isStop;
 	Sprite object;
+	Texture animal;
 public:
-	virtual void Move();
 	virtual void Tell();//sound during game? dunno
 	CANIMAL() = delete;//default NOT available
-	CANIMAL(int mode);
-	~CANIMAL();
-	virtual void stop();//stop when red light
-	virtual void resume();//move again when green light
+	CANIMAL(int x, int y, int mode);
+	virtual void Move(bool reverse) = 0;
+	void stop();//stop when red light
+	void resume();//move again when green light
+	Sprite getObject();
 };
 
 //Constructor set image for object
@@ -30,11 +32,13 @@ class CDINAUSOR : public CANIMAL {
 	// image
 public:
 	CDINAUSOR() = delete;//default NOT available
-	CDINAUSOR(int mode);// 1 2 3 -> easy medium hard
+	CDINAUSOR(int x, int y, int mode);// 1 2 3 -> easy medium hard
+	void Move(bool reverse);//if reverse, move right to left
 };
 class CBIRD : public CANIMAL {
 	//image
 public:
 	CBIRD() = delete;//default NOT available
-	CBIRD(int mode);//1 2 3 -> easy medium hard;
+	CBIRD(int x, int y, int mode);//1 2 3 -> easy medium hard;
+	void Move(bool reverse);//if reverse, move right to left
 };

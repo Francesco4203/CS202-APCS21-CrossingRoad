@@ -29,23 +29,17 @@ CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 	vehicle.loadFromFile("Resource/truck.png");
 	object.setTexture(vehicle);
 }
-CTRUCK::~CTRUCK() {
-
-}
-void CTRUCK::Move() {
+void CTRUCK::Move(bool reverse) {
 	if (isStop) return;
 	srand(time(NULL));
-	object.move((rand() % speed + 3) / 10.0, 0);
+	object.move((reverse ? -1 : 1) * (rand() % speed + 3) / 50.0, 0);
 }
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 	vehicle.loadFromFile("Resource/car.png");
 	object.setTexture(vehicle);
 }
-CCAR::~CCAR() {
-
-}
-void CCAR::Move() {
+void CCAR::Move(bool reverse) {
 	if (isStop) return;
 	srand(time(NULL));
-	object.move((rand() % (speed + 5) + 3) / 10.0, 0);
+	object.move((reverse ? -1 : 1) * (rand() % (speed + 5) + 3) / 50.0, 0);
 }
