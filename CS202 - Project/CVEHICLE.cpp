@@ -32,7 +32,7 @@ CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 void CTRUCK::Move(bool reverse) {
 	if (isStop) return;
 	srand(time(NULL));
-	object.move((reverse ? -1 : 1) * (rand() % speed + 3) / 50.0, 0);
+	object.move((reverse ? -1 : 1) * ((rand() % (speed - 2) + 3) % speed + 3) / 50.0, 0);
 }
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 	vehicle.loadFromFile("Resource/car.png");
@@ -41,5 +41,5 @@ CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
 void CCAR::Move(bool reverse) {
 	if (isStop) return;
 	srand(time(NULL));
-	object.move((reverse ? -1 : 1) * (rand() % (speed + 5) + 3) / 50.0, 0);
+	object.move((reverse ? -1 : 1) * ((rand() % (speed + 3) + 3) % (speed + 5) + 3) / 50.0, 0);
 }
