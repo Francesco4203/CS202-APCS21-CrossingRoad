@@ -11,7 +11,7 @@ using namespace sf;
 
 int main()
 {
-    string resourcePath = "C:/Users/MY MSI/Downloads/Project1/Resource/";
+    string resourcePath = "Resource/";
 
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
 
