@@ -41,7 +41,7 @@ public:
 
 class LINE {
 private:
-    vector <CVEHICLE*> list;
+    vector <CENEMY*> list;
     string lanePath = "Resource/lane.png";
     string grassPath = "Resource/grass.png";
     LIGHT light;
@@ -56,5 +56,5 @@ public:
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
 };

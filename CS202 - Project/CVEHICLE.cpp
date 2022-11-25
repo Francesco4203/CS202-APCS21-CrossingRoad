@@ -7,52 +7,25 @@
 #include "CVEHICLE.h"
 #include "CGAME.h"
 #include "CTRAFFIC.h"
+#include "CENEMY.h"
 using namespace std;
 using namespace sf;
 
 
-void CVEHICLE::stop() {
-    isStop = true;
-}
-void CVEHICLE::resume() {
-    isStop = false;
-}
-Sprite CVEHICLE::getObject() {
-    return object;
-}
 CVEHICLE::CVEHICLE(int x, int y, int mode) {
-    speed = (mode == 1 ? 5 : (mode == 2 ? 7 : 10));
+    speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
     object.setPosition(x, y);
     object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    if (x > 0) vehicle.loadFromFile("Resource/Rtruck.png");
-    else vehicle.loadFromFile("Resource/truck.png");
-    object.setTexture(vehicle);
+    if (x > 0) enemy.loadFromFile("Resource/Rtruck.png");
+    else enemy.loadFromFile("Resource/truck.png");
+    object.setTexture(enemy);
 }
-void CTRUCK::Move(bool reverse) {
-    if (isStop) return;
-    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500 && !reverse) {
-        object.setPosition(-350, object.getPosition().y);
-    }
-    if (object.getPosition().x <= -200 && reverse) {
-        object.setPosition(1500 + 350, object.getPosition().y);
-    }
-}
+
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    if (x > 0) vehicle.loadFromFile("Resource/Rcar.png");
-    else vehicle.loadFromFile("Resource/car.png");
-    object.setTexture(vehicle);
-}
-void CCAR::Move(bool reverse) {
-    if (isStop) return;
-    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500 && !reverse) {
-        object.setPosition(-350, object.getPosition().y);
-    }
-    if (object.getPosition().x <= -200 && reverse) {
-        object.setPosition(1500 + 350, object.getPosition().y);
-    }
+    if (x > 0) enemy.loadFromFile("Resource/Rcar.png");
+    else enemy.loadFromFile("Resource/car.png");
+    object.setTexture(enemy);
 }

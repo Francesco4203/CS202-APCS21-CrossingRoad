@@ -15,19 +15,85 @@ using namespace sf;
 const int WIDTH = 1500;
 const int HEIGHT = 800;
 
-class CVEHICLE {
+class CENEMY
+{
 protected:
     int speed;//step per second, or seconds needed for 1 step
     bool isStop;
     Sprite object;
-    Texture vehicle;
+    Texture enemy;
+public:
+    void Move(bool reverse);
+    void stop();
+    void resume();
+    Sprite getObject();
+};
+
+void CENEMY::stop() {
+    isStop = true;
+}
+void CENEMY::resume() {
+    isStop = false;
+}
+Sprite CENEMY::getObject() {
+    return object;
+}
+
+void CENEMY::Move(bool reverse) {
+    if (isStop) return;
+    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
+    if (object.getPosition().x >= 1500 && !reverse) {
+        object.setPosition(-350, object.getPosition().y);
+    }
+    if (object.getPosition().x <= -200 && reverse) {
+        object.setPosition(1500 + 350, object.getPosition().y);
+    }
+}
+
+class CANIMAL : public CENEMY {
+
+public:
+    CANIMAL() = delete;//default NOT available
+    CANIMAL(int x, int y, int mode);
+};
+
+//Constructor set image for object
+
+class CDINAUSOR : public CANIMAL {
+    // image
+public:
+    CDINAUSOR() = delete;//default NOT available
+    CDINAUSOR(int x, int y, int mode);// 1 2 3 -> easy medium hard
+};
+class CBIRD : public CANIMAL {
+    //image
+public:
+    CBIRD() = delete;//default NOT available
+    CBIRD(int x, int y, int mode);//1 2 3 -> easy medium hard;
+};
+
+CANIMAL::CANIMAL(int x, int y, int mode) {
+    speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
+    isStop = 1;
+    object.setPosition(x, y);
+    object.scale(0.3, 0.3);
+}
+CDINAUSOR::CDINAUSOR(int x, int y, int mode) : CANIMAL(x, y, mode) {
+    if (x > 0) enemy.loadFromFile("Resource/Rdinausor.png");
+    else enemy.loadFromFile("Resource/dinausor.png");
+    object.setTexture(enemy);
+}
+
+CBIRD::CBIRD(int x, int y, int mode) : CANIMAL(x, y, mode) {
+    if (x > 0) enemy.loadFromFile("Resource/Rbird.png");
+    else enemy.loadFromFile("Resource/bird.png");
+    object.setTexture(enemy);
+}
+
+class CVEHICLE : public CENEMY {
 public:
     CVEHICLE() = delete;//default NOT available
     CVEHICLE(int x, int y, int mode);
-    virtual void Move(bool reverse) = 0;
-    void stop();//stop when red light
-    void resume();//move again when green light
-    Sprite getObject();
 };
 
 //Constructor set image for object
@@ -37,61 +103,30 @@ class CTRUCK : public CVEHICLE {
 public:
     CTRUCK() = delete;//default NOT available
     CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
-    void Move(bool reverse);//if reverse, move right to left
 };
 class CCAR : public CVEHICLE {
     // image
 public:
     CCAR() = delete;//default NOT available
     CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
-    void Move(bool reverse);//if reverse, move right to left
 };
 
-
-void CVEHICLE::stop() {
-    isStop = true;
-}
-void CVEHICLE::resume() {
-    isStop = false;
-}
-Sprite CVEHICLE::getObject() {
-    return object;
-}
 CVEHICLE::CVEHICLE(int x, int y, int mode) {
-    speed = (mode == 1 ? 5 : (mode == 2 ? 7 : 10));
+    speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
     object.setPosition(x, y);
     object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    if (x > 0) vehicle.loadFromFile("Resource/Rtruck.png");
-    else vehicle.loadFromFile("Resource/truck.png");
-    object.setTexture(vehicle);
+    if (x > 0) enemy.loadFromFile("Resource/Rtruck.png");
+    else enemy.loadFromFile("Resource/truck.png");
+    object.setTexture(enemy);
 }
-void CTRUCK::Move(bool reverse) {
-    if (isStop) return;
-    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500 && !reverse) {
-        object.setPosition(-350, object.getPosition().y);
-    }
-    if (object.getPosition().x <= -200 && reverse) {
-        object.setPosition(1500 + 350, object.getPosition().y);
-    }
-}
+
 CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
-    if (x > 0) vehicle.loadFromFile("Resource/Rcar.png");
-    else vehicle.loadFromFile("Resource/car.png");
-    object.setTexture(vehicle);
-}
-void CCAR::Move(bool reverse) {
-    if (isStop) return;
-    object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
-    if (object.getPosition().x >= 1500 && !reverse) {
-        object.setPosition(-350, object.getPosition().y);
-    }
-    if (object.getPosition().x <= -200 && reverse) {
-        object.setPosition(1500 + 350, object.getPosition().y);
-    }
+    if (x > 0) enemy.loadFromFile("Resource/Rcar.png");
+    else enemy.loadFromFile("Resource/car.png");
+    object.setTexture(enemy);
 }
 
 class LIGHT {
@@ -119,8 +154,9 @@ public:
 
 class LINE {
 private:
-    vector <CVEHICLE*> list;
-    string linePath = "Resource/line.png";
+    vector <CENEMY*> list;
+    string lanePath = "Resource/lane.png";
+    string grassPath = "Resource/grass.png";
     LIGHT light;
     int direction;//1 left --> right; 2 left <-- right
     Texture Tline;
@@ -128,12 +164,12 @@ private:
 
 public:
     LINE() = delete;//default NOT available
-    LINE(int y, int dirction, int mode);// 1 2 3 - easy medium hard
+    LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
 
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
 };
 
 LIGHT::LIGHT(int mode) {
@@ -142,7 +178,7 @@ LIGHT::LIGHT(int mode) {
     green_light.loadFromFile(greenPath);
     light.setTexture(green_light);
     light.scale(0.3, 0.3);
-    time = 3 * (4 - mode);
+    time = 2 * (4 - mode);
     state = 3;
 }
 
@@ -175,36 +211,61 @@ void LIGHT::setPosition(int x, int y) {
     light.setPosition(x, y);
 }
 
-LINE::LINE(int y, int direction, int mode) : light(mode) {
-    Tline.loadFromFile(linePath);
+LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
+    if (isLane) Tline.loadFromFile(lanePath);
+    else Tline.loadFromFile(grassPath);
+
     line.setTexture(Tline);
-    line.scale(3, 0.4);
     line.setPosition(0, y);
     this->direction = direction;
     if (direction == 1) {
         list.clear();
         int num = mode + 3;
-        CVEHICLE* car = NULL;
-        while (num > 0) {
-            int type = rand() % 2;
-            if (type) car = new CCAR(num * (-250), y, mode);
-            else car = new CTRUCK(num * (-250), y, mode);
-            list.push_back(car);
-            num--;
+        if (isLane) {
+            CVEHICLE* vehicle = NULL;
+            while (num > 0) {
+                int type = rand() % 2;
+                if (type) vehicle = new CCAR(num * (-250), y, mode);
+                else vehicle = new CTRUCK(num * (-250), y, mode);
+                list.push_back(vehicle);
+                num--;
+            }
         }
-     
+        else {
+            CANIMAL* animal = NULL;
+            while (num > 0) {
+                int type = rand() % 2;
+                if (type) animal = new CBIRD(num * (-250), y, mode);
+                else animal = new CDINAUSOR(num * (-250), y, mode);
+                list.push_back(animal);
+                num--;
+            }
+        }
+
         light.setPosition(WIDTH - 120, y - 30);
     }
     else {
         list.clear();
         int num = mode + 3;
-        CVEHICLE* car = NULL;
-        while (num > 0) {
-            int type = rand() % 2;
-            if (type) car = new CCAR(1500 + num * 250, y, mode);
-            else car = new CTRUCK(1500 + num * 250, y, mode);
-            list.push_back(car);
-            num--;
+        if (isLane) {
+            CVEHICLE* vehicle = NULL;
+            while (num > 0) {
+                int type = rand() % 2;
+                if (type) vehicle = new CCAR(1500 + num * 250, y, mode);
+                else vehicle = new CTRUCK(1500 + num * 250, y, mode);
+                list.push_back(vehicle);
+                num--;
+            }
+        }
+        else {
+            CENEMY* enemy = NULL;
+            while (num > 0) {
+                int type = rand() % 2;
+                if (type) enemy = new CBIRD(1500 + num * 250, y, mode);
+                else enemy = new CDINAUSOR(1500 + num * 250, y, mode);
+                list.push_back(enemy);
+                num--;
+            }
         }
         light.setPosition(-50, y - 30);
     }
@@ -219,8 +280,12 @@ void LINE::stop() {
     }
 }
 
-void LINE::draw(sf::RenderWindow& window) {
-
+void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
+    time.second = clock();
+    if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
+        light.changeLight();
+        time.first = clock();
+    }
     window.draw(line);
 
     for (auto p : list) {
@@ -237,25 +302,20 @@ int main()
 {
     srand(time(NULL));
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-    LINE line(50, 1, 1), line2(300, 2, 3);
-    clock_t start, end;
-    start = clock();
-    end = clock();
+    LINE line(50, 1, 1, 1), line2(225, 2, 0, 2), line3(400, 1, 1, 3), line4(575, 2, 0, 2);
+    pair<clock_t, clock_t> time[4];
+    for (int i = 0; i < 4; ++i) {
+        time[i].first = clock();
+        time[i].second = clock();
+    }
     while (window.isOpen()) {
-        end = clock();
-
         window.clear();
         
-        if ((end - start) / CLOCKS_PER_SEC >= line.getLight().getTime()) {
-            line.getLight().changeLight();
-            start = clock();
-        }
-        if ((end - start) / CLOCKS_PER_SEC >= line2.getLight().getTime()) {
-            line2.getLight().changeLight();
-            start = clock();
-        }
-        line.draw(window);
-        line2.draw(window);
+        line.draw(window, time[0]);
+        line2.draw(window, time[1]);
+        line3.draw(window, time[2]);
+        line4.draw(window, time[3]);
+
         window.display();
     }
 

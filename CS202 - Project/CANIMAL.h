@@ -8,37 +8,29 @@
 #include "CVEHICLE.h"
 #include "CGAME.h"
 #include "CTRAFFIC.h"
+#include "CENEMY.h"
+
 using namespace std;
 using namespace sf;
-class CANIMAL {
-protected:
-	int speed;//step per second, or seconds needed for 1 step
-	bool isStop;
-	Sprite object;
-	Texture animal;
+
+class CANIMAL : public CENEMY {
+
 public:
-	virtual void Tell();//sound during game? dunno
-	CANIMAL() = delete;//default NOT available
-	CANIMAL(int x, int y, int mode);
-	virtual void Move(bool reverse) = 0;
-	void stop();//stop when red light
-	void resume();//move again when green light
-	Sprite getObject();
+    CANIMAL() = delete;//default NOT available
+    CANIMAL(int x, int y, int mode);
 };
 
 //Constructor set image for object
 
 class CDINAUSOR : public CANIMAL {
-	// image
+    // image
 public:
-	CDINAUSOR() = delete;//default NOT available
-	CDINAUSOR(int x, int y, int mode);// 1 2 3 -> easy medium hard
-	void Move(bool reverse);//if reverse, move right to left
+    CDINAUSOR() = delete;//default NOT available
+    CDINAUSOR(int x, int y, int mode);// 1 2 3 -> easy medium hard
 };
 class CBIRD : public CANIMAL {
-	//image
+    //image
 public:
-	CBIRD() = delete;//default NOT available
-	CBIRD(int x, int y, int mode);//1 2 3 -> easy medium hard;
-	void Move(bool reverse);//if reverse, move right to left
+    CBIRD() = delete;//default NOT available
+    CBIRD(int x, int y, int mode);//1 2 3 -> easy medium hard;
 };

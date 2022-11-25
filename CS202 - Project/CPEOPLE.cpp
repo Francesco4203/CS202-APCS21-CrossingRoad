@@ -7,6 +7,8 @@
 #include "CVEHICLE.h"
 #include "CGAME.h"
 #include "CTRAFFIC.h"
+#include "CENEMY.h"
+
 using namespace std;
 using namespace sf;
 CPEOPLE::CPEOPLE() {
