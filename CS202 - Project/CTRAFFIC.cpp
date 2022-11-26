@@ -123,10 +123,10 @@ void LINE::stop() {
 }
 
 void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
-    time.second = clock();
+    time.second = clock() + rand() % 10;
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
-        time.first = clock();
+        time.first = clock() + rand() % 10;
     }
     window.draw(line);
 

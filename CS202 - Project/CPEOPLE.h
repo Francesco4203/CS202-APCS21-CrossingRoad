@@ -12,14 +12,12 @@
 using namespace std;
 using namespace sf;
 class CPEOPLE {
-	int mX, mY;
+	Texture image;
+	Sprite people;
 	bool mState; //live - die
 public:
 	CPEOPLE();
-	void Up(int);
-	void Left(int);
-	void Right(int);
-	void Down(int);
+	void move(Event& ev);
 	bool isImpact(const CVEHICLE*&);
 	bool isImpact(const CANIMAL*&);
 	bool isFinish();

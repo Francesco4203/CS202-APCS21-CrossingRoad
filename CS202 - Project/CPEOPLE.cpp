@@ -14,16 +14,7 @@ using namespace sf;
 CPEOPLE::CPEOPLE() {
 
 }
-void CPEOPLE::Up(int) {
-
-}
-void CPEOPLE::Left(int) {
-
-}
-void CPEOPLE::Right(int) {
-
-}
-void CPEOPLE::Down(int) {
+void CPEOPLE::move(Event& ev) {
 
 }
 bool CPEOPLE::isImpact(const CVEHICLE*&) {

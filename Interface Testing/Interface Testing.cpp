@@ -281,10 +281,10 @@ void LINE::stop() {
 }
 
 void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
-    time.second = clock();
+    time.second = clock() + rand() % 10;
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
-        time.first = clock();
+        time.first = clock() + rand() % 10;
     }
     window.draw(line);
 
@@ -297,27 +297,66 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
 
     window.draw(this->getLight().getSpriteLight());
 }
-
-int main()
-{
-    srand(time(NULL));
-    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-    LINE line(50, 1, 1, 1), line2(225, 2, 0, 2), line3(400, 1, 1, 3), line4(575, 2, 0, 2);
-    pair<clock_t, clock_t> time[4];
-    for (int i = 0; i < 4; ++i) {
-        time[i].first = clock();
-        time[i].second = clock();
+class CGAME {
+    vector<LINE*> map;
+    int mode;
+    vector<pair<clock_t, clock_t>> time;
+public:
+    CGAME();
+    void gameSet();
+    void newGame();
+    void playGame();
+};
+CGAME::CGAME() {
+    map.clear();
+    mode = 1;
+}
+void CGAME::newGame() {
+    gameSet();
+    playGame();
+}
+void CGAME::gameSet() {
+    map.clear();
+    for (int i = 0; i < 2 + mode; i++) {
+        int isLane = rand() % 2;
+        int direction = rand() % 2;
+        int easier = rand() % 4;
+        LINE* a = new LINE(50 + 120 * i, direction + 1, isLane, min(3, mode + !easier));
+        map.push_back(a);
     }
+    time = vector<pair<clock_t, clock_t>>(mode + 2);
+    for (int i = 0; i < mode + 2; ++i) {
+        time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
+        time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
+    }
+    for (int i = 0; i < 2 + mode; i++) {
+        int isLane = rand() % 2;
+        int direction = rand() % 2;
+        int easier = rand() % 4;
+        LINE* a = new LINE(50 + 150 * i, direction + 1, isLane, min(3, mode + !easier));
+        map.push_back(a);
+    }
+}
+void CGAME::playGame() {
+    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
     while (window.isOpen()) {
+        Event ev;
+        while (window.pollEvent(ev)) {
+
+        }
         window.clear();
-        
-        line.draw(window, time[0]);
-        line2.draw(window, time[1]);
-        line3.draw(window, time[2]);
-        line4.draw(window, time[3]);
+
+        for (int i = 0; i < 2 + mode; i++) {
+            map[i]->draw(window, time[i]);
+        }
 
         window.display();
     }
-
+}
+int main()
+{
+    srand(time(NULL));
+    CGAME game;
+    game.newGame();
     return 0;
 }
