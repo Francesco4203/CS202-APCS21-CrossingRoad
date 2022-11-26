@@ -14,12 +14,14 @@ using namespace sf;
 class CPEOPLE {
 	Texture image;
 	Sprite people;
+	float speed = 1;
 	bool mState; //live - die
 public:
-	CPEOPLE();
-	void move(Event& ev);
+	CPEOPLE(int t);
+	void move(Event&ev,sf::RenderWindow& window);
 	bool isImpact(const CVEHICLE*&);
-	bool isImpact(const CANIMAL*&);
+	//bool isImpactA(const CANIMAL*&);
 	bool isFinish();
 	bool isDead();
+	void draw(sf::RenderWindow& window);
 };

@@ -128,7 +128,58 @@ CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
     else enemy.loadFromFile("Resource/car.png");
     object.setTexture(enemy);
 }
+class CPEOPLE {
+    Texture image;
+    Sprite people;
+    float speed = 1;
+    bool mState; //live - die
+    friend class CGAME;
+public:
+    CPEOPLE(int t);
+    void move(Event& ev, sf::RenderWindow& window);
+    bool isImpact(const CVEHICLE*&);
+    //bool isImpactA(const CANIMAL*&);
+    bool isFinish();
+    bool isDead();
+    void draw(sf::RenderWindow& window);
+};
+CPEOPLE::CPEOPLE(int t) {
+    if (t == 1) {
+        people.scale(0.1, 0.1);
+        people.setPosition(750, 700);
+        image.loadFromFile("Resource/man.png");
+        people.setTexture(image);
+    }
+}
+void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
+    switch (ev.type)
+    {
+    case sf::Event::Closed:
+        window.close();
+        break;
 
+    case sf::Event::KeyPressed:
+        switch (ev.key.code)
+        {
+        case sf::Keyboard::W:
+            if (people.getPosition().y - speed >= 0) people.move(0.f, -speed);
+            break;
+        case sf::Keyboard::S:
+            if (people.getPosition().y + speed <= 700) people.move(0.f, speed);
+            break;
+        case sf::Keyboard::A:
+            if (people.getPosition().x - speed >= 0) people.move(-speed, 0.f);
+            break;
+        case sf::Keyboard::D:
+            if (people.getPosition().x + speed <= 1450) people.move(speed, 0.f);
+            break;
+        }
+        break;
+    }
+}
+void CPEOPLE::draw(sf::RenderWindow& window) {
+    window.draw(this->people);
+}
 class LIGHT {
 private:
     string redPath = "Resource/red_light.png";
@@ -339,17 +390,17 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
+    CPEOPLE Person(1);
     while (window.isOpen()) {
         Event ev;
         while (window.pollEvent(ev)) {
-
+            Person.move(ev, window);
         }
         window.clear();
-
         for (int i = 0; i < 2 + mode; i++) {
             map[i]->draw(window, time[i]);
         }
-
+        Person.draw(window);
         window.display();
     }
 }
