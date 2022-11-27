@@ -33,19 +33,24 @@ void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
             if (people.getPosition().y - speed >= 0) people.move(0.f, -speed);
             break;
         case sf::Keyboard::S:
-            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0.f, speed);
+            if (people.getPosition().y + people.getGlobalBounds().height < 800) people.move(0.f, speed);
             break;
         case sf::Keyboard::A:
             if (people.getPosition().x - speed >= 0) people.move(-speed, 0.f);
             break;
         case sf::Keyboard::D:
-            if (people.getPosition().x + speed <= 1430) people.move(speed, 0.f);
+            if (people.getPosition().x + people.getGlobalBounds().width < 1500) people.move(speed, 0.f);
             break;
         }
         break;
     }
 }
-bool CPEOPLE::isImpact(CVEHICLE*& arr) {
+bool CPEOPLE::isImpact(vector<CVEHICLE*>& arr) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (people.getGlobalBounds().intersects(arr[i]->getObject().getGlobalBounds())){
+            return true;
+        }
+    }
 }
 /*bool CPEOPLE::isImpactA(const CANIMAL*&) {
 

@@ -19,7 +19,7 @@ class CPEOPLE {
 public:
 	CPEOPLE(int t);
 	void move(Event&ev,sf::RenderWindow& window);
-	bool isImpact(CVEHICLE*& arr);
+	bool isImpact(vector<CVEHICLE*>& arr);
 	//bool isImpactA(const CANIMAL*&);
 	bool isFinish();
 	bool isDead();
