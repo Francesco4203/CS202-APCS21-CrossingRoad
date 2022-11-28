@@ -152,7 +152,20 @@ CPEOPLE::CPEOPLE(int t) {
     }
 }
 void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
-    switch (ev.type)
+        if (sf::Event::Closed) window.close();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+            if (people.getPosition().y - speed >= 0) people.move(0, -speed);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
+        }
+    /*switch (ev.type)
     {
     case sf::Event::Closed:
         window.close();
@@ -175,7 +188,7 @@ void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
             break;
         }
         break;
-    }
+    }*/
 }
 void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->people);
