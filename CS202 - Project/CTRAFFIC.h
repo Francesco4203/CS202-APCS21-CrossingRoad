@@ -53,7 +53,7 @@ private:
 public:
     LINE() = delete;//default NOT available
     LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
-
+    vector<CENEMY*> getVectorList() { return this->list; };
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();

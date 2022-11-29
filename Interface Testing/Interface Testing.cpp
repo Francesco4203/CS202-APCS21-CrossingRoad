@@ -128,71 +128,6 @@ CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
     else enemy.loadFromFile("Resource/car.png");
     object.setTexture(enemy);
 }
-class CPEOPLE {
-    Texture image;
-    Sprite people;
-    float speed = 10;
-    bool mState; //live - die
-    friend class CGAME;
-public:
-    CPEOPLE(int t);
-    void move(Event& ev, sf::RenderWindow& window);
-    bool isImpact(const CVEHICLE*&);
-    //bool isImpactA(const CANIMAL*&);
-    bool isFinish();
-    bool isDead();
-    void draw(sf::RenderWindow& window);
-};
-CPEOPLE::CPEOPLE(int t) {
-    if (t == 1) {
-        people.scale(0.25, 0.25);
-        people.setPosition(750, 700);
-        image.loadFromFile("Resource/man.png");
-        people.setTexture(image);
-    }
-}
-void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
-        if (sf::Event::Closed) window.close();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            if (people.getPosition().y - speed >= 0) people.move(0, -speed);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
-        }
-    /*switch (ev.type)
-    {
-    case sf::Event::Closed:
-        window.close();
-        break;
-
-    case sf::Event::KeyPressed:
-        switch (ev.key.code)
-        {
-        case sf::Keyboard::W:
-            if (people.getPosition().y - speed >= 0) people.move(0, -speed);
-            break;
-        case sf::Keyboard::S:
-            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
-            break;
-        case sf::Keyboard::A:
-            if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
-            break;
-        case sf::Keyboard::D:
-            if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
-            break;
-        }
-        break;
-    }*/
-}
-void CPEOPLE::draw(sf::RenderWindow& window) {
-    window.draw(this->people);
-}
 class LIGHT {
 private:
     string redPath = "Resource/red_light.png";
@@ -230,7 +165,7 @@ private:
 public:
     LINE() = delete;//default NOT available
     LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
-
+    vector<CENEMY*> getVectorList() { return this->list; };
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
@@ -339,6 +274,78 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
         light.setPosition(-50, y - 30);
     }
 }
+class CPEOPLE {
+    Texture image;
+    Sprite people;
+    float speed = 10;
+    bool mState; //live - die
+    friend class CGAME;
+public:
+    CPEOPLE(int t);
+    void move(Event& ev, sf::RenderWindow& window);
+    bool isImpact(LINE* a);
+    bool isFinish();
+    bool isDead();
+    void draw(sf::RenderWindow& window);
+};
+
+CPEOPLE::CPEOPLE(int t) {
+    if (t == 1) {
+        people.scale(0.25, 0.25);
+        people.setPosition(750, 700);
+        image.loadFromFile("Resource/man.png");
+        people.setTexture(image);
+    }
+}
+void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
+    if (sf::Event::Closed) window.close();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if (people.getPosition().y - speed >= 0) people.move(0, -speed);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
+    }
+    /*switch (ev.type)
+    {
+    case sf::Event::Closed:
+        window.close();
+        break;
+
+    case sf::Event::KeyPressed:
+        switch (ev.key.code)
+        {
+        case sf::Keyboard::W:
+            if (people.getPosition().y - speed >= 0) people.move(0, -speed);
+            break;
+        case sf::Keyboard::S:
+            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
+            break;
+        case sf::Keyboard::A:
+            if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
+            break;
+        case sf::Keyboard::D:
+            if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
+            break;
+        }
+        break;
+    }*/
+}
+void CPEOPLE::draw(sf::RenderWindow& window) {
+    window.draw(this->people);
+}
+bool CPEOPLE::isImpact(LINE* a) {
+    for (int i = 0; i < a->getVectorList().size(); i++) {
+        if (people.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
+            return true;
+        }
+    }
+}
 
 LIGHT& LINE::getLight() { return light; }
 Sprite LINE::getSpriteLine() { return line; }
@@ -417,6 +424,11 @@ void CGAME::playGame() {
         window.clear();
         for (int i = 0; i < 2 + mode; i++) {
             map[i]->draw(window, time[i]);
+        }
+        for (int i = 0; i < 2 + mode; i++) {
+            if (Person.isImpact(map[i])){
+                throw;
+            }
         }
         Person.draw(window);
         window.display();

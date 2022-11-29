@@ -59,16 +59,13 @@ void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
     }
     */
 }
-bool CPEOPLE::isImpact(vector<CVEHICLE*>& arr) {
-    for (int i = 0; i < arr.size(); i++) {
-        if (people.getGlobalBounds().intersects(arr[i]->getObject().getGlobalBounds())){
+bool CPEOPLE::isImpact(LINE* a) {
+    for (int i = 0; i < a.getVectorList().size(); i++) {
+        if (people.getGlobalBounds().intersects(a.getVectorList()[i]->getObject().getGlobalBounds())){
             return true;
         }
     }
 }
-/*bool CPEOPLE::isImpactA(const CANIMAL*&) {
-
-}*/
 bool CPEOPLE::isFinish() {
 
 }
