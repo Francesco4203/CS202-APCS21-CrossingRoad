@@ -15,12 +15,14 @@ using namespace sf;
 CGAME::CGAME() {
     map.clear();
     mode = 1;
+    win = isPlaying = 0;
 }
 void CGAME::newGame() {
     gameSet();
     playGame();
 }
 void CGAME::gameSet() {
+    isPlaying = 1;
     for (auto& c : map) delete c;
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {

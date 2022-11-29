@@ -15,6 +15,8 @@ class CGAME {
 	vector<LINE*> map;
 	int mode;
 	vector<pair<clock_t, clock_t>> time;
+	bool win;
+	bool isPlaying;
 public:
 	CGAME();
 	void gameSet();

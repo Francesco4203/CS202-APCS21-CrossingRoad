@@ -201,6 +201,7 @@ private:
     int time;
     int state;//1 red - 2 yellow - 3 green
     int red, yellow, green;//time of a state, 2-3s for yellow
+    int mode;
     Texture red_light;
     Texture green_light;
     Texture yellow_light;
@@ -243,6 +244,7 @@ LIGHT::LIGHT(int mode) {
     light.setTexture(green_light);
     light.scale(0.3, 0.3);
     time = 2 * (4 - mode);
+    this->mode = mode;
     state = 3;
 }
 
@@ -260,13 +262,16 @@ void LIGHT::changeLight() {
     if (state == 1) {
         state = 3;
         light.setTexture(green_light);
+        time = 2 * (4 - mode) + rand() % 5;
         return;
     }
     if (state == 2) {
         state = 1;
         light.setTexture(red_light);
+        time = 2 * (4 - mode) + rand() % 3;
         return;
     }
+    time = 2 * (4 - mode);
     state = 2;
     light.setTexture(yellow_light);
 }
@@ -345,10 +350,10 @@ void LINE::stop() {
 }
 
 void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
-    time.second = clock() + rand() % 10;
+    time.second = clock();
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
-        time.first = clock() + rand() % 10;
+        time.first = clock();
     }
     window.draw(line);
 
@@ -363,9 +368,9 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
 }
 class CGAME {
     vector<LINE*> map;
-    int mode;
     vector<pair<clock_t, clock_t>> time;
 public:
+    int mode;
     CGAME();
     void gameSet();
     void newGame();
@@ -421,6 +426,7 @@ int main()
 {
     srand(time(NULL));
     CGAME game;
+    game.mode = 3;
     game.newGame();
     return 0;
 }
