@@ -21,6 +21,7 @@ LIGHT::LIGHT(int mode) {
     light.setTexture(green_light);
     light.scale(0.3, 0.3);
     time = 2 * (4 - mode);
+    this->mode = mode;
     state = 3;
 }
 
@@ -38,13 +39,16 @@ void LIGHT::changeLight() {
     if (state == 1) {
         state = 3;
         light.setTexture(green_light);
+        time = 2 * (4 - mode) + rand() % 5;
         return;
     }
     if (state == 2) {
         state = 1;
         light.setTexture(red_light);
+        time = 2 * (4 - mode) + rand() % 3;
         return;
     }
+    time = 2 * (4 - mode);
     state = 2;
     light.setTexture(yellow_light);
 }

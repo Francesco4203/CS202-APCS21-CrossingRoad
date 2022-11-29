@@ -24,6 +24,7 @@ private:
     int time;
     int state;//1 red - 2 yellow - 3 green
     int red, yellow, green;//time of a state, 2-3s for yellow
+    int mode;
     Texture red_light;
     Texture green_light;
     Texture yellow_light;
