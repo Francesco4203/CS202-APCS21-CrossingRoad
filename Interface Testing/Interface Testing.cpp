@@ -345,6 +345,7 @@ bool CPEOPLE::isImpact(LINE* a) {
             return true;
         }
     }
+    return false;
 }
 
 LIGHT& LINE::getLight() { return light; }

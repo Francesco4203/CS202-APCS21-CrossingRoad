@@ -60,11 +60,12 @@ void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
     */
 }
 bool CPEOPLE::isImpact(LINE* a) {
-    for (int i = 0; i < a.getVectorList().size(); i++) {
-        if (people.getGlobalBounds().intersects(a.getVectorList()[i]->getObject().getGlobalBounds())){
+    for (int i = 0; i < a->getVectorList().size(); i++) {
+        if (people.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())){
             return true;
         }
     }
+    return false;
 }
 bool CPEOPLE::isFinish() {
 
