@@ -67,11 +67,17 @@ bool CPEOPLE::isImpact(LINE* a) {
     }
     return false;
 }
-bool CPEOPLE::isFinish() {
-
-}
-bool CPEOPLE::isDead() {
-
+bool CPEOPLE::isFinish(sf::RenderWindow& window) {
+    Texture Finish_line;
+    Finish_line.loadFromFile("Resource/line.png");
+    sf::Sprite line(Finish_line);
+    line.scale(4, 0.1);
+    line.setPosition(10, 10);
+    window.draw(line);
+    if (people.getGlobalBounds().intersects(line.getGlobalBounds())) {
+        return true;
+    }
+    return false;
 }
 void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->people);

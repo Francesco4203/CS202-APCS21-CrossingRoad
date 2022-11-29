@@ -277,21 +277,20 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
 class CPEOPLE {
     Texture image;
     Sprite people;
-    float speed = 10;
+    float speed = 30;
     bool mState; //live - die
     friend class CGAME;
 public:
-    CPEOPLE(int t);
+    CPEOPLE(int t);// 1 is for male, 2 is for female.
     void move(Event& ev, sf::RenderWindow& window);
     bool isImpact(LINE* a);
-    bool isFinish();
-    bool isDead();
+    bool isFinish(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
 };
 
 CPEOPLE::CPEOPLE(int t) {
     if (t == 1) {
-        people.scale(0.25, 0.25);
+        people.scale(0.1, 0.1);
         people.setPosition(750, 700);
         image.loadFromFile("Resource/man.png");
         people.setTexture(image);
@@ -335,6 +334,18 @@ void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
         }
         break;
     }*/
+}
+bool CPEOPLE::isFinish(sf::RenderWindow& window) {
+    Texture Finish_line;
+    Finish_line.loadFromFile("Resource/line.png");
+    sf::Sprite line(Finish_line);
+    line.scale(4, 0.1);
+    line.setPosition(10, 10);
+    window.draw(line);
+    if (people.getGlobalBounds().intersects(line.getGlobalBounds())) {
+         return true;
+    }
+    return false;
 }
 void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->people);
@@ -416,6 +427,7 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
+    window.setFramerateLimit(700);
     CPEOPLE Person(1);
     while (window.isOpen()) {
         Event ev;
@@ -428,8 +440,13 @@ void CGAME::playGame() {
         }
         for (int i = 0; i < 2 + mode; i++) {
             if (Person.isImpact(map[i])){
-                throw;
+                cout << "You lose";
+                exit(0);
             }
+        }
+        if (Person.isFinish(window)) {
+            cout << "You win";
+            exit(0);
         }
         Person.draw(window);
         window.display();
