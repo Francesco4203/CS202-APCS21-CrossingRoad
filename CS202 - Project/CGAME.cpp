@@ -5,7 +5,8 @@ using namespace sf;
 CGAME::CGAME() {
     map.clear();
     mode = 1;
-    win = isPlaying = 0;
+	win = 1;
+	isPlaying = 0;
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
 }
 void CGAME::menu() {
@@ -57,7 +58,10 @@ void CGAME::menu() {
 						menu.changeMenu(0);
 						break;
 					case 3: // game
-
+						while (win) {
+							newGame();
+							mode = min(3, mode + 1);
+						}
 						break;
 					case 4: // load game
 						break;
@@ -112,13 +116,13 @@ void CGAME::playGame() {
         }
         for (int i = 0; i < 2 + mode; i++) {
             if (Person.isImpact(map[i])) {
-                cout << "You lose";
-                exit(0);
+				win = 0;
+				return;
             }
         }
         if (Person.isFinish(window)) {
-            cout << "You win";
-            exit(0);
+			win = 1;
+			return;
         }
         Person.draw(window);
         window.display();

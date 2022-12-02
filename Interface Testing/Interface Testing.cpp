@@ -399,9 +399,11 @@ class CGAME {
     vector<LINE*> map;
     vector<pair<clock_t, clock_t>> time;
     RenderWindow window;
+    bool win;
 public:
     int mode;
     CGAME();
+    void menu();
     void gameSet();
     void newGame();
     void playGame();
@@ -410,6 +412,13 @@ CGAME::CGAME() {
     map.clear();
     mode = 1;
     window.create(VideoMode(1500, 800), "Crossing Road Game!");
+    win = 1;
+}
+void CGAME::menu() {
+    while (win) {
+        newGame();
+        mode = min(3, mode + 1);
+    }
 }
 void CGAME::newGame() {
     gameSet();
@@ -451,13 +460,13 @@ void CGAME::playGame() {
         }
         for (int i = 0; i < 2 + mode; i++) {
             if (Person.isImpact(map[i])){
-                cout << "You lose";
-                exit(0);
+                win = 0;
+                return;
             }
         }
         if (Person.isFinish(window)) {
-            cout << "You win";
-            exit(0);
+            win = 1;
+            return;
         }
         Person.draw(window);
         window.display();
@@ -468,6 +477,6 @@ int main()
     srand(time(NULL));
     CGAME game;
     game.mode = 1;
-    game.newGame();
+    game.menu();
     return 0;
 }
