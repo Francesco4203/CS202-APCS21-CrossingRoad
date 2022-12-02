@@ -6,7 +6,7 @@
 //#include "CPEOPLE.h"
 //#include "CVEHICLE.h"
 //#include "CGAME.h"
-
+#include "Header.h"
 #include <ctime>
 
 using namespace std;
@@ -415,9 +415,71 @@ CGAME::CGAME() {
     win = 1;
 }
 void CGAME::menu() {
-    while (win) {
-        newGame();
-        mode = min(3, mode + 1);
+    int menuNumber = 0;
+    Menu menu(800, 600);
+    MenuSprite menusprite;
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                case sf::Keyboard::Up:
+                    menu.moveUp();
+                    break;
+                case sf::Keyboard::Down:
+                    menu.moveDown();
+                    break;
+                case sf::Keyboard::Enter:
+                    //cout << "enter" << endl;
+                    switch (menuNumber)
+                    {
+                    case 0: // main menu
+                        switch (menu.selectedMenu())
+                        {
+                        case 0: //new game
+                            while (win) {
+                                newGame();
+                                mode = min(3, mode + 1);
+                            }
+                            break;
+                        case 1: //load game
+                            //insert code load game here
+                            menuNumber = 4;
+                            menu.changeMenu(4);
+                            break;
+                        case 2: //setting
+                            menuNumber = 2;
+                            menu.changeMenu(2);
+                            break;
+                        case 3:
+                            window.close();
+                        }
+                        break;
+                    case 2: // setting
+                        menuNumber = 0;
+                        menu.changeMenu(0);
+                        break;
+                    case 3: // game
+                        while (win) {
+                            newGame();
+                            mode = min(3, mode + 1);
+                        }
+                        break;
+                    case 4: // load game
+                        break;
+                    }
+                }
+            }
+        }
+        window.clear();
+        menusprite.drawBG(window);
+        menu.draw(window);
+        window.display();
     }
 }
 void CGAME::newGame() {
