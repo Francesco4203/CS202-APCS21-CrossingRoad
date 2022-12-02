@@ -1,14 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <bits/stdc++.h>
-#include "CANIMAL.h"
-#include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CGAME.h"
-#include "CTRAFFIC.h"
-#include "CENEMY.h"
-
+﻿#include "INCLUDING.h"
 using namespace std;
 using namespace sf;
 
@@ -16,6 +6,93 @@ CGAME::CGAME() {
     map.clear();
     mode = 1;
     win = isPlaying = 0;
+    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
+}
+void CGAME::menu() {
+	int menuNumber = 0;
+	Menu menu(800, 600);
+	MenuSprite menusprite;
+    while (window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (event.type == sf::Event::KeyPressed)
+			{
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Up:
+					menu.moveUp();
+					break;
+				case sf::Keyboard::Down:
+					menu.moveDown();
+					break;
+				case sf::Keyboard::Enter:
+					//cout << "enter" << endl;
+					switch (menuNumber)
+					{
+					case 0: // main menu
+						switch (menu.selectedMenu())
+						{
+						case 0: //new game
+							menuNumber = 1;
+							menu.changeMenu(1);
+							break;
+						case 1: //load game
+							//insert code load game here
+							menuNumber = 4;
+							menu.changeMenu(4);
+							break;
+						case 2: //setting
+							menuNumber = 2;
+							menu.changeMenu(2);
+							break;
+						case 3:
+							window.close();
+						}
+						break;
+					case 1: // difficulty
+						switch (menu.selectedMenu())
+						{
+						case 0: //easy
+							//cout << "easy" << endl;
+							menuNumber = 3;
+							menu.changeMenu(3);
+							break;
+						case 1: //medium
+							//cout << "medium" << endl;
+							menuNumber = 3;
+							menu.changeMenu(3);
+							break;
+						case 2: //hard
+							//cout << "hard" << endl;
+							menuNumber = 3;
+							menu.changeMenu(3);
+							break;
+						case 3: //return
+							menuNumber = 0;
+							menu.changeMenu(0);
+							break;
+						}
+						break;
+					case 2: // setting
+						menuNumber = 0;
+						menu.changeMenu(0);
+						break;
+					case 3: // game
+						break;
+					case 4: // load game
+						break;
+					}
+				}
+			}
+		}
+		window.clear();
+		menusprite.drawBG(window);
+		menu.draw(window);
+		window.display();
+    }
 }
 void CGAME::newGame() {
     gameSet();
@@ -46,11 +123,14 @@ void CGAME::gameSet() {
     }
 }
 void CGAME::playGame() {
+<<<<<<< Updated upstream
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
     //window.setFramerateLimit(700);
     CPEOPLE Person(0.3f, 100.0f);
     Clock clock;
     float deltaTime = 0.0f;
+=======
+>>>>>>> Stashed changes
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);

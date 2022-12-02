@@ -56,5 +56,14 @@
     <ClInclude Include="CENEMY.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="MENU.cpp">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MENU.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INCLUDING.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,14 +1,5 @@
 ﻿#pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <bits/stdc++.h>
-#include "CANIMAL.h"
-#include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CGAME.h"
-#include "CTRAFFIC.h"
-#include "CENEMY.h"
+#include "INCLUDING.h"
 using namespace std;
 using namespace sf;
 class CGAME {
@@ -17,8 +8,10 @@ class CGAME {
 	vector<pair<clock_t, clock_t>> time;
 	bool win;
 	bool isPlaying;
+	RenderWindow window;
 public:
 	CGAME();
+	void menu();
 	void gameSet();
 	void newGame();
 	void playGame();
