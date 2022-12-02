@@ -310,22 +310,22 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
 }
 void CPEOPLE::move(float deltaTime) {
     float dis = deltaTime * _speed;
-    if (Keyboard::isKeyPressed(Keyboard::W)) {
+    if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
         if (_player.getPosition().y - dis >= 0) _player.move(Vector2f(0, -dis));
         _direction = 3;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::S)) {
+    if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
         if (_player.getPosition().y + dis <= 700) _player.move(sf::Vector2f(0, dis));
         _direction = 0;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::A)) {
+    if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
         if (_player.getPosition().x - dis >= 0) _player.move(Vector2f(-dis, 0));
         _direction = 1;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::D)) {
+    if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
         if (_player.getPosition().x + dis <= 1450) _player.move(Vector2f(dis, 0));
         _direction = 2;
         update(_direction, deltaTime);
@@ -399,7 +399,7 @@ class CGAME {
     vector<LINE*> map;
     vector<pair<clock_t, clock_t>> time;
     RenderWindow window;
-    bool win;
+    bool win, isPlaying;
 public:
     int mode;
     CGAME();
@@ -413,6 +413,7 @@ CGAME::CGAME() {
     mode = 1;
     window.create(VideoMode(1500, 800), "Crossing Road Game!");
     win = 1;
+    isPlaying = 0;
 }
 void CGAME::menu() {
     int menuNumber = 0;
@@ -443,9 +444,12 @@ void CGAME::menu() {
                         {
                         case 0: //new game
                             while (win) {
+                                isPlaying = 1;
                                 newGame();
                                 mode = min(3, mode + 1);
                             }
+                            isPlaying = 0;
+                            win = mode = 1;
                             break;
                         case 1: //load game
                             //insert code load game here
@@ -513,7 +517,7 @@ void CGAME::playGame() {
     CPEOPLE Person(0.3f, 150.0f);
     Clock clock;
     float deltaTime = 0.0f;
-    while (window.isOpen()) {
+    while (window.isOpen() && isPlaying) {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
         window.clear();
