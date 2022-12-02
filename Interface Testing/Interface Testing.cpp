@@ -398,6 +398,7 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
 class CGAME {
     vector<LINE*> map;
     vector<pair<clock_t, clock_t>> time;
+    RenderWindow window;
 public:
     int mode;
     CGAME();
@@ -408,6 +409,7 @@ public:
 CGAME::CGAME() {
     map.clear();
     mode = 1;
+    window.create(VideoMode(1500, 800), "Crossing Road Game!");
 }
 void CGAME::newGame() {
     gameSet();
@@ -436,7 +438,6 @@ void CGAME::gameSet() {
     }
 }
 void CGAME::playGame() {
-    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
     //window.setFramerateLimit(700);
     CPEOPLE Person(0.3f, 150.0f);
     Clock clock;

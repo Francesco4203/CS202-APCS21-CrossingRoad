@@ -52,35 +52,12 @@ void CGAME::menu() {
 							window.close();
 						}
 						break;
-					case 1: // difficulty
-						switch (menu.selectedMenu())
-						{
-						case 0: //easy
-							//cout << "easy" << endl;
-							menuNumber = 3;
-							menu.changeMenu(3);
-							break;
-						case 1: //medium
-							//cout << "medium" << endl;
-							menuNumber = 3;
-							menu.changeMenu(3);
-							break;
-						case 2: //hard
-							//cout << "hard" << endl;
-							menuNumber = 3;
-							menu.changeMenu(3);
-							break;
-						case 3: //return
-							menuNumber = 0;
-							menu.changeMenu(0);
-							break;
-						}
-						break;
 					case 2: // setting
 						menuNumber = 0;
 						menu.changeMenu(0);
 						break;
 					case 3: // game
+
 						break;
 					case 4: // load game
 						break;
@@ -123,14 +100,9 @@ void CGAME::gameSet() {
     }
 }
 void CGAME::playGame() {
-<<<<<<< Updated upstream
-    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-    //window.setFramerateLimit(700);
     CPEOPLE Person(0.3f, 100.0f);
     Clock clock;
     float deltaTime = 0.0f;
-=======
->>>>>>> Stashed changes
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
