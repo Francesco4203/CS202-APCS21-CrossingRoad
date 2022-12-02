@@ -12,14 +12,22 @@
 using namespace std;
 using namespace sf;
 class CPEOPLE {
-	Texture image;
-	Sprite people;
-	float speed = 20;
-	bool mState; //live - die
+    Vector2u _scale;
+    IntRect _currentImage;
+    Texture _Tplayer;
+    Sprite _player;
+    float _switchTime;
+    float _totalTime;
+    float _speed = 30;
+    int _direction;
+    bool _mState; //live - die
+
+    friend class CGAME;
 public:
-	CPEOPLE(int t);
-	void move(Event&ev,sf::RenderWindow& window);
-	bool isImpact(LINE* a);
-	bool isFinish(sf::RenderWindow& window);
-	void draw(sf::RenderWindow& window);
+    CPEOPLE(float switchTime, float speed);
+    void move(float deltaTime);
+    void update(int direction, float deltaTime);
+    bool isImpact(LINE* a);
+    bool isFinish(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);
 };

@@ -47,17 +47,28 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
+    //window.setFramerateLimit(700);
+    CPEOPLE Person(0.3f, 100.0f);
+    Clock clock;
+    float deltaTime = 0.0f;
     while (window.isOpen()) {
-        Event ev;
-        while (window.pollEvent(ev)) {
-
-        }
+        deltaTime = clock.restart().asSeconds();
+        Person.move(deltaTime);
         window.clear();
-        
         for (int i = 0; i < 2 + mode; i++) {
             map[i]->draw(window, time[i]);
         }
-
+        for (int i = 0; i < 2 + mode; i++) {
+            if (Person.isImpact(map[i])) {
+                cout << "You lose";
+                exit(0);
+            }
+        }
+        if (Person.isFinish(window)) {
+            cout << "You win";
+            exit(0);
+        }
+        Person.draw(window);
         window.display();
     }
 }

@@ -275,65 +275,75 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     }
 }
 class CPEOPLE {
-    Texture image;
-    Sprite people;
-    float speed = 30;
-    bool mState; //live - die
+    Vector2u _scale;
+    IntRect _currentImage;
+    Texture _Tplayer;
+    Sprite _player;
+    float _switchTime;
+    float _totalTime;
+    float _speed = 30;
+    int _direction;
+    bool _mState; //live - die
+
     friend class CGAME;
 public:
-    CPEOPLE(int t);// 1 is for male, 2 is for female.
-    void move(Event& ev, sf::RenderWindow& window);
+    CPEOPLE(float switchTime, float speed);
+    void move(float deltaTime);
+    void update(int direction, float deltaTime);
     bool isImpact(LINE* a);
     bool isFinish(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
 };
 
-CPEOPLE::CPEOPLE(int t) {
-    if (t == 1) {
-        people.scale(0.1, 0.1);
-        people.setPosition(750, 700);
-        image.loadFromFile("Resource/man.png");
-        people.setTexture(image);
+CPEOPLE::CPEOPLE(float switchTime, float speed) {
+    _Tplayer.loadFromFile("Resource/man.png");
+    _currentImage.width = _Tplayer.getSize().x / 4;
+    _currentImage.height = _Tplayer.getSize().y / 4;
+    _player.setTexture(_Tplayer);
+    _player.setTextureRect(_currentImage);
+    _switchTime = switchTime;
+    _speed = speed;
+    _totalTime = 0;
+    _scale.x = 0;
+    _scale.y = 0;
+    _player.setPosition(750, 700);
+}
+void CPEOPLE::move(float deltaTime) {
+    float dis = deltaTime * _speed;
+    if (Keyboard::isKeyPressed(Keyboard::W)) {
+        if (_player.getPosition().y - dis >= 0) _player.move(Vector2f(0, -dis));
+        _direction = 3;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::S)) {
+        if (_player.getPosition().y + dis <= 700) _player.move(sf::Vector2f(0, dis));
+        _direction = 0;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A)) {
+        if (_player.getPosition().x - dis >= 0) _player.move(Vector2f(-dis, 0));
+        _direction = 1;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::D)) {
+        if (_player.getPosition().x + dis <= 1450) _player.move(Vector2f(dis, 0));
+        _direction = 2;
+        update(_direction, deltaTime);
     }
 }
-void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
-    if (sf::Event::Closed) window.close();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if (people.getPosition().y - speed >= 0) people.move(0, -speed);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
-    }
-    /*switch (ev.type)
-    {
-    case sf::Event::Closed:
-        window.close();
-        break;
-
-    case sf::Event::KeyPressed:
-        switch (ev.key.code)
-        {
-        case sf::Keyboard::W:
-            if (people.getPosition().y - speed >= 0) people.move(0, -speed);
-            break;
-        case sf::Keyboard::S:
-            if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
-            break;
-        case sf::Keyboard::A:
-            if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
-            break;
-        case sf::Keyboard::D:
-            if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
-            break;
+void CPEOPLE::update(int direction, float deltaTime) {
+    _scale.y = direction;
+    _totalTime += deltaTime;
+    if (_totalTime >= _switchTime) {
+        _totalTime = 0;
+        ++_scale.x;
+        if (_scale.x == 4) {
+            _scale.x = 0;
         }
-        break;
-    }*/
+    }
+    _currentImage.left = _scale.x * _currentImage.width;
+    _currentImage.top = _scale.y * _currentImage.height;
+    _player.setTextureRect(_currentImage);
 }
 bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     Texture Finish_line;
@@ -342,17 +352,17 @@ bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     line.scale(4, 0.1);
     line.setPosition(10, 10);
     window.draw(line);
-    if (people.getGlobalBounds().intersects(line.getGlobalBounds())) {
+    if (_player.getGlobalBounds().intersects(line.getGlobalBounds())) {
          return true;
     }
     return false;
 }
 void CPEOPLE::draw(sf::RenderWindow& window) {
-    window.draw(this->people);
+    window.draw(this->_player);
 }
 bool CPEOPLE::isImpact(LINE* a) {
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        if (people.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
+        if (_player.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
             return true;
         }
     }
@@ -409,7 +419,7 @@ void CGAME::gameSet() {
         int isLane = rand() % 2;
         int direction = rand() % 2;
         int easier = rand() % 4;
-        LINE* a = new LINE(50 + 120 * i, direction + 1, isLane, min(3, mode + !easier));
+        LINE* a = new LINE(50 + 150 * i, direction + 1, isLane, min(3, mode + !easier));
         map.push_back(a);
     }
     time = vector<pair<clock_t, clock_t>>(mode + 2);
@@ -427,13 +437,13 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
-    window.setFramerateLimit(700);
-    CPEOPLE Person(1);
+    //window.setFramerateLimit(700);
+    CPEOPLE Person(0.3f, 150.0f);
+    Clock clock;
+    float deltaTime = 0.0f;
     while (window.isOpen()) {
-        Event ev;
-        while (window.pollEvent(ev)) {
-            Person.move(ev, window);
-        }
+        deltaTime = clock.restart().asSeconds();
+        Person.move(deltaTime);
         window.clear();
         for (int i = 0; i < 2 + mode; i++) {
             map[i]->draw(window, time[i]);
@@ -456,7 +466,7 @@ int main()
 {
     srand(time(NULL));
     CGAME game;
-    game.mode = 3;
+    game.mode = 1;
     game.newGame();
     return 0;
 }

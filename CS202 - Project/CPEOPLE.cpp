@@ -11,61 +11,55 @@
 
 using namespace std;
 using namespace sf;
-CPEOPLE::CPEOPLE(int t) {
-    if (t == 1) {
-        people.scale(0.25, 0.25);
-        people.setPosition(750, 700);
-        image.loadFromFile("Resource/man.png");
-        people.setTexture(image);
+CPEOPLE::CPEOPLE(float switchTime, float speed) {
+    _Tplayer.loadFromFile("Resource/man.png");
+    _currentImage.width = _Tplayer.getSize().x / 4;
+    _currentImage.height = _Tplayer.getSize().y / 4;
+    _player.setTexture(_Tplayer);
+    _player.setTextureRect(_currentImage);
+    _switchTime = switchTime;
+    _speed = speed;
+    _totalTime = 0;
+    _scale.x = 0;
+    _scale.y = 0;
+    _player.setPosition(750, 700);
+}
+void CPEOPLE::move(float deltaTime) {
+    float dis = deltaTime * _speed;
+    if (Keyboard::isKeyPressed(Keyboard::W)) {
+        if (_player.getPosition().y - dis >= 0) _player.move(Vector2f(0, -dis));
+        _direction = 3;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::S)) {
+        if (_player.getPosition().y + dis <= 700) _player.move(sf::Vector2f(0, dis));
+        _direction = 0;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::A)) {
+        if (_player.getPosition().x - dis >= 0) _player.move(Vector2f(-dis, 0));
+        _direction = 1;
+        update(_direction, deltaTime);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::D)) {
+        if (_player.getPosition().x + dis <= 1450) _player.move(Vector2f(dis, 0));
+        _direction = 2;
+        update(_direction, deltaTime);
     }
 }
-void CPEOPLE::move(Event& ev, sf::RenderWindow& window) {
-    if (sf::Event::Closed) window.close();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if (people.getPosition().x - speed >= 0) people.move(-speed, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if (people.getPosition().x + speed <= (1430)) people.move(speed, 0);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if (people.getPosition().y - speed >= 0) people.move(0, -speed);
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if (people.getGlobalBounds().top + people.getGlobalBounds().height < window.getSize().y) people.move(0, speed);
-    }
-    /*switch (ev.type)
-    {
-    case sf::Event::Closed:
-        window.close();
-        break;
-
-    case sf::Event::KeyPressed:
-        switch (ev.key.code)
-        {
-        case sf::Keyboard::W:
-            if (people.getPosition().y - speed >= 0) people.move(0.f, -speed);
-            break;
-        case sf::Keyboard::S:
-            if (people.getPosition().y + people.getGlobalBounds().height < 800) people.move(0.f, speed);
-            break;
-        case sf::Keyboard::A:
-            if (people.getPosition().x - speed >= 0) people.move(-speed, 0.f);
-            break;
-        case sf::Keyboard::D:
-            if (people.getPosition().x + people.getGlobalBounds().width < 1500) people.move(speed, 0.f);
-            break;
-        }
-        break;
-    }
-    */
-}
-bool CPEOPLE::isImpact(LINE* a) {
-    for (int i = 0; i < a->getVectorList().size(); i++) {
-        if (people.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())){
-            return true;
+void CPEOPLE::update(int direction, float deltaTime) {
+    _scale.y = direction;
+    _totalTime += deltaTime;
+    if (_totalTime >= _switchTime) {
+        _totalTime = 0;
+        ++_scale.x;
+        if (_scale.x == 4) {
+            _scale.x = 0;
         }
     }
-    return false;
+    _currentImage.left = _scale.x * _currentImage.width;
+    _currentImage.top = _scale.y * _currentImage.height;
+    _player.setTextureRect(_currentImage);
 }
 bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     Texture Finish_line;
@@ -74,11 +68,19 @@ bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     line.scale(4, 0.1);
     line.setPosition(10, 10);
     window.draw(line);
-    if (people.getGlobalBounds().intersects(line.getGlobalBounds())) {
+    if (_player.getGlobalBounds().intersects(line.getGlobalBounds())) {
         return true;
     }
     return false;
 }
 void CPEOPLE::draw(sf::RenderWindow& window) {
-    window.draw(this->people);
+    window.draw(this->_player);
+}
+bool CPEOPLE::isImpact(LINE* a) {
+    for (int i = 0; i < a->getVectorList().size(); i++) {
+        if (_player.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
+            return true;
+        }
+    }
+    return false;
 }
