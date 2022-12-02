@@ -7,7 +7,7 @@ CGAME::CGAME() {
     mode = 1;
 	win = 1;
 	isPlaying = 0;
-    RenderWindow window(VideoMode(1500, 800), "Crossing Road Game!");
+    window.create(VideoMode(1500, 800), "Crossing Road Game!");
 }
 void CGAME::menu() {
 	int menuNumber = 0;

@@ -17,22 +17,22 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
 }
 void CPEOPLE::move(float deltaTime) {
     float dis = deltaTime * _speed;
-    if (Keyboard::isKeyPressed(Keyboard::W)) {
+    if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
         if (_player.getPosition().y - dis >= 0) _player.move(Vector2f(0, -dis));
         _direction = 3;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::S)) {
+    if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
         if (_player.getPosition().y + dis <= 700) _player.move(sf::Vector2f(0, dis));
         _direction = 0;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::A)) {
+    if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
         if (_player.getPosition().x - dis >= 0) _player.move(Vector2f(-dis, 0));
         _direction = 1;
         update(_direction, deltaTime);
     }
-    if (Keyboard::isKeyPressed(Keyboard::D)) {
+    if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
         if (_player.getPosition().x + dis <= 1450) _player.move(Vector2f(dis, 0));
         _direction = 2;
         update(_direction, deltaTime);
