@@ -41,7 +41,7 @@ private:
     int direction;//1 left --> right; 2 left <-- right
     Texture Tline;
     Sprite line;
-
+    bool isLane;
 public:
     LINE() = delete;//default NOT available
     LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard

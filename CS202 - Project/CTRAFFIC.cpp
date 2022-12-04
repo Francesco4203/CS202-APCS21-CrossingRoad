@@ -49,7 +49,7 @@ void LIGHT::setPosition(int x, int y) {
 LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     if (isLane) Tline.loadFromFile(lanePath);
     else Tline.loadFromFile(grassPath);
-
+    this->isLane = isLane;
     line.setTexture(Tline);
     line.setPosition(0, y);
     this->direction = direction;
@@ -125,10 +125,10 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
 
     for (auto p : list) {
         p->resume();
-        if (this->getLight().getState() == 1) p->stop();
+        if (this->getLight().getState() == 1 && isLane) p->stop();
         p->Move(direction == 2);
         window.draw(p->getObject());
     }
 
-    window.draw(this->getLight().getSpriteLight());
+    if (isLane) window.draw(this->getLight().getSpriteLight());
 }

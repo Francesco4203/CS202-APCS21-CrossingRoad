@@ -161,7 +161,7 @@ private:
     int direction;//1 left --> right; 2 left <-- right
     Texture Tline;
     Sprite line;
-
+    bool isLane;
 public:
     LINE() = delete;//default NOT available
     LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
@@ -218,7 +218,7 @@ void LIGHT::setPosition(int x, int y) {
 LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     if (isLane) Tline.loadFromFile(lanePath);
     else Tline.loadFromFile(grassPath);
-
+    this->isLane = isLane;
     line.setTexture(Tline);
     line.setPosition(0, y);
     this->direction = direction;
@@ -362,7 +362,12 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
 }
 bool CPEOPLE::isImpact(LINE* a) {
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        if (_player.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
+        auto player_fix = _player.getGlobalBounds();
+        /*player_fix.top -= 30;
+        player_fix.left += 20;
+        player_fix.height = 30;
+        player_fix.width = 30;*/
+        if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
             return true;
         }
     }
@@ -388,12 +393,12 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
 
     for (auto p : list) {
         p->resume();
-        if (this->getLight().getState() == 1) p->stop();
+        if (this->getLight().getState() == 1 && isLane) p->stop();
         p->Move(direction == 2);
         window.draw(p->getObject());
     }
 
-    window.draw(this->getLight().getSpriteLight());
+    if (isLane) window.draw(this->getLight().getSpriteLight());
 }
 class CGAME {
     vector<LINE*> map;
@@ -446,6 +451,8 @@ void CGAME::menu() {
                             while (win) {
                                 isPlaying = 1;
                                 newGame();
+                                int a;
+                                cin >> a;
                                 mode = min(3, mode + 1);
                             }
                             while (window.pollEvent(event));
