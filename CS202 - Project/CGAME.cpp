@@ -70,8 +70,18 @@ void CGAME::menu() {
 							isPlaying = 1;
 							newGame();
 							mode = min(3, mode + 1);
+							while (window.pollEvent(event));
+							while (true) {
+								bool next = false;
+								while (window.pollEvent(event)) {
+									if (event.type == Event::KeyPressed) {
+										next = true;
+										break;
+									}
+								}
+								if (next) break;
+							}
 						}
-						while (window.pollEvent(event));
 						isPlaying = 0;
 						win = mode = 1;
 						break;

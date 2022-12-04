@@ -461,11 +461,19 @@ void CGAME::menu() {
                             while (win) {
                                 isPlaying = 1;
                                 newGame();
-                                int a;
-                                cin >> a;
                                 mode = min(3, mode + 1);
+                                while (window.pollEvent(event));
+                                while (true) {
+                                    bool next = false;
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == Event::KeyPressed) {
+                                            next = true;
+                                            break;
+                                        }
+                                    }
+                                    if (next) break;
+                                }
                             }
-                            while (window.pollEvent(event));
                             isPlaying = 0;
                             win = mode = 1;
                             break;
@@ -546,7 +554,8 @@ void CGAME::playGame() {
             if (Person.isImpact(map[i])){
                 win = 0;
                 GameOver(window);
-                break;
+                window.display();
+                return;
             }
         }
         if (Person.isFinish(window)) {
@@ -555,10 +564,6 @@ void CGAME::playGame() {
         }
         Person.draw(window);
         window.display();
-        if (win == 0) {
-            this_thread::sleep_for(1s);
-            return;
-        }
     }
 }
 int main()
