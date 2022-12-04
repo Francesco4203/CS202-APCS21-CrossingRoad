@@ -12,6 +12,7 @@ class CGAME {
 public:
 	CGAME();
 	void menu();
+	void GameOver(sf::RenderWindow& window);
 	void gameSet();
 	void newGame();
 	void playGame();
