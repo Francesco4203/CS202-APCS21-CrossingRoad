@@ -8,7 +8,8 @@
 //#include "CGAME.h"
 #include "Header.h"
 #include <ctime>
-
+#include <chrono>
+#include <thread>
 using namespace std;
 using namespace sf;
 
@@ -408,6 +409,7 @@ class CGAME {
 public:
     int mode;
     CGAME();
+    void GameOver(sf::RenderWindow& window);
     void menu();
     void gameSet();
     void newGame();
@@ -419,6 +421,14 @@ CGAME::CGAME() {
     window.create(VideoMode(1500, 800), "Crossing Road Game!");
     win = 1;
     isPlaying = 0;
+}
+void CGAME::GameOver(sf::RenderWindow& window) {
+    Texture Gameover;
+    Gameover.loadFromFile("Resource/Gameover2.png");
+    sf::Sprite GO(Gameover);
+    GO.scale(1.0f, 1.0f);
+    GO.setPosition(500, 200);
+    window.draw(GO);
 }
 void CGAME::menu() {
     int menuNumber = 0;
@@ -535,7 +545,8 @@ void CGAME::playGame() {
         for (int i = 0; i < 2 + mode; i++) {
             if (Person.isImpact(map[i])){
                 win = 0;
-                return;
+                GameOver(window);
+                break;
             }
         }
         if (Person.isFinish(window)) {
@@ -544,6 +555,10 @@ void CGAME::playGame() {
         }
         Person.draw(window);
         window.display();
+        if (win == 0) {
+            this_thread::sleep_for(1s);
+            return;
+        }
     }
 }
 int main()

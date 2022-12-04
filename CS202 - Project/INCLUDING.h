@@ -11,5 +11,6 @@
 #include "CENEMY.h"
 
 #include <ctime>
-
+#include <chrono>
+#include <thread>
 #include "MENU.h"

@@ -9,6 +9,14 @@ CGAME::CGAME() {
 	isPlaying = 0;
     window.create(VideoMode(1500, 800), "Crossing Road Game!");
 }
+void CGAME::GameOver(sf::RenderWindow& window) {
+	Texture Gameover;
+	Gameover.loadFromFile("Resource/Gameover2.png");
+	sf::Sprite GO(Gameover);
+	GO.scale(1.0f, 1.0f);
+	GO.setPosition(500, 200);
+	window.draw(GO);
+}
 void CGAME::menu() {
 	int menuNumber = 0;
 	Menu menu(800, 600);
@@ -115,20 +123,22 @@ void CGAME::playGame() {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
         window.clear();
-        for (int i = 0; i < 2 + mode; i++) {
-            map[i]->draw(window, time[i]);
-        }
-        for (int i = 0; i < 2 + mode; i++) {
-            if (Person.isImpact(map[i])) {
+		for (int i = 0; i < 2 + mode; i++) {
+			if (Person.isImpact(map[i])) {
 				win = 0;
-				return;
-            }
-        }
-        if (Person.isFinish(window)) {
+				GameOver(window);
+				break;
+			}
+		}
+		if (Person.isFinish(window)) {
 			win = 1;
 			return;
-        }
-        Person.draw(window);
-        window.display();
+		}
+		Person.draw(window);
+		window.display();
+		if (win == 0) {
+			this_thread::sleep_for(1s);
+			return;
+		}
     }
 }
