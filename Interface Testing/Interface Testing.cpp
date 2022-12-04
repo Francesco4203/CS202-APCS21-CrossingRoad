@@ -419,10 +419,10 @@ CGAME::CGAME() {
 }
 void CGAME::GameOver(sf::RenderWindow& window) {
     Texture Gameover;
-    Gameover.loadFromFile("Resource/gameover.png");
+    Gameover.loadFromFile("Resource/Gameover2.png");
     sf::Sprite GO(Gameover);
-    GO.scale(0.3, 0.3);
-    GO.setPosition(600, 200);
+    GO.scale(1.0f, 1.0f);
+    GO.setPosition(500, 200);
     window.draw(GO);
 }
 void CGAME::menu() {
