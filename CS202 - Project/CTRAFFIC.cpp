@@ -46,6 +46,9 @@ void LIGHT::setPosition(int x, int y) {
     light.setPosition(x, y);
 }
 
+LINE::~LINE() {
+    for (int i = 0; i < list.size(); i++) delete list[i];
+}
 LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     if (isLane) Tline.loadFromFile(lanePath);
     else Tline.loadFromFile(grassPath);

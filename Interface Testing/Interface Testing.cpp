@@ -173,8 +173,11 @@ public:
     Sprite getSpriteLine();
     void stop();
     void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    ~LINE();
 };
-
+LINE::~LINE() {
+    for (int i = 0; i < list.size(); i++) delete list[i];
+}
 LIGHT::LIGHT(int mode) {
     red_light.loadFromFile(redPath);
     yellow_light.loadFromFile(yellowPath);
@@ -549,6 +552,7 @@ void CGAME::playGame() {
         for (int i = 0; i < 2 + mode; i++) {
             if (Person.isImpact(map[i])){
                 win = 0;
+                Person.draw(window);
                 GameOver(window);
                 window.display();
                 return;

@@ -50,4 +50,5 @@ public:
     Sprite getSpriteLine();
     void stop();
     void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    ~LINE();
 };

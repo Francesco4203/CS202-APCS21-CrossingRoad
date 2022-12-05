@@ -127,8 +127,9 @@ void CGAME::playGame() {
 		for (int i = 0; i < 2 + mode; i++) {
 			if (Person.isImpact(map[i])) {
 				win = 0;
+				Person.draw(window);
 				GameOver(window);
-				break;
+				return;
 			}
 		}
 		if (Person.isFinish(window)) {
