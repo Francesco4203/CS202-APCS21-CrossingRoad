@@ -6,7 +6,7 @@ using namespace sf;
 CVEHICLE::CVEHICLE(int x, int y, int mode) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
-    object.setPosition(x, y);
+    object.setPosition(x < 0 ? x + (mode != 3 ? 1000 : 500) : x - (mode != 3 ? 1000 : 500), y);
     object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {

@@ -102,28 +102,19 @@ void CGAME::newGame() {
     playGame();
 }
 void CGAME::gameSet() {
-    isPlaying = 1;
-    for (auto& c : map) delete c;
-    map.clear();
-    for (int i = 0; i < 2 + mode; i++) {
-        int isLane = rand() % 2;
-        int direction = rand() % 2;
-        int easier = rand() % 4;
-        LINE* a = new LINE(50 + 120 * i, direction + 1, isLane, min(3, mode + !easier));
-        map.push_back(a);
-    }
-    time = vector<pair<clock_t, clock_t>>(mode + 2);
-    for (int i = 0; i < mode + 2; ++i) {
-        time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
-        time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
-    }
-    for (int i = 0; i < 2 + mode; i++) {
-        int isLane = rand() % 2;
-        int direction = rand() % 2;
-        int easier = rand() % 4;
-        LINE* a = new LINE(50 + 150 * i, direction + 1, isLane, min(3, mode + !easier));
-        map.push_back(a);
-    }
+	map.clear();
+	for (int i = 0; i < 2 + mode; i++) {
+		int isLane = rand() % 2;
+		int direction = rand() % 2;
+		int easier = rand() % 4;
+		LINE* a = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction + 1, isLane, min(3, mode + !easier));
+		map.push_back(a);
+	}
+	time = vector<pair<clock_t, clock_t>>(mode + 2);
+	for (int i = 0; i < mode + 2; ++i) {
+		time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
+		time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
+	}
 }
 void CGAME::playGame() {
     CPEOPLE Person(0.3f, 100.0f);

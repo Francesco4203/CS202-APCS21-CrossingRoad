@@ -76,7 +76,7 @@ public:
 CANIMAL::CANIMAL(int x, int y, int mode) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
-    object.setPosition(x, y);
+    object.setPosition(x < 0 ? x + (mode != 3 ? 1000 : 500) : x - (mode != 3 ? 1000 : 500), y);
     object.scale(0.3, 0.3);
 }
 CDINAUSOR::CDINAUSOR(int x, int y, int mode) : CANIMAL(x, y, mode) {
@@ -115,7 +115,7 @@ public:
 CVEHICLE::CVEHICLE(int x, int y, int mode) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
-    object.setPosition(x, y);
+    object.setPosition(x < 0 ? x + (mode != 3 ? 1000 : 500) : x - (mode != 3 ? 1000 : 500), y);
     object.scale(0.3, 0.3);
 }
 CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
@@ -225,24 +225,24 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     this->direction = direction;
     if (direction == 1) {
         list.clear();
-        int num = mode + 3;
+        int num = mode + 4;
         if (isLane) {
-            CVEHICLE* vehicle = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) vehicle = new CCAR(num * (-250), y, mode);
-                else vehicle = new CTRUCK(num * (-250), y, mode);
-                list.push_back(vehicle);
+                if (type) enemy = new CCAR(num * (-250), y, mode);
+                else enemy = new CTRUCK(num * (-250), y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
         else {
-            CANIMAL* animal = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) animal = new CBIRD(num * (-250), y, mode);
-                else animal = new CDINAUSOR(num * (-250), y, mode);
-                list.push_back(animal);
+                if (type) enemy = new CBIRD(num * (-250), y, mode);
+                else enemy = new CDINAUSOR(num * (-250), y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
@@ -251,14 +251,14 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     }
     else {
         list.clear();
-        int num = mode + 3;
+        int num = mode + 4;
         if (isLane) {
-            CVEHICLE* vehicle = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) vehicle = new CCAR(1500 + num * 250, y, mode);
-                else vehicle = new CTRUCK(1500 + num * 250, y, mode);
-                list.push_back(vehicle);
+                if (type) enemy = new CCAR(1500 + num * 250, y, mode);
+                else enemy = new CTRUCK(1500 + num * 250, y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
@@ -522,20 +522,13 @@ void CGAME::gameSet() {
         int isLane = rand() % 2;
         int direction = rand() % 2;
         int easier = rand() % 4;
-        LINE* a = new LINE(50 + 150 * i, direction + 1, isLane, min(3, mode + !easier));
+        LINE* a = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction + 1, isLane, min(3, mode + !easier));
         map.push_back(a);
     }
     time = vector<pair<clock_t, clock_t>>(mode + 2);
     for (int i = 0; i < mode + 2; ++i) {
         time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
         time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
-    }
-    for (int i = 0; i < 2 + mode; i++) {
-        int isLane = rand() % 2;
-        int direction = rand() % 2;
-        int easier = rand() % 4;
-        LINE* a = new LINE(50 + 150 * i, direction + 1, isLane, min(3, mode + !easier));
-        map.push_back(a);
     }
 }
 void CGAME::playGame() {

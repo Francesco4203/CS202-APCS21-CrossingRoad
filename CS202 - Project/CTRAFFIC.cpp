@@ -55,24 +55,24 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     this->direction = direction;
     if (direction == 1) {
         list.clear();
-        int num = mode + 3;
+        int num = mode + 4;
         if (isLane) {
-            CVEHICLE* vehicle = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) vehicle = new CCAR(num * (-250), y, mode);
-                else vehicle = new CTRUCK(num * (-250), y, mode);
-                list.push_back(vehicle);
+                if (type) enemy = new CCAR(num * (-250), y, mode);
+                else enemy = new CTRUCK(num * (-250), y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
         else {
-            CANIMAL* animal = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) animal = new CBIRD(num * (-250), y, mode);
-                else animal = new CDINAUSOR(num * (-250), y, mode);
-                list.push_back(animal);
+                if (type) enemy = new CBIRD(num * (-250), y, mode);
+                else enemy = new CDINAUSOR(num * (-250), y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
@@ -81,14 +81,14 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     }
     else {
         list.clear();
-        int num = mode + 3;
+        int num = mode + 4;
         if (isLane) {
-            CVEHICLE* vehicle = NULL;
+            CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) vehicle = new CCAR(1500 + num * 250, y, mode);
-                else vehicle = new CTRUCK(1500 + num * 250, y, mode);
-                list.push_back(vehicle);
+                if (type) enemy = new CCAR(1500 + num * 250, y, mode);
+                else enemy = new CTRUCK(1500 + num * 250, y, mode);
+                list.push_back(enemy);
                 num--;
             }
         }
