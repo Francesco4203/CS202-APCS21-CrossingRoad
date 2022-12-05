@@ -55,7 +55,7 @@ class CANIMAL : public CENEMY {
 
 public:
     CANIMAL() = delete;//default NOT available
-    CANIMAL(int x, int y, int mode);
+    CANIMAL(int x, int y, int mode, int randomFactor);
 };
 
 //Constructor set image for object
@@ -64,28 +64,29 @@ class CDINAUSOR : public CANIMAL {
     // image
 public:
     CDINAUSOR() = delete;//default NOT available
-    CDINAUSOR(int x, int y, int mode);// 1 2 3 -> easy medium hard
+    CDINAUSOR(int x, int y, int mode, int randomFactor);// 1 2 3 -> easy medium hard
 };
 class CBIRD : public CANIMAL {
     //image
 public:
     CBIRD() = delete;//default NOT available
-    CBIRD(int x, int y, int mode);//1 2 3 -> easy medium hard;
+    CBIRD(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard;
 };
 
-CANIMAL::CANIMAL(int x, int y, int mode) {
+CANIMAL::CANIMAL(int x, int y, int mode, int randomFactor) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
-    object.setPosition(x < 0 ? x + (mode != 3 ? 1000 : 500) : x - (mode != 3 ? 1000 : 500), y);
+    int shift = mode != 3 ? 900 + randomFactor : 400 + randomFactor;
+    object.setPosition(x < 0 ? x + shift : x - shift, y);
     object.scale(0.3, 0.3);
 }
-CDINAUSOR::CDINAUSOR(int x, int y, int mode) : CANIMAL(x, y, mode) {
+CDINAUSOR::CDINAUSOR(int x, int y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
     if (x > 0) enemy.loadFromFile("Resource/Rdinausor.png");
     else enemy.loadFromFile("Resource/dinausor.png");
     object.setTexture(enemy);
 }
 
-CBIRD::CBIRD(int x, int y, int mode) : CANIMAL(x, y, mode) {
+CBIRD::CBIRD(int x, int y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
     if (x > 0) enemy.loadFromFile("Resource/Rbird.png");
     else enemy.loadFromFile("Resource/bird.png");
     object.setTexture(enemy);
@@ -94,7 +95,7 @@ CBIRD::CBIRD(int x, int y, int mode) : CANIMAL(x, y, mode) {
 class CVEHICLE : public CENEMY {
 public:
     CVEHICLE() = delete;//default NOT available
-    CVEHICLE(int x, int y, int mode);
+    CVEHICLE(int x, int y, int mode, int randomFactor);
 };
 
 //Constructor set image for object
@@ -103,28 +104,29 @@ class CTRUCK : public CVEHICLE {
     // image
 public:
     CTRUCK() = delete;//default NOT available
-    CTRUCK(int x, int y, int mode);//1 2 3 -> easy medium hard
+    CTRUCK(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard
 };
 class CCAR : public CVEHICLE {
     // image
 public:
     CCAR() = delete;//default NOT available
-    CCAR(int x, int y, int mode);//1 2 3 -> easy medium hard
+    CCAR(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard
 };
 
-CVEHICLE::CVEHICLE(int x, int y, int mode) {
+CVEHICLE::CVEHICLE(int x, int y, int mode, int randomFactor) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
-    object.setPosition(x < 0 ? x + (mode != 3 ? 1000 : 500) : x - (mode != 3 ? 1000 : 500), y);
+    int shift = mode != 3 ? 900 + randomFactor : 400 + randomFactor;
+    object.setPosition(x < 0 ? x + shift : x - shift, y);
     object.scale(0.3, 0.3);
 }
-CTRUCK::CTRUCK(int x, int y, int mode) : CVEHICLE(x, y, mode) {
+CTRUCK::CTRUCK(int x, int y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
     if (x > 0) enemy.loadFromFile("Resource/Rtruck.png");
     else enemy.loadFromFile("Resource/truck.png");
     object.setTexture(enemy);
 }
 
-CCAR::CCAR(int x, int y, int mode) : CVEHICLE(x, y, mode) {
+CCAR::CCAR(int x, int y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
     if (x > 0) enemy.loadFromFile("Resource/Rcar.png");
     else enemy.loadFromFile("Resource/car.png");
     object.setTexture(enemy);
@@ -223,6 +225,7 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     line.setTexture(Tline);
     line.setPosition(0, y);
     this->direction = direction;
+    int randomFactor = rand() % 200;
     if (direction == 1) {
         list.clear();
         int num = mode + 4;
@@ -230,8 +233,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(num * (-250), y, mode);
-                else enemy = new CTRUCK(num * (-250), y, mode);
+                if (type) enemy = new CCAR(num * (-250), y, mode, randomFactor);
+                else enemy = new CTRUCK(num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -240,8 +243,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(num * (-250), y, mode);
-                else enemy = new CDINAUSOR(num * (-250), y, mode);
+                if (type) enemy = new CBIRD(num * (-250), y, mode, randomFactor);
+                else enemy = new CDINAUSOR(num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -256,8 +259,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(1500 + num * 250, y, mode);
-                else enemy = new CTRUCK(1500 + num * 250, y, mode);
+                if (type) enemy = new CCAR(1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CTRUCK(1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -266,8 +269,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(1500 + num * 250, y, mode);
-                else enemy = new CDINAUSOR(1500 + num * 250, y, mode);
+                if (type) enemy = new CBIRD(1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CDINAUSOR(1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }

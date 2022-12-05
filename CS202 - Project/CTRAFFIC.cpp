@@ -53,6 +53,7 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     line.setTexture(Tline);
     line.setPosition(0, y);
     this->direction = direction;
+    int randomFactor = rand() % 200;
     if (direction == 1) {
         list.clear();
         int num = mode + 4;
@@ -60,8 +61,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(num * (-250), y, mode);
-                else enemy = new CTRUCK(num * (-250), y, mode);
+                if (type) enemy = new CCAR(num * (-250), y, mode, randomFactor);
+                else enemy = new CTRUCK(num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -70,8 +71,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(num * (-250), y, mode);
-                else enemy = new CDINAUSOR(num * (-250), y, mode);
+                if (type) enemy = new CBIRD(num * (-250), y, mode, randomFactor);
+                else enemy = new CDINAUSOR(num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -86,8 +87,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(1500 + num * 250, y, mode);
-                else enemy = new CTRUCK(1500 + num * 250, y, mode);
+                if (type) enemy = new CCAR(1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CTRUCK(1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -96,8 +97,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(1500 + num * 250, y, mode);
-                else enemy = new CDINAUSOR(1500 + num * 250, y, mode);
+                if (type) enemy = new CBIRD(1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CDINAUSOR(1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
