@@ -14,7 +14,7 @@ using namespace std;
 using namespace sf;
 
 const int WIDTH = 1500;
-const int HEIGHT = 800;
+const int HEIGHT = 900;
 
 class CENEMY
 {
@@ -412,6 +412,10 @@ class CGAME {
     vector<pair<clock_t, clock_t>> time;
     RenderWindow window;
     bool win, isPlaying;
+    Sprite level;
+    Texture levelImage;
+    Text levelText;
+    Font levelFont;
 public:
     int mode;
     CGAME();
@@ -424,9 +428,18 @@ public:
 CGAME::CGAME() {
     map.clear();
     mode = 1;
-    window.create(VideoMode(1500, 800), "Crossing Road Game!");
+    window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
     win = 1;
     isPlaying = 0;
+    levelImage.loadFromFile("Resource/level.png");
+    level.setTexture(levelImage);
+    level.setPosition(0, 800);
+    levelFont.loadFromFile("font/000OneTwoPunchBB-Regular.otf");
+    levelText.setFont(levelFont);
+    levelText.setFillColor(Color(255, 255, 0, 255));
+    levelText.setPosition(660, 800);
+    levelText.scale(2.0, 2.0);
+    //levelText.setColor(Color(100, 100, 100, 100));
 }
 void CGAME::GameOver(sf::RenderWindow& window) {
     Texture Gameover;
@@ -468,6 +481,7 @@ void CGAME::menu() {
                                 isPlaying = 1;
                                 newGame();
                                 mode = min(3, mode + 1);
+                                levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
                                 while (true) {
                                     bool next = false;
@@ -523,6 +537,7 @@ void CGAME::newGame() {
     playGame();
 }
 void CGAME::gameSet() {
+    levelText.setString("LEVEL " + to_string(mode));
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {
         int isLane = rand() % 2;
@@ -546,6 +561,8 @@ void CGAME::playGame() {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
         window.clear();
+        window.draw(level);
+        window.draw(levelText);
         for (int i = 0; i < 2 + mode; i++) {
             map[i]->draw(window, time[i]);
         }

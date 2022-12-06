@@ -206,7 +206,7 @@ MenuSprite::MenuSprite()
 		system("pause");
 	}
 	menubgS.setTexture(menubgT);
-	menubgS.scale({ 1.88, 1.33 });
+	menubgS.scale({ 1.88, 1.5 });
 };
 
 void MenuSprite::drawBG(sf::RenderWindow& window)

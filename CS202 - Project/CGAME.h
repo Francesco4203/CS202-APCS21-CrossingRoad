@@ -3,17 +3,20 @@
 using namespace std;
 using namespace sf;
 class CGAME {
-	vector<LINE*> map;
-	int mode;
-	vector<pair<clock_t, clock_t>> time;
-	bool win;
-	bool isPlaying;
-	RenderWindow window;
+    vector<LINE*> map;
+    vector<pair<clock_t, clock_t>> time;
+    RenderWindow window;
+    bool win, isPlaying;
+    Sprite level;
+    Texture levelImage;
+    Text levelText;
+    Font levelFont;
 public:
-	CGAME();
-	void menu();
-	void GameOver(sf::RenderWindow& window);
-	void gameSet();
-	void newGame();
-	void playGame();
+    int mode;
+    CGAME();
+    void GameOver(sf::RenderWindow& window);
+    void menu();
+    void gameSet();
+    void newGame();
+    void playGame();
 };
