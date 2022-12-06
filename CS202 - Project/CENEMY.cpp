@@ -1,5 +1,11 @@
 #include "INCLUDING.h"
 
+void CENEMY::setPosition(double x, double y) {
+    object.setPosition(x, y);
+}
+void CENEMY::output(ofstream& f) {
+    f << type << ' ' << speed << ' ' << isStop << ' ' << object.getPosition().x << ' ' << object.getPosition().y << '\n';
+}
 void CENEMY::stop() {
     isStop = true;
 }

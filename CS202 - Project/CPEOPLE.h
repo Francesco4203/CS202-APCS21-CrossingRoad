@@ -21,4 +21,6 @@ public:
     bool isImpact(LINE* a);
     bool isFinish(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
+    void setPosition(double x, double y);
+    void output(ofstream& f);
 };

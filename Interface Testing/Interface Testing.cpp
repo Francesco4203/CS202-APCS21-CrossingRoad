@@ -19,6 +19,7 @@ const int HEIGHT = 900;
 class CENEMY
 {
 protected:
+    int type;//0 car, 1 truck, 2 bird, 3 dinausor
     int speed;//step per second, or seconds needed for 1 step
     bool isStop;
     Sprite object;
@@ -28,8 +29,16 @@ public:
     void stop();
     void resume();
     Sprite getObject();
+    void output(ofstream& f);
+    void setPosition(double x, double y);
 };
 
+void CENEMY::setPosition(double x, double y) {
+    object.setPosition(x, y);
+}
+void CENEMY::output(ofstream& f) {
+    f << type << ' ' << speed << ' ' << isStop << ' ' << object.getPosition().x << ' ' << object.getPosition().y << '\n';
+}
 void CENEMY::stop() {
     isStop = true;
 }
@@ -55,7 +64,7 @@ class CANIMAL : public CENEMY {
 
 public:
     CANIMAL() = delete;//default NOT available
-    CANIMAL(int x, int y, int mode, int randomFactor);
+    CANIMAL(double x, double y, int mode, int randomFactor);
 };
 
 //Constructor set image for object
@@ -64,38 +73,40 @@ class CDINAUSOR : public CANIMAL {
     // image
 public:
     CDINAUSOR() = delete;//default NOT available
-    CDINAUSOR(int x, int y, int mode, int randomFactor);// 1 2 3 -> easy medium hard
+    CDINAUSOR(int direction, double x, double y, int mode, int randomFactor);// 1 2 3 -> easy medium hard
 };
 class CBIRD : public CANIMAL {
     //image
 public:
     CBIRD() = delete;//default NOT available
-    CBIRD(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard;
+    CBIRD(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard;
 };
 
-CANIMAL::CANIMAL(int x, int y, int mode, int randomFactor) {
+CANIMAL::CANIMAL(double x, double y, int mode, int randomFactor) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
     int shift = mode != 3 ? 900 + randomFactor : 400 + randomFactor;
     object.setPosition(x < 0 ? x + shift : x - shift, y);
     object.scale(0.3, 0.3);
 }
-CDINAUSOR::CDINAUSOR(int x, int y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
-    if (x > 0) enemy.loadFromFile("Resource/Rdinausor.png");
+CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    if (direction == 2) enemy.loadFromFile("Resource/Rdinausor.png");
     else enemy.loadFromFile("Resource/dinausor.png");
     object.setTexture(enemy);
+    type = 3;
 }
 
-CBIRD::CBIRD(int x, int y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
-    if (x > 0) enemy.loadFromFile("Resource/Rbird.png");
+CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    if (direction == 2) enemy.loadFromFile("Resource/Rbird.png");
     else enemy.loadFromFile("Resource/bird.png");
     object.setTexture(enemy);
+    type = 2;
 }
 
 class CVEHICLE : public CENEMY {
 public:
     CVEHICLE() = delete;//default NOT available
-    CVEHICLE(int x, int y, int mode, int randomFactor);
+    CVEHICLE(double x, double y, int mode, int randomFactor);
 };
 
 //Constructor set image for object
@@ -104,32 +115,34 @@ class CTRUCK : public CVEHICLE {
     // image
 public:
     CTRUCK() = delete;//default NOT available
-    CTRUCK(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard
+    CTRUCK(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard
 };
 class CCAR : public CVEHICLE {
     // image
 public:
     CCAR() = delete;//default NOT available
-    CCAR(int x, int y, int mode, int randomFactor);//1 2 3 -> easy medium hard
+    CCAR(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard
 };
 
-CVEHICLE::CVEHICLE(int x, int y, int mode, int randomFactor) {
+CVEHICLE::CVEHICLE(double x, double y, int mode, int randomFactor) {
     speed = (mode == 1 ? 7 : (mode == 2 ? 10 : 13));
     isStop = 1;
     int shift = mode != 3 ? 900 + randomFactor : 400 + randomFactor;
     object.setPosition(x < 0 ? x + shift : x - shift, y);
     object.scale(0.3, 0.3);
 }
-CTRUCK::CTRUCK(int x, int y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
-    if (x > 0) enemy.loadFromFile("Resource/Rtruck.png");
+CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
+    if (direction == 2) enemy.loadFromFile("Resource/Rtruck.png");
     else enemy.loadFromFile("Resource/truck.png");
     object.setTexture(enemy);
+    type = 1;
 }
 
-CCAR::CCAR(int x, int y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
-    if (x > 0) enemy.loadFromFile("Resource/Rcar.png");
+CCAR::CCAR(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
+    if (direction == 2) enemy.loadFromFile("Resource/Rcar.png");
     else enemy.loadFromFile("Resource/car.png");
     object.setTexture(enemy);
+    type = 0;
 }
 class LIGHT {
 private:
@@ -152,8 +165,10 @@ public:
     int getState();
     Sprite getSpriteLight();
     void changeLight();
-    void setPosition(int x, int y);
+    void setPosition(double x, double y);
+    int getMode();
 };
+
 
 class LINE {
 private:
@@ -173,8 +188,25 @@ public:
     Sprite getSpriteLine();
     void stop();
     void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    void output(ofstream& f);
+    int getMode();
+    void setEnemy(vector<CENEMY*> enemyList);
     ~LINE();
 };
+int LIGHT::getMode() {
+    return mode;
+}
+void LINE::setEnemy(vector<CENEMY*> enemyList) {
+    for (int i = 0; i < list.size(); i++) delete list[i];
+    list = enemyList;
+}
+int LINE::getMode() {
+    return light.getMode();
+}
+void LINE::output(ofstream & f) {
+    f << direction << ' ' << isLane << ' ' << list.size() << ' ' << getMode() << '\n';
+    for (int i = 0; i < list.size(); i++) list[i]->output(f);
+}
 LINE::~LINE() {
     for (int i = 0; i < list.size(); i++) delete list[i];
 }
@@ -217,7 +249,7 @@ void LIGHT::changeLight() {
     light.setTexture(yellow_light);
 }
 
-void LIGHT::setPosition(int x, int y) {
+void LIGHT::setPosition(double x, double y) {
     light.setPosition(x, y);
 }
 
@@ -236,8 +268,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(num * (-250), y, mode, randomFactor);
-                else enemy = new CTRUCK(num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-250), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -246,8 +278,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(num * (-250), y, mode, randomFactor);
-                else enemy = new CDINAUSOR(num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CBIRD(direction, num * (-250), y, mode, randomFactor);
+                else enemy = new CDINAUSOR(direction, num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -262,8 +294,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CTRUCK(1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -272,8 +304,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CDINAUSOR(1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CBIRD(direction, 1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CDINAUSOR(direction, 1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -300,8 +332,16 @@ public:
     bool isImpact(LINE* a);
     bool isFinish(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
+    void setPosition(double x, double y);
+    void output(ofstream& f);
 };
 
+void CPEOPLE::output(ofstream& f) {
+    f << _player.getPosition().x << ' ' << _player.getPosition().y << '\n';
+}
+void CPEOPLE::setPosition(double x, double y) {
+    _player.setPosition(x, y);
+}
 CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _Tplayer.loadFromFile("Resource/man.png");
     _currentImage.width = _Tplayer.getSize().x / 4;
@@ -313,7 +353,6 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _totalTime = 0;
     _scale.x = 0;
     _scale.y = 0;
-    _player.setPosition(750, 700);
 }
 void CPEOPLE::move(float deltaTime) {
     float dis = deltaTime * _speed;
@@ -416,6 +455,7 @@ class CGAME {
     Texture levelImage;
     Text levelText;
     Font levelFont;
+    CPEOPLE Person = CPEOPLE(0.3f, 150.0f);
 public:
     int mode;
     CGAME();
@@ -424,7 +464,57 @@ public:
     void gameSet();
     void newGame();
     void playGame();
+    void output(ofstream& f);
+    void input(ifstream& f);
+    void loadGame();
 };
+
+void CGAME::loadGame() {
+    ifstream f("Saved Game.txt");
+    input(f);
+    playGame();
+}
+void CGAME::input(ifstream& f) {
+    f >> mode;
+    int map_size;
+    f >> map_size;
+    levelText.setString("LEVEL " + to_string(mode));
+    levelText.setFillColor(Color(255, 255, 0, 255));
+    map.clear();
+    for (int i = 0; i < 2 + mode; i++) {
+        int isLane, direction, list_size, laneMode;
+        f >> direction >> isLane >> list_size >> laneMode;
+        LINE* newLine = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction, isLane, laneMode);
+        vector<CENEMY*> list;
+        for (int j = 0; j < list_size; j++) {
+            CENEMY* a = 0;
+            int type, speed, isStop;
+            double x, y;
+            f >> type >> speed >> isStop >> x >> y;
+            if (type == 0) a = new CCAR(direction, x, y, laneMode, 0);
+            else if (type == 1) a = new CTRUCK(direction, x, y, laneMode, 0);
+            else if (type == 2) a = new CBIRD(direction, x, y, laneMode, 0);
+            else if (type == 3) a = new CDINAUSOR(direction, x, y, laneMode, 0);
+            if (isStop) a->stop();
+            a->setPosition(x, y);
+            list.push_back(a);
+        }
+        newLine->setEnemy(list);
+        map.push_back(newLine);
+    }
+    time = vector<pair<clock_t, clock_t>>(mode + 2);
+    for (int i = 0; i < time.size(); i++) f >> time[i].first >> time[i].second;
+    double x, y;
+    f >> x >> y;
+    Person.setPosition(x, y);
+    Person.update(3, 0);
+}
+void CGAME::output(ofstream& f) {
+    f << mode << ' ' << map.size() << '\n';
+    for (int i = 0; i < map.size(); i++) map[i]->output(f);
+    for (int i = 0; i < time.size(); i++) f << time[i].first << ' ' << time[i].second << '\n';
+    Person.output(f);
+}
 CGAME::CGAME() {
     map.clear();
     mode = 1;
@@ -499,8 +589,27 @@ void CGAME::menu() {
                             break;
                         case 1: //load game
                             //insert code load game here
-                            menuNumber = 4;
-                            menu.changeMenu(4);
+                            loadGame();
+                            mode = min(3, mode + 1);
+                            while (win) {
+                                isPlaying = 1;
+                                newGame();
+                                mode = min(3, mode + 1);
+                                levelText.setString("LEVEL " + to_string(mode));
+                                while (window.pollEvent(event));
+                                while (true) {
+                                    bool next = false;
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == Event::KeyPressed) {
+                                            next = true;
+                                            break;
+                                        }
+                                    }
+                                    if (next) break;
+                                }
+                            }
+                            isPlaying = 0;
+                            win = mode = 1;
                             break;
                         case 2: //setting
                             menuNumber = 2;
@@ -537,7 +646,10 @@ void CGAME::newGame() {
     playGame();
 }
 void CGAME::gameSet() {
+    Person.setPosition(750, 700);
+    Person.update(3, 0);
     levelText.setString("LEVEL " + to_string(mode));
+    levelText.setFillColor(Color(255, 255, 0, 255));
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {
         int isLane = rand() % 2;
@@ -554,12 +666,20 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     //window.setFramerateLimit(700);
-    CPEOPLE Person(0.3f, 150.0f);
     Clock clock;
     float deltaTime = 0.0f;
-    while (window.isOpen() && isPlaying) {
+    while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
+        Event ev;
+        bool save = 0;
+        while (window.pollEvent(ev)) {
+            if (ev.type == Event::KeyPressed && ev.key.code == Keyboard::L) {
+                save = 1;
+                levelText.setString("GAME SAVED");
+                levelText.setFillColor(Color(255, 0, 0, 255));
+            }
+        }
         window.clear();
         window.draw(level);
         window.draw(levelText);
@@ -581,13 +701,18 @@ void CGAME::playGame() {
         }
         Person.draw(window);
         window.display();
+        if (save) {
+            ofstream f("Saved Game.txt");
+            output(f);
+            win = 0;
+            return;
+        }
     }
 }
 int main()
 {
     srand(time(NULL));
     CGAME game;
-    game.mode = 1;
     game.menu();
     return 0;
 }

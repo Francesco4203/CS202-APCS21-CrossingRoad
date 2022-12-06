@@ -3,6 +3,23 @@
 using namespace std;
 using namespace sf;
 
+int LIGHT::getMode() {
+    return mode;
+}
+void LINE::setEnemy(vector<CENEMY*> enemyList) {
+    for (int i = 0; i < list.size(); i++) delete list[i];
+    list = enemyList;
+}
+int LINE::getMode() {
+    return light.getMode();
+}
+void LINE::output(ofstream& f) {
+    f << direction << ' ' << isLane << ' ' << list.size() << ' ' << getMode() << '\n';
+    for (int i = 0; i < list.size(); i++) list[i]->output(f);
+}
+LINE::~LINE() {
+    for (int i = 0; i < list.size(); i++) delete list[i];
+}
 LIGHT::LIGHT(int mode) {
     red_light.loadFromFile(redPath);
     yellow_light.loadFromFile(yellowPath);
@@ -42,13 +59,10 @@ void LIGHT::changeLight() {
     light.setTexture(yellow_light);
 }
 
-void LIGHT::setPosition(int x, int y) {
+void LIGHT::setPosition(double x, double y) {
     light.setPosition(x, y);
 }
 
-LINE::~LINE() {
-    for (int i = 0; i < list.size(); i++) delete list[i];
-}
 LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     if (isLane) Tline.loadFromFile(lanePath);
     else Tline.loadFromFile(grassPath);
@@ -64,8 +78,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(num * (-250), y, mode, randomFactor);
-                else enemy = new CTRUCK(num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-250), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -74,8 +88,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(num * (-250), y, mode, randomFactor);
-                else enemy = new CDINAUSOR(num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CBIRD(direction, num * (-250), y, mode, randomFactor);
+                else enemy = new CDINAUSOR(direction, num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -90,8 +104,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CTRUCK(1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -100,8 +114,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CBIRD(1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CDINAUSOR(1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CBIRD(direction, 1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CDINAUSOR(direction, 1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -109,10 +123,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
         light.setPosition(-50, y - 30);
     }
 }
-
 LIGHT& LINE::getLight() { return light; }
 Sprite LINE::getSpriteLine() { return line; }
-
 void LINE::stop() {
     for (auto p : list) {
         p->stop();
@@ -120,10 +132,10 @@ void LINE::stop() {
 }
 
 void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
-    time.second = clock() + rand() % 10;
+    time.second = clock();
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
-        time.first = clock() + rand() % 10;
+        time.first = clock();
     }
     window.draw(line);
 

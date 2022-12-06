@@ -2,6 +2,12 @@
 
 using namespace std;
 using namespace sf;
+void CPEOPLE::output(ofstream& f) {
+    f << _player.getPosition().x << ' ' << _player.getPosition().y << '\n';
+}
+void CPEOPLE::setPosition(double x, double y) {
+    _player.setPosition(x, y);
+}
 CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _Tplayer.loadFromFile("Resource/man.png");
     _currentImage.width = _Tplayer.getSize().x / 4;
@@ -13,7 +19,6 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _totalTime = 0;
     _scale.x = 0;
     _scale.y = 0;
-    _player.setPosition(750, 700);
 }
 void CPEOPLE::move(float deltaTime) {
     float dis = deltaTime * _speed;
@@ -69,7 +74,12 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
 }
 bool CPEOPLE::isImpact(LINE* a) {
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        if (_player.getGlobalBounds().intersects(a->getVectorList()[i]->getObject().getGlobalBounds())) {
+        auto player_fix = _player.getGlobalBounds();
+        /*player_fix.top -= 30;
+        player_fix.left += 20;
+        player_fix.height = 30;
+        player_fix.width = 30;*/
+        if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
             return true;
         }
     }

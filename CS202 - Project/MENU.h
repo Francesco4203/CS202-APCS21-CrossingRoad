@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "INCLUDING.h"
+#include <bits/stdc++.h>
 
 using namespace std;
 using namespace sf;
@@ -36,4 +36,3 @@ public:
 	void drawBG(sf::RenderWindow& window);
 	~MenuSprite();
 };
-

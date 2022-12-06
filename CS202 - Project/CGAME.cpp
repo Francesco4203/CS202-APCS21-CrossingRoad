@@ -2,6 +2,52 @@
 using namespace std;
 using namespace sf;
 
+void CGAME::loadGame() {
+    ifstream f("Saved Game.txt");
+    input(f);
+    playGame();
+}
+void CGAME::input(ifstream& f) {
+    f >> mode;
+    int map_size;
+    f >> map_size;
+    levelText.setString("LEVEL " + to_string(mode));
+    levelText.setFillColor(Color(255, 255, 0, 255));
+    map.clear();
+    for (int i = 0; i < 2 + mode; i++) {
+        int isLane, direction, list_size, laneMode;
+        f >> direction >> isLane >> list_size >> laneMode;
+        LINE* newLine = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction, isLane, laneMode);
+        vector<CENEMY*> list;
+        for (int j = 0; j < list_size; j++) {
+            CENEMY* a = 0;
+            int type, speed, isStop;
+            double x, y;
+            f >> type >> speed >> isStop >> x >> y;
+            if (type == 0) a = new CCAR(direction, x, y, laneMode, 0);
+            else if (type == 1) a = new CTRUCK(direction, x, y, laneMode, 0);
+            else if (type == 2) a = new CBIRD(direction, x, y, laneMode, 0);
+            else if (type == 3) a = new CDINAUSOR(direction, x, y, laneMode, 0);
+            if (isStop) a->stop();
+            a->setPosition(x, y);
+            list.push_back(a);
+        }
+        newLine->setEnemy(list);
+        map.push_back(newLine);
+    }
+    time = vector<pair<clock_t, clock_t>>(mode + 2);
+    for (int i = 0; i < time.size(); i++) f >> time[i].first >> time[i].second;
+    double x, y;
+    f >> x >> y;
+    Person.setPosition(x, y);
+    Person.update(3, 0);
+}
+void CGAME::output(ofstream& f) {
+    f << mode << ' ' << map.size() << '\n';
+    for (int i = 0; i < map.size(); i++) map[i]->output(f);
+    for (int i = 0; i < time.size(); i++) f << time[i].first << ' ' << time[i].second << '\n';
+    Person.output(f);
+}
 CGAME::CGAME() {
     map.clear();
     mode = 1;
@@ -76,8 +122,27 @@ void CGAME::menu() {
                             break;
                         case 1: //load game
                             //insert code load game here
-                            menuNumber = 4;
-                            menu.changeMenu(4);
+                            loadGame();
+                            mode = min(3, mode + 1);
+                            while (win) {
+                                isPlaying = 1;
+                                newGame();
+                                mode = min(3, mode + 1);
+                                levelText.setString("LEVEL " + to_string(mode));
+                                while (window.pollEvent(event));
+                                while (true) {
+                                    bool next = false;
+                                    while (window.pollEvent(event)) {
+                                        if (event.type == Event::KeyPressed) {
+                                            next = true;
+                                            break;
+                                        }
+                                    }
+                                    if (next) break;
+                                }
+                            }
+                            isPlaying = 0;
+                            win = mode = 1;
                             break;
                         case 2: //setting
                             menuNumber = 2;
@@ -114,7 +179,10 @@ void CGAME::newGame() {
     playGame();
 }
 void CGAME::gameSet() {
+    Person.setPosition(750, 700);
+    Person.update(3, 0);
     levelText.setString("LEVEL " + to_string(mode));
+    levelText.setFillColor(Color(255, 255, 0, 255));
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {
         int isLane = rand() % 2;
@@ -131,12 +199,20 @@ void CGAME::gameSet() {
 }
 void CGAME::playGame() {
     //window.setFramerateLimit(700);
-    CPEOPLE Person(0.3f, 150.0f);
     Clock clock;
     float deltaTime = 0.0f;
-    while (window.isOpen() && isPlaying) {
+    while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         Person.move(deltaTime);
+        Event ev;
+        bool save = 0;
+        while (window.pollEvent(ev)) {
+            if (ev.type == Event::KeyPressed && ev.key.code == Keyboard::L) {
+                save = 1;
+                levelText.setString("GAME SAVED");
+                levelText.setFillColor(Color(255, 0, 0, 255));
+            }
+        }
         window.clear();
         window.draw(level);
         window.draw(levelText);
@@ -158,5 +234,11 @@ void CGAME::playGame() {
         }
         Person.draw(window);
         window.display();
+        if (save) {
+            ofstream f("Saved Game.txt");
+            output(f);
+            win = 0;
+            return;
+        }
     }
 }

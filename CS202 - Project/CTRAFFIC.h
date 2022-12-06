@@ -29,8 +29,10 @@ public:
     int getState();
     Sprite getSpriteLight();
     void changeLight();
-    void setPosition(int x, int y);
+    void setPosition(double x, double y);
+    int getMode();
 };
+
 
 class LINE {
 private:
@@ -50,5 +52,8 @@ public:
     Sprite getSpriteLine();
     void stop();
     void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    void output(ofstream& f);
+    int getMode();
+    void setEnemy(vector<CENEMY*> enemyList);
     ~LINE();
 };

@@ -11,6 +11,7 @@ class CGAME {
     Texture levelImage;
     Text levelText;
     Font levelFont;
+    CPEOPLE Person = CPEOPLE(0.3f, 150.0f);
 public:
     int mode;
     CGAME();
@@ -19,4 +20,7 @@ public:
     void gameSet();
     void newGame();
     void playGame();
+    void output(ofstream& f);
+    void input(ifstream& f);
+    void loadGame();
 };
