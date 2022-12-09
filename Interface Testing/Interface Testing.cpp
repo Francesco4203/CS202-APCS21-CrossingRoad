@@ -24,6 +24,8 @@ protected:
     bool isStop;
     Sprite object;
     Texture enemy;
+    SoundBuffer _Bsound;
+    Sound _sound;
 public:
     void Move(bool reverse);
     void stop();
@@ -31,7 +33,12 @@ public:
     Sprite getObject();
     void output(ofstream& f);
     void setPosition(double x, double y);
+    void sound();
 };
+
+void CENEMY::sound() {
+    _sound.play();
+}
 
 void CENEMY::setPosition(double x, double y) {
     object.setPosition(x, y);
@@ -90,6 +97,8 @@ CANIMAL::CANIMAL(double x, double y, int mode, int randomFactor) {
     object.scale(0.3, 0.3);
 }
 CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/dinausor.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rdinausor.png");
     else enemy.loadFromFile("Resource/dinausor.png");
     object.setTexture(enemy);
@@ -97,6 +106,8 @@ CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFact
 }
 
 CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/bird.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rbird.png");
     else enemy.loadFromFile("Resource/bird.png");
     object.setTexture(enemy);
@@ -131,7 +142,10 @@ CVEHICLE::CVEHICLE(double x, double y, int mode, int randomFactor) {
     object.setPosition(x < 0 ? x + shift : x - shift, y);
     object.scale(0.3, 0.3);
 }
+
 CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/truck.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rtruck.png");
     else enemy.loadFromFile("Resource/truck.png");
     object.setTexture(enemy);
@@ -139,6 +153,8 @@ CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : 
 }
 
 CCAR::CCAR(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/car.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rcar.png");
     else enemy.loadFromFile("Resource/car.png");
     object.setTexture(enemy);
@@ -268,8 +284,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, num * (-250), y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-300), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-300), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -294,8 +310,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, 1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, 1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 300, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 300, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -414,6 +430,7 @@ bool CPEOPLE::isImpact(LINE* a) {
         player_fix.height = 30;
         player_fix.width = 30;*/
         if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
+            a->getVectorList()[i]->sound();
             return true;
         }
     }
@@ -447,6 +464,9 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
     if (isLane) window.draw(this->getLight().getSpriteLight());
 }
 class CGAME {
+    SoundBuffer Bsound;
+    SoundBuffer BgameOverSound;
+    Sound sound;
     vector<LINE*> map;
     vector<pair<clock_t, clock_t>> time;
     RenderWindow window;
@@ -455,6 +475,8 @@ class CGAME {
     Texture levelImage;
     Text levelText;
     Font levelFont;
+    Texture Tbackground;
+    Sprite background;
     CPEOPLE Person = CPEOPLE(0.3f, 150.0f);
 public:
     int mode;
@@ -529,12 +551,25 @@ CGAME::CGAME() {
     levelText.setFillColor(Color(255, 255, 0, 255));
     levelText.setPosition(660, 800);
     levelText.scale(2.0, 2.0);
+    Tbackground.loadFromFile("Resource/background.png");
+    background.setTexture(Tbackground);
+    background.setPosition(0, 0);
+    background.setScale(1.18, 1.11);
+    BgameOverSound.loadFromFile("Resource/Sound/gameOver.wav");
+    Bsound.loadFromFile("Resource/Sound/SugarCookie.wav");
+    sound.setBuffer(Bsound);
+    sound.setLoop(true);
+    sound.setVolume(70.f);
+    sound.play();
     //levelText.setColor(Color(100, 100, 100, 100));
 }
 void CGAME::GameOver(sf::RenderWindow& window) {
+    sound.setBuffer(BgameOverSound);
+    sound.setLoop(false);
+    sound.play();
     Texture Gameover;
     Gameover.loadFromFile("Resource/Gameover2.png");
-    sf::Sprite GO(Gameover);
+    Sprite GO(Gameover);
     GO.scale(1.0f, 1.0f);
     GO.setPosition(500, 200);
     window.draw(GO);
@@ -573,7 +608,7 @@ void CGAME::menu() {
                                 mode = min(3, mode + 1);
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
-                                while (true) {
+                                while (win == 0) {
                                     bool next = false;
                                     while (window.pollEvent(event)) {
                                         if (event.type == Event::KeyPressed) {
@@ -581,7 +616,13 @@ void CGAME::menu() {
                                             break;
                                         }
                                     }
-                                    if (next) break;
+                                    if (next) {
+                                        sound.setBuffer(Bsound);
+                                        sound.setLoop(true);
+                                        sound.setVolume(70.f);
+                                        sound.play();
+                                        break;
+                                    }
                                 }
                             }
                             isPlaying = 0;
@@ -597,7 +638,7 @@ void CGAME::menu() {
                                 mode = min(3, mode + 1);
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
-                                while (true) {
+                                while (win == 0) {
                                     bool next = false;
                                     while (window.pollEvent(event)) {
                                         if (event.type == Event::KeyPressed) {
@@ -605,7 +646,13 @@ void CGAME::menu() {
                                             break;
                                         }
                                     }
-                                    if (next) break;
+                                    if (next) {
+                                        sound.setBuffer(Bsound);
+                                        sound.setLoop(true);
+                                        sound.setVolume(70.f);
+                                        sound.play();
+                                        break;
+                                    }
                                 }
                             }
                             isPlaying = 0;
@@ -641,6 +688,7 @@ void CGAME::menu() {
         window.display();
     }
 }
+
 void CGAME::newGame() {
     gameSet();
     playGame();
@@ -681,6 +729,7 @@ void CGAME::playGame() {
             }
         }
         window.clear();
+        window.draw(background);
         window.draw(level);
         window.draw(levelText);
         for (int i = 0; i < 2 + mode; i++) {
