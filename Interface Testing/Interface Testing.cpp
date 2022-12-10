@@ -640,6 +640,7 @@ void CGAME::menu() {
                                 isPlaying = 1;
                                 playGame();
                                 mode = min(3, mode + 1);
+                                gameSet();
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
                                 while (win == 0) {
