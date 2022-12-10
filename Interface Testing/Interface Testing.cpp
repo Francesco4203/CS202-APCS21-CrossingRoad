@@ -498,7 +498,6 @@ public:
 void CGAME::loadGame() {
     ifstream f("Saved Game.txt");
     input(f);
-    //playGame();
 }
 void CGAME::input(ifstream& f) {
     f >> mode;
@@ -634,27 +633,8 @@ void CGAME::menu() {
                             win = mode = 1;
                             break;
                         case 1: //load game
-                            //insert code load game here
+                            //insert code load game heres
                             loadGame();
-                            mode = min(3, mode + 1);
-                            levelText.setString("LEVEL " + to_string(mode));
-                            while (window.pollEvent(event));
-                            while (win == 0) {
-                                bool next = false;
-                                while (window.pollEvent(event)) {
-                                    if (event.type == Event::KeyPressed) {
-                                        next = true;
-                                        break;
-                                    }
-                                }
-                                if (next) {
-                                    sound.setBuffer(Bsound);
-                                    sound.setLoop(true);
-                                    sound.setVolume(70.f);
-                                    sound.play();
-                                    break;
-                                }
-                            }
                             while (win) {
                                 isPlaying = 1;
                                 playGame();
