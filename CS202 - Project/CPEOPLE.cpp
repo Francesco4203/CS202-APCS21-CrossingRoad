@@ -1,7 +1,8 @@
-#include "INCLUDING.h"
+#include "CPEOPLE.h"
 
 using namespace std;
 using namespace sf;
+
 void CPEOPLE::output(ofstream& f) {
     f << _player.getPosition().x << ' ' << _player.getPosition().y << '\n';
 }
@@ -80,6 +81,7 @@ bool CPEOPLE::isImpact(LINE* a) {
         player_fix.height = 30;
         player_fix.width = 30;*/
         if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
+            a->getVectorList()[i]->sound();
             return true;
         }
     }

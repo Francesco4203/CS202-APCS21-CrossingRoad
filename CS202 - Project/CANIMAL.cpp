@@ -1,5 +1,5 @@
-#include "INCLUDING.h"
-
+#pragma once
+#include "CANIMAL.h"
 using namespace std;
 using namespace sf;
 
@@ -11,6 +11,8 @@ CANIMAL::CANIMAL(double x, double y, int mode, int randomFactor) {
     object.scale(0.3, 0.3);
 }
 CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/dinausor.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rdinausor.png");
     else enemy.loadFromFile("Resource/dinausor.png");
     object.setTexture(enemy);
@@ -18,6 +20,8 @@ CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFact
 }
 
 CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
+    _Bsound.loadFromFile("Resource/Sound/bird.wav");
+    _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rbird.png");
     else enemy.loadFromFile("Resource/bird.png");
     object.setTexture(enemy);

@@ -1,3 +1,4 @@
+#pragma once
 #include "MENU.h"
 #define max_menu 4
 #define diff_menu 4

@@ -1,9 +1,17 @@
 #pragma once
-#include "INCLUDING.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <bits/stdc++.h>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include "CENEMY.h"
 using namespace std;
 using namespace sf;
 
-class CANIMAL : public CENEMY {
+class CANIMAL : public CENEMY   {
 
 public:
     CANIMAL() = delete;//default NOT available

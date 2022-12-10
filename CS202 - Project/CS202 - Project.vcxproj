@@ -152,6 +152,7 @@
     <ClCompile Include="CS202 - Project.cpp" />
     <ClCompile Include="CTRAFFIC.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
+    <ClCompile Include="MENU.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CANIMAL.h" />
@@ -161,7 +162,6 @@
     <ClInclude Include="CTRAFFIC.h" />
     <ClInclude Include="CVEHICLE.h" />
     <ClInclude Include="INCLUDING.h" />
-    <ClInclude Include="MENU.cpp" />
     <ClInclude Include="MENU.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

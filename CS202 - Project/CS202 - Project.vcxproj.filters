@@ -18,51 +18,51 @@
     <ClCompile Include="CS202 - Project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CPEOPLE.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CVEHICLE.cpp">
+    <ClCompile Include="MENU.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="CANIMAL.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CGAME.cpp">
+    <ClCompile Include="CENEMY.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="CTRAFFIC.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="CENEMY.cpp">
+    <ClCompile Include="CVEHICLE.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CPEOPLE.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGAME.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CPEOPLE.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CVEHICLE.h">
+    <ClInclude Include="MENU.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="CANIMAL.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="CGAME.h">
+    <ClInclude Include="CENEMY.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="CTRAFFIC.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="CENEMY.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MENU.cpp">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MENU.h">
+    <ClInclude Include="CVEHICLE.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="INCLUDING.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPEOPLE.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGAME.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -36,3 +36,4 @@ public:
 	void drawBG(sf::RenderWindow& window);
 	~MenuSprite();
 };
+

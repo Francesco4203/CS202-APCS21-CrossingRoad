@@ -1,5 +1,6 @@
-#include "INCLUDING.h"
-
+#include "CTRAFFIC.h"
+const int WIDTH = 1500;
+const int HEIGHT = 900;
 using namespace std;
 using namespace sf;
 
@@ -78,8 +79,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, num * (-250), y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, num * (-250), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-300), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-300), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -104,8 +105,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, 1500 + num * 250, y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, 1500 + num * 250, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 300, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 300, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -123,8 +124,10 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
         light.setPosition(-50, y - 30);
     }
 }
+
 LIGHT& LINE::getLight() { return light; }
 Sprite LINE::getSpriteLine() { return line; }
+
 void LINE::stop() {
     for (auto p : list) {
         p->stop();

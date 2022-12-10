@@ -1,4 +1,11 @@
-#include "INCLUDING.h"
+#pragma once
+#include "CENEMY.h"
+using namespace std;
+using namespace sf;
+
+void CENEMY::sound() {
+    _sound.play();
+}
 
 void CENEMY::setPosition(double x, double y) {
     object.setPosition(x, y);

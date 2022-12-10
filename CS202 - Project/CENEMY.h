@@ -1,9 +1,14 @@
 #pragma once
-#include "INCLUDING.h"
-
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <bits/stdc++.h>
+#include <ctime>
+#include <chrono>
+#include <thread>
 using namespace std;
 using namespace sf;
-
 class CENEMY
 {
 protected:
@@ -12,6 +17,8 @@ protected:
     bool isStop;
     Sprite object;
     Texture enemy;
+    SoundBuffer _Bsound;
+    Sound _sound;
 public:
     void Move(bool reverse);
     void stop();
@@ -19,4 +26,5 @@ public:
     Sprite getObject();
     void output(ofstream& f);
     void setPosition(double x, double y);
+    void sound();
 };

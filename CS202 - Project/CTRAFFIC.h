@@ -1,13 +1,17 @@
 #pragma once
-#include "INCLUDING.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
+#include <bits/stdc++.h>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include "CENEMY.h"
+#include "CANIMAL.h"
+#include "CVEHICLE.h"
 using namespace std;
 using namespace sf;
-
-//Constructor set image for object
-
-const int WIDTH = 1500;
-const int HEIGHT = 800;
-
 class LIGHT {
 private:
     string redPath = "Resource/red_light.png";

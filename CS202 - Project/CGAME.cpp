@@ -1,11 +1,11 @@
-﻿#include "INCLUDING.h"
+﻿#include "CGAME.h"
 using namespace std;
 using namespace sf;
-
+const int WIDTH = 1500;
+const int HEIGHT = 900;
 void CGAME::loadGame() {
     ifstream f("Saved Game.txt");
     input(f);
-    playGame();
 }
 void CGAME::input(ifstream& f) {
     f >> mode;
@@ -62,15 +62,29 @@ CGAME::CGAME() {
     levelText.setFillColor(Color(255, 255, 0, 255));
     levelText.setPosition(660, 800);
     levelText.scale(2.0, 2.0);
+    Tbackground.loadFromFile("Resource/background.png");
+    background.setTexture(Tbackground);
+    background.setPosition(0, 0);
+    background.setScale(1.18, 1.11);
+    BlevelUp.loadFromFile("Resource/Sound/levelUp.wav");
+    BgameOverSound.loadFromFile("Resource/Sound/gameOver.wav");
+    Bsound.loadFromFile("Resource/Sound/SugarCookie.wav");
+    TgameOver.loadFromFile("Resource/Gameover2.png");
+    gameOver.setTexture(TgameOver);
+    gameOver.scale(1.0f, 1.0f);
+    gameOver.setPosition(500, 200);
+    levelUp.setBuffer(BlevelUp);
+    sound.setBuffer(Bsound);
+    sound.setLoop(true);
+    sound.setVolume(70.f);
+    sound.play();
     //levelText.setColor(Color(100, 100, 100, 100));
 }
 void CGAME::GameOver(sf::RenderWindow& window) {
-    Texture Gameover;
-    Gameover.loadFromFile("Resource/Gameover2.png");
-    sf::Sprite GO(Gameover);
-    GO.scale(1.0f, 1.0f);
-    GO.setPosition(500, 200);
-    window.draw(GO);
+    sound.setBuffer(BgameOverSound);
+    sound.setLoop(false);
+    sound.play();
+    window.draw(gameOver);
 }
 void CGAME::menu() {
     int menuNumber = 0;
@@ -106,7 +120,7 @@ void CGAME::menu() {
                                 mode = min(3, mode + 1);
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
-                                while (true) {
+                                while (win == 0) {
                                     bool next = false;
                                     while (window.pollEvent(event)) {
                                         if (event.type == Event::KeyPressed) {
@@ -114,23 +128,29 @@ void CGAME::menu() {
                                             break;
                                         }
                                     }
-                                    if (next) break;
+                                    if (next) {
+                                        sound.setBuffer(Bsound);
+                                        sound.setLoop(true);
+                                        sound.setVolume(70.f);
+                                        sound.play();
+                                        break;
+                                    }
                                 }
                             }
                             isPlaying = 0;
                             win = mode = 1;
                             break;
                         case 1: //load game
-                            //insert code load game here
+                            //insert code load game heres
                             loadGame();
-                            mode = min(3, mode + 1);
                             while (win) {
                                 isPlaying = 1;
-                                newGame();
+                                playGame();
                                 mode = min(3, mode + 1);
+                                gameSet();
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
-                                while (true) {
+                                while (win == 0) {
                                     bool next = false;
                                     while (window.pollEvent(event)) {
                                         if (event.type == Event::KeyPressed) {
@@ -138,7 +158,13 @@ void CGAME::menu() {
                                             break;
                                         }
                                     }
-                                    if (next) break;
+                                    if (next) {
+                                        sound.setBuffer(Bsound);
+                                        sound.setLoop(true);
+                                        sound.setVolume(70.f);
+                                        sound.play();
+                                        break;
+                                    }
                                 }
                             }
                             isPlaying = 0;
@@ -174,6 +200,7 @@ void CGAME::menu() {
         window.display();
     }
 }
+
 void CGAME::newGame() {
     gameSet();
     playGame();
@@ -214,6 +241,7 @@ void CGAME::playGame() {
             }
         }
         window.clear();
+        window.draw(background);
         window.draw(level);
         window.draw(levelText);
         for (int i = 0; i < 2 + mode; i++) {
@@ -229,6 +257,7 @@ void CGAME::playGame() {
             }
         }
         if (Person.isFinish(window)) {
+            levelUp.play();
             win = 1;
             return;
         }
