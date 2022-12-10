@@ -464,6 +464,8 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
     if (isLane) window.draw(this->getLight().getSpriteLight());
 }
 class CGAME {
+    SoundBuffer BlevelUp;
+    Sound levelUp;
     SoundBuffer Bsound;
     SoundBuffer BgameOverSound;
     Sound sound;
@@ -477,6 +479,8 @@ class CGAME {
     Font levelFont;
     Texture Tbackground;
     Sprite background;
+    Texture TgameOver;
+    Sprite gameOver;
     CPEOPLE Person = CPEOPLE(0.3f, 150.0f);
 public:
     int mode;
@@ -494,7 +498,7 @@ public:
 void CGAME::loadGame() {
     ifstream f("Saved Game.txt");
     input(f);
-    playGame();
+    //playGame();
 }
 void CGAME::input(ifstream& f) {
     f >> mode;
@@ -555,8 +559,14 @@ CGAME::CGAME() {
     background.setTexture(Tbackground);
     background.setPosition(0, 0);
     background.setScale(1.18, 1.11);
+    BlevelUp.loadFromFile("Resource/Sound/levelUp.wav");
     BgameOverSound.loadFromFile("Resource/Sound/gameOver.wav");
     Bsound.loadFromFile("Resource/Sound/SugarCookie.wav");
+    TgameOver.loadFromFile("Resource/Gameover2.png");
+    gameOver.setTexture(TgameOver);
+    gameOver.scale(1.0f, 1.0f);
+    gameOver.setPosition(500, 200);
+    levelUp.setBuffer(BlevelUp);
     sound.setBuffer(Bsound);
     sound.setLoop(true);
     sound.setVolume(70.f);
@@ -567,12 +577,7 @@ void CGAME::GameOver(sf::RenderWindow& window) {
     sound.setBuffer(BgameOverSound);
     sound.setLoop(false);
     sound.play();
-    Texture Gameover;
-    Gameover.loadFromFile("Resource/Gameover2.png");
-    Sprite GO(Gameover);
-    GO.scale(1.0f, 1.0f);
-    GO.setPosition(500, 200);
-    window.draw(GO);
+    window.draw(gameOver);
 }
 void CGAME::menu() {
     int menuNumber = 0;
@@ -631,10 +636,9 @@ void CGAME::menu() {
                         case 1: //load game
                             //insert code load game here
                             loadGame();
-                            mode = min(3, mode + 1);
                             while (win) {
                                 isPlaying = 1;
-                                newGame();
+                                playGame();
                                 mode = min(3, mode + 1);
                                 levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
@@ -745,6 +749,7 @@ void CGAME::playGame() {
             }
         }
         if (Person.isFinish(window)) {
+            levelUp.play();
             win = 1;
             return;
         }
