@@ -40,9 +40,9 @@ public:
     void GameOver(sf::RenderWindow& window);
     void menu();
     void gameSet();
-    void newGame();
+    void playSession(Event& event);
     void playGame();
     void output(ofstream& f);
-    void input(ifstream& f);
-    void loadGame();
+    bool input(ifstream& f);
+    bool loadGame();
 };

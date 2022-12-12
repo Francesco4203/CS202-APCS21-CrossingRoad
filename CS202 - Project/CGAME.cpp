@@ -3,11 +3,23 @@ using namespace std;
 using namespace sf;
 const int WIDTH = 1500;
 const int HEIGHT = 900;
-void CGAME::loadGame() {
+bool CGAME::loadGame() {
     ifstream f("Saved Game.txt");
-    input(f);
+    bool valid = input(f);
+    f.close();
+    if (valid) {
+        ofstream fout("Saved Game.txt");
+        fout.clear();
+        fout << 0;
+        fout.close();
+        return true;
+    }
+    return false;
 }
-void CGAME::input(ifstream& f) {
+bool CGAME::input(ifstream& f) {
+    int valid;
+    f >> valid;
+    if (!valid) return false;
     f >> mode;
     int map_size;
     f >> map_size;
@@ -41,8 +53,10 @@ void CGAME::input(ifstream& f) {
     f >> x >> y;
     Person.setPosition(x, y);
     Person.update(3, 0);
+    return true;
 }
 void CGAME::output(ofstream& f) {
+    f << 1 << '\n';
     f << mode << ' ' << map.size() << '\n';
     for (int i = 0; i < map.size(); i++) map[i]->output(f);
     for (int i = 0; i < time.size(); i++) f << time[i].first << ' ' << time[i].second << '\n';
@@ -114,61 +128,13 @@ void CGAME::menu() {
                         switch (menu.selectedMenu())
                         {
                         case 0: //new game
-                            while (win) {
-                                isPlaying = 1;
-                                newGame();
-                                mode = min(3, mode + 1);
-                                levelText.setString("LEVEL " + to_string(mode));
-                                while (window.pollEvent(event));
-                                while (win == 0) {
-                                    bool next = false;
-                                    while (window.pollEvent(event)) {
-                                        if (event.type == Event::KeyPressed) {
-                                            next = true;
-                                            break;
-                                        }
-                                    }
-                                    if (next) {
-                                        sound.setBuffer(Bsound);
-                                        sound.setLoop(true);
-                                        sound.setVolume(70.f);
-                                        sound.play();
-                                        break;
-                                    }
-                                }
-                            }
-                            isPlaying = 0;
-                            win = mode = 1;
+                            gameSet();
+                            playSession(event);
                             break;
                         case 1: //load game
                             //insert code load game heres
-                            loadGame();
-                            while (win) {
-                                isPlaying = 1;
-                                playGame();
-                                mode = min(3, mode + 1);
-                                gameSet();
-                                levelText.setString("LEVEL " + to_string(mode));
-                                while (window.pollEvent(event));
-                                while (win == 0) {
-                                    bool next = false;
-                                    while (window.pollEvent(event)) {
-                                        if (event.type == Event::KeyPressed) {
-                                            next = true;
-                                            break;
-                                        }
-                                    }
-                                    if (next) {
-                                        sound.setBuffer(Bsound);
-                                        sound.setLoop(true);
-                                        sound.setVolume(70.f);
-                                        sound.play();
-                                        break;
-                                    }
-                                }
-                            }
-                            isPlaying = 0;
-                            win = mode = 1;
+                            if (loadGame())
+                                playSession(event);
                             break;
                         case 2: //setting
                             menuNumber = 2;
@@ -183,10 +149,7 @@ void CGAME::menu() {
                         menu.changeMenu(0);
                         break;
                     case 3: // game
-                        while (win) {
-                            newGame();
-                            mode = min(3, mode + 1);
-                        }
+
                         break;
                     case 4: // load game
                         break;
@@ -201,9 +164,33 @@ void CGAME::menu() {
     }
 }
 
-void CGAME::newGame() {
-    gameSet();
-    playGame();
+void CGAME::playSession(Event& event) {
+    while (win) {
+        isPlaying = 1;
+        playGame();
+        mode = min(3, mode + 1);
+        gameSet();
+        levelText.setString("LEVEL " + to_string(mode));
+        while (window.pollEvent(event));
+        while (win == 0) {
+            bool next = false;
+            while (window.pollEvent(event)) {
+                if (event.type == Event::KeyPressed) {
+                    next = true;
+                    break;
+                }
+            }
+            if (next) {
+                sound.setBuffer(Bsound);
+                sound.setLoop(true);
+                sound.setVolume(70.f);
+                sound.play();
+                break;
+            }
+        }
+    }
+    isPlaying = 0;
+    win = mode = 1;
 }
 void CGAME::gameSet() {
     Person.setPosition(750, 700);
