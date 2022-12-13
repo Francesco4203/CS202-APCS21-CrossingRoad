@@ -214,13 +214,18 @@ void MenuSprite::drawBG(sf::RenderWindow& window)
 {
 	window.draw(menubgS);
 }
+void Menu::OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale) {
+	Text cur;
+	cur.setFont(font);
+	cur.setFillColor(a);
+	cur.setString(s);
+	cur.setCharacterSize(scale);
+	cur.setPosition(sf::Vector2f(corX, corY)); /* 800 - 600 = w/h*/
+	window.draw(cur);
+}
 void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
-	setting[0].setFont(font);
-	setting[0].setFillColor(sf::Color::White);
-	setting[0].setString("GAME SETTING");
-	setting[0].setCharacterSize(70);
-	setting[0].setPosition(sf::Vector2f(550, 300 / (max_menu + 1) * 1)); /* 800 - 600 = w/h*/
-	window.draw(setting[0]);
+	OutputText(window, "PRESS THE BUTTON TEST", 600, 150, sf::Color::Black, 30);
+	OutputText(window, "GAME SETTING", 550, 50, sf::Color::White, 70);
 	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG;
 	int cor_XK = 200, cor_XY = 200;
 	TAWSD.loadFromFile("Resource/AWSD.png");
@@ -239,7 +244,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	L.setScale(0.2f, 0.2f);
 	window.draw(L);
 	window.draw(AWSD);
-	a.setPosition(1000, 150);
+	a.setPosition(1100, 150);
 	a.update(3, 0);
 	a.getSprite().setScale(4, 4);
 	float deltaTime = 0.0f;
@@ -251,6 +256,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		W.setPosition(cor_XK, cor_XY);
 		W.setScale(0.2f, 0.2f);
 		window.draw(W);
+		//Move Up (we can another function for text only void OutputText(window, string))
 	}
 	if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
 		S.setTexture(TS);
@@ -280,6 +286,25 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		SG.setScale(0.3f, 0.3f);
 		window.draw(L2);
 		window.draw(SG);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
+		OutputText(window, "MOVE UP", 700, 200, sf::Color::Black, 70);
+	}
+	else {
+		if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
+			OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black, 70);
+		}
+		else {
+			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
+				OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black, 70);
+			}
+			else {
+				if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
+					OutputText(window, "MOVE Right", 700, 200, sf::Color::Black, 70);
+				}
+			}
+		}
+
 	}
 	a.draw(window);
 }

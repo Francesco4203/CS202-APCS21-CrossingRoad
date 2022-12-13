@@ -477,6 +477,7 @@ public:
     void moveDown();
     int selectedMenu();
     void changeMenu(int i);
+    void OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale);
     ~Menu();
 private:
     int mainMenuSelected;
@@ -484,7 +485,6 @@ private:
     sf::Font font;
     sf::Text mainMenu[max_menu];
     sf::Text difficultyMenu[diff_menu];
-    sf::Text setting[1];
 };
 
 class MenuSprite
@@ -558,12 +558,6 @@ Menu::Menu(float w, float h)
     difficultyMenu[3].setCharacterSize(30);
     difficultyMenu[3].setPosition(sf::Vector2f(w / 2 - 100, (h - 200) / (diff_menu + 1) * 4 + dmoffset));
 
-    //setting
-    setting[0].setFont(font);
-    setting[0].setFillColor(sf::Color::White);
-    setting[0].setString("There is nothing here yet.\nPress enter to return\nto the main menu");
-    setting[0].setCharacterSize(30);
-    setting[0].setPosition(sf::Vector2f(w / 2 - 100, h / (max_menu + 1) * 1));
     Texture AWSD;
     /*AWSD.loadFromFile("Resource/Picture2.png");
     setting[0].setTexture(AWSD);
@@ -572,13 +566,18 @@ Menu::Menu(float w, float h)
     mainMenuSelected = 0;
     menuNumber = 0;
 };
+void Menu::OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale) {
+    Text cur;
+    cur.setFont(font);
+    cur.setFillColor(a);
+    cur.setString(s);
+    cur.setCharacterSize(scale);
+    cur.setPosition(sf::Vector2f(corX, corY)); /* 800 - 600 = w/h*/
+    window.draw(cur);
+}
 void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
-    setting[0].setFont(font);
-    setting[0].setFillColor(sf::Color::White);
-    setting[0].setString("GAME SETTING");
-    setting[0].setCharacterSize(70);
-    setting[0].setPosition(sf::Vector2f( 550, 300 / (max_menu + 1) * 1)); /* 800 - 600 = w/h*/
-    window.draw(setting[0]);
+    OutputText(window, "PRESS THE BUTTON TEST",600, 150, sf::Color::Black,30);
+    OutputText(window, "GAME SETTING", 550, 50, sf::Color::White,70);
     Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG;
     int cor_XK = 200, cor_XY = 200;
     TAWSD.loadFromFile("Resource/AWSD.png");
@@ -593,13 +592,13 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
     AWSD.setPosition(cor_XK, cor_XY);
     AWSD.setScale(0.2f, 0.2f);
     L.setTexture(TL);
-    L.setPosition(cor_XK+125, cor_XY + 250);
+    L.setPosition(cor_XK + 125, cor_XY + 250);
     L.setScale(0.2f, 0.2f);
     window.draw(L);
     window.draw(AWSD);
-    a.setPosition(1000, 150);
+    a.setPosition(1100, 150);
     a.update(3, 0);
-    a.getSprite().setScale(4,4);
+    a.getSprite().setScale(4, 4);
     float deltaTime = 0.0f;
     Clock clock;
     deltaTime = clock.restart().asSeconds();
@@ -609,6 +608,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
         W.setPosition(cor_XK, cor_XY);
         W.setScale(0.2f, 0.2f);
         window.draw(W);
+        //Move Up (we can another function for text only void OutputText(window, string))
     }
     if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
         S.setTexture(TS);
@@ -634,10 +634,29 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
         L2.setPosition(cor_XK + 125, cor_XY + 250);
         L2.setScale(0.2f, 0.2f);
         SG.setTexture(TSG);
-        SG.setPosition(750, cor_XY +200);
+        SG.setPosition(750, cor_XY + 200);
         SG.setScale(0.3f, 0.3f);
         window.draw(L2);
         window.draw(SG);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
+        OutputText(window, "MOVE UP", 700, 200, sf::Color::Black,70);
+    }
+    else {
+        if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
+            OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black,70);
+        }
+        else {
+            if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
+                OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black,70);
+            }
+            else {
+                if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
+                    OutputText(window, "MOVE Right", 700, 200, sf::Color::Black,70);
+                }
+            }
+        }
+
     }
     a.draw(window);
 }

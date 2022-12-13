@@ -17,6 +17,7 @@ public:
 	void MenuSetting(sf::RenderWindow& window, CPEOPLE a);
 	int selectedMenu();
 	void changeMenu(int i);
+	void OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale);
 	~Menu();
 private:
 	int mainMenuSelected;
@@ -24,7 +25,6 @@ private:
 	sf::Font font;
 	sf::Text mainMenu[max_menu];
 	sf::Text difficultyMenu[diff_menu];
-	sf::Text setting[1];
 };
 
 class MenuSprite
