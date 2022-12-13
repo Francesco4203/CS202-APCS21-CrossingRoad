@@ -1,4 +1,4 @@
-#include "Header.h"
+/*#include "Header.h"
 #define max_menu 4
 #define diff_menu 4
 using namespace std;
@@ -72,7 +72,7 @@ Menu::Menu(float w, float h)
 	Texture AWSD;
 	/*AWSD.loadFromFile("Resource/Picture2.png");
 	setting[0].setTexture(AWSD);
-	setting[0].setPosition(0, 0);*/
+	setting[0].setPosition(0, 0);
 
 	mainMenuSelected = 0;
 	menuNumber = 0;
@@ -256,27 +256,4 @@ void MenuSprite::drawBG(sf::RenderWindow& window)
 	window.draw(menubgS);
 }
 
-MenuSprite::~MenuSprite() {};
-
-class CPEOPLE {
-	Vector2u _scale;
-	IntRect _currentImage;
-	Texture _Tplayer;
-	Sprite _player;
-	float _switchTime;
-	float _totalTime;
-	float _speed = 30;
-	int _direction;
-	bool _mState; //live - die
-
-	friend class CGAME;
-public:
-	CPEOPLE(float switchTime, float speed);
-	void move(float deltaTime);
-	void update(int direction, float deltaTime);
-	bool isImpact(LINE* a);
-	bool isFinish(sf::RenderWindow& window);
-	void draw(sf::RenderWindow& window);
-	void setPosition(double x, double y);
-	void output(ofstream& f);
-};
+MenuSprite::~MenuSprite() {};*/
