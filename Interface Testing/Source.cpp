@@ -69,10 +69,52 @@ Menu::Menu(float w, float h)
 	setting[0].setString("There is nothing here yet.\nPress enter to return\nto the main menu");
 	setting[0].setCharacterSize(30);
 	setting[0].setPosition(sf::Vector2f(w / 2 - 100, h / (max_menu + 1) * 1));
+	Texture AWSD;
+	/*AWSD.loadFromFile("Resource/Picture2.png");
+	setting[0].setTexture(AWSD);
+	setting[0].setPosition(0, 0);*/
 
 	mainMenuSelected = 0;
 	menuNumber = 0;
 };
+void Menu::MenuSetting(sf::RenderWindow& window) {
+	Texture TAWSD, TW, TA, TS, TD;
+	int cor_XK = 70, cor_XY = 70;
+	TAWSD.loadFromFile("Resource/AWSD.png");
+	TW.loadFromFile("Resource/keyboardW.png");
+	TA.loadFromFile("Resource/keyboardA.png");
+	TS.loadFromFile("Resource/keyboardS.png");
+	TD.loadFromFile("Resource/keyboardD.png");
+	sf::Sprite AWSD, W, A, S, D;
+	AWSD.setTexture(TAWSD);
+	AWSD.setPosition(cor_XK, cor_XY);
+	AWSD.setScale(0.2f,0.2f);
+	window.draw(AWSD);
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
+		W.setTexture(TW);
+		W.setPosition(cor_XK, cor_XY);
+		W.setScale(0.2f, 0.2f);
+		window.draw(W);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
+		S.setTexture(TS);
+		S.setPosition(cor_XK, cor_XY);
+		S.setScale(0.2f, 0.2f);
+		window.draw(S);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
+		A.setTexture(TA);
+		A.setPosition(cor_XK, cor_XY);
+		A.setScale(0.2f, 0.2f);
+		window.draw(A);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
+		D.setTexture(TD);
+		D.setPosition(cor_XK, cor_XY);
+		D.setScale(0.2f, 0.2f);
+		window.draw(D);
+	}
+}
 void Menu::draw(sf::RenderWindow& window)
 {
 	switch (menuNumber)
@@ -94,7 +136,7 @@ void Menu::draw(sf::RenderWindow& window)
 		//cout << "menu2" << endl;
 
 	case 2: //setting
-		window.draw(setting[0]);
+		MenuSetting(window);
 		break;
 	case 3: //game
 		break;
@@ -215,3 +257,26 @@ void MenuSprite::drawBG(sf::RenderWindow& window)
 }
 
 MenuSprite::~MenuSprite() {};
+
+class CPEOPLE {
+	Vector2u _scale;
+	IntRect _currentImage;
+	Texture _Tplayer;
+	Sprite _player;
+	float _switchTime;
+	float _totalTime;
+	float _speed = 30;
+	int _direction;
+	bool _mState; //live - die
+
+	friend class CGAME;
+public:
+	CPEOPLE(float switchTime, float speed);
+	void move(float deltaTime);
+	void update(int direction, float deltaTime);
+	bool isImpact(LINE* a);
+	bool isFinish(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window);
+	void setPosition(double x, double y);
+	void output(ofstream& f);
+};

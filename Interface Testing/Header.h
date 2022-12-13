@@ -12,6 +12,7 @@ class Menu
 public:
 	Menu(float w, float h);
 	void draw(sf::RenderWindow& window);
+	void MenuSetting(sf::RenderWindow& window);
 	void moveUp();
 	void moveDown();
 	int selectedMenu();
