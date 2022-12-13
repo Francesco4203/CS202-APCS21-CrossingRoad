@@ -471,8 +471,8 @@ class Menu
 {
 public:
     Menu(float w, float h);
-    void draw(sf::RenderWindow& window, CPEOPLE& a);
-    void MenuSetting(sf::RenderWindow& window, CPEOPLE&a);
+    void draw(sf::RenderWindow& window, CPEOPLE a);
+    void MenuSetting(sf::RenderWindow& window, CPEOPLE a);
     void moveUp();
     void moveDown();
     int selectedMenu();
@@ -572,7 +572,7 @@ Menu::Menu(float w, float h)
     mainMenuSelected = 0;
     menuNumber = 0;
 };
-void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE& a) {
+void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
     Texture TAWSD, TW, TA, TS, TD;
     int cor_XK = 200, cor_XY = 80;
     TAWSD.loadFromFile("Resource/AWSD.png");
@@ -618,7 +618,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE& a) {
     }
     a.draw(window);
 }
-void Menu::draw(sf::RenderWindow& window, CPEOPLE& a)
+void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 {
     switch (menuNumber)
     {
