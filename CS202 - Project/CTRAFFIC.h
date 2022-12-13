@@ -25,6 +25,7 @@ private:
     Texture green_light;
     Texture yellow_light;
     Sprite light;
+    friend class CGAME;
 public:
     LIGHT() = delete;//default NOT available
     LIGHT(int mode);// 1 2 3 - easy medium hard

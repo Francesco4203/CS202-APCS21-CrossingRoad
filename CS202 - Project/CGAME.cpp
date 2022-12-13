@@ -48,7 +48,17 @@ bool CGAME::input(ifstream& f) {
         map.push_back(newLine);
     }
     time = vector<pair<clock_t, clock_t>>(mode + 2);
-    for (int i = 0; i < time.size(); i++) f >> time[i].first >> time[i].second;
+    for (int i = 0; i < time.size(); i++) {
+        clock_t delta;
+        f >> delta;
+        time[i].first = clock();
+        time[i].second = time[i].first + delta;
+        int time, state;
+        f >> time >> state;
+        if (state == 2) map[i]->getLight().changeLight();
+        if (state == 1) map[i]->getLight().changeLight(), map[i]->getLight().changeLight();
+        map[i]->getLight().time = time;
+    }
     double x, y;
     f >> x >> y;
     Person.setPosition(x, y);
@@ -59,7 +69,11 @@ void CGAME::output(ofstream& f) {
     f << 1 << '\n';
     f << mode << ' ' << map.size() << '\n';
     for (int i = 0; i < map.size(); i++) map[i]->output(f);
-    for (int i = 0; i < time.size(); i++) f << time[i].first << ' ' << time[i].second << '\n';
+    for (int i = 0; i < time.size(); i++) {
+        f << time[i].second - time[i].first << '\n';
+        f << map[i]->getLight().time << '\n';
+        f << map[i]->getLight().state << '\n';
+    }
     Person.output(f);
 }
 CGAME::CGAME() {
