@@ -179,7 +179,7 @@ void CGAME::menu() {
 }
 
 void CGAME::playSession(Event& event) {
-    while (win) {
+    while (win && window.isOpen()) {
         isPlaying = 1;
         playGame();
         mode = min(3, mode + 1);
@@ -239,6 +239,10 @@ void CGAME::playGame() {
                 save = 1;
                 levelText.setString("GAME SAVED");
                 levelText.setFillColor(Color(255, 0, 0, 255));
+            }
+            if (ev.type == Event::Closed) {
+                window.close();
+                break;
             }
         }
         window.clear();
