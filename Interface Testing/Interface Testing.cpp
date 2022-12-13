@@ -573,19 +573,31 @@ Menu::Menu(float w, float h)
     menuNumber = 0;
 };
 void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
-    Texture TAWSD, TW, TA, TS, TD;
-    int cor_XK = 200, cor_XY = 80;
+    setting[0].setFont(font);
+    setting[0].setFillColor(sf::Color::White);
+    setting[0].setString("GAME SETTING");
+    setting[0].setCharacterSize(70);
+    setting[0].setPosition(sf::Vector2f( 550, 300 / (max_menu + 1) * 1)); /* 800 - 600 = w/h*/
+    window.draw(setting[0]);
+    Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG;
+    int cor_XK = 200, cor_XY = 200;
     TAWSD.loadFromFile("Resource/AWSD.png");
     TW.loadFromFile("Resource/keyboardW.png");
     TA.loadFromFile("Resource/keyboardA.png");
     TS.loadFromFile("Resource/keyboardS.png");
     TD.loadFromFile("Resource/keyboardD.png");
-    sf::Sprite AWSD, W, A, S, D;
+    TSG.loadFromFile("Resource/SaveGame.png");
+    TL.loadFromFile("Resource/L.png");
+    sf::Sprite AWSD, W, A, S, D, L, L2, SG;
     AWSD.setTexture(TAWSD);
     AWSD.setPosition(cor_XK, cor_XY);
     AWSD.setScale(0.2f, 0.2f);
+    L.setTexture(TL);
+    L.setPosition(cor_XK+125, cor_XY + 250);
+    L.setScale(0.2f, 0.2f);
+    window.draw(L);
     window.draw(AWSD);
-    a.setPosition(800, cor_XY);
+    a.setPosition(1000, 150);
     a.update(3, 0);
     a.getSprite().setScale(4,4);
     float deltaTime = 0.0f;
@@ -615,6 +627,17 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
         D.setPosition(cor_XK, cor_XY);
         D.setScale(0.2f, 0.2f);
         window.draw(D);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::L)) {
+        PL.loadFromFile("Resource/KeyboardL.png");
+        L2.setTexture(PL);
+        L2.setPosition(cor_XK + 125, cor_XY + 250);
+        L2.setScale(0.2f, 0.2f);
+        SG.setTexture(TSG);
+        SG.setPosition(750, cor_XY +200);
+        SG.setScale(0.3f, 0.3f);
+        window.draw(L2);
+        window.draw(SG);
     }
     a.draw(window);
 }
