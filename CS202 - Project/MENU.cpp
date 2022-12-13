@@ -74,7 +74,7 @@ Menu::Menu(float w, float h)
 	mainMenuSelected = 0;
 	menuNumber = 0;
 };
-void Menu::draw(sf::RenderWindow& window)
+void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 {
 	switch (menuNumber)
 	{
@@ -95,7 +95,7 @@ void Menu::draw(sf::RenderWindow& window)
 		//cout << "menu2" << endl;
 
 	case 2: //setting
-		window.draw(setting[0]);
+		MenuSetting(window, a);
 		break;
 	case 3: //game
 		break;
@@ -214,5 +214,73 @@ void MenuSprite::drawBG(sf::RenderWindow& window)
 {
 	window.draw(menubgS);
 }
-
+void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
+	setting[0].setFont(font);
+	setting[0].setFillColor(sf::Color::White);
+	setting[0].setString("GAME SETTING");
+	setting[0].setCharacterSize(70);
+	setting[0].setPosition(sf::Vector2f(550, 300 / (max_menu + 1) * 1)); /* 800 - 600 = w/h*/
+	window.draw(setting[0]);
+	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG;
+	int cor_XK = 200, cor_XY = 200;
+	TAWSD.loadFromFile("Resource/AWSD.png");
+	TW.loadFromFile("Resource/keyboardW.png");
+	TA.loadFromFile("Resource/keyboardA.png");
+	TS.loadFromFile("Resource/keyboardS.png");
+	TD.loadFromFile("Resource/keyboardD.png");
+	TSG.loadFromFile("Resource/SaveGame.png");
+	TL.loadFromFile("Resource/L.png");
+	sf::Sprite AWSD, W, A, S, D, L, L2, SG;
+	AWSD.setTexture(TAWSD);
+	AWSD.setPosition(cor_XK, cor_XY);
+	AWSD.setScale(0.2f, 0.2f);
+	L.setTexture(TL);
+	L.setPosition(cor_XK + 125, cor_XY + 250);
+	L.setScale(0.2f, 0.2f);
+	window.draw(L);
+	window.draw(AWSD);
+	a.setPosition(1000, 150);
+	a.update(3, 0);
+	a.getSprite().setScale(4, 4);
+	float deltaTime = 0.0f;
+	Clock clock;
+	deltaTime = clock.restart().asSeconds();
+	a.move(deltaTime);
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
+		W.setTexture(TW);
+		W.setPosition(cor_XK, cor_XY);
+		W.setScale(0.2f, 0.2f);
+		window.draw(W);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
+		S.setTexture(TS);
+		S.setPosition(cor_XK, cor_XY);
+		S.setScale(0.2f, 0.2f);
+		window.draw(S);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
+		A.setTexture(TA);
+		A.setPosition(cor_XK, cor_XY);
+		A.setScale(0.2f, 0.2f);
+		window.draw(A);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
+		D.setTexture(TD);
+		D.setPosition(cor_XK, cor_XY);
+		D.setScale(0.2f, 0.2f);
+		window.draw(D);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::L)) {
+		PL.loadFromFile("Resource/KeyboardL.png");
+		L2.setTexture(PL);
+		L2.setPosition(cor_XK + 125, cor_XY + 250);
+		L2.setScale(0.2f, 0.2f);
+		SG.setTexture(TSG);
+		SG.setPosition(750, cor_XY + 200);
+		SG.setScale(0.3f, 0.3f);
+		window.draw(L2);
+		window.draw(SG);
+	}
+	a.draw(window);
+}
 MenuSprite::~MenuSprite() {};

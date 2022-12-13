@@ -159,7 +159,7 @@ void CGAME::menu() {
         }
         window.clear();
         menusprite.drawBG(window);
-        menu.draw(window);
+        menu.draw(window, Person);
         window.display();
     }
 }

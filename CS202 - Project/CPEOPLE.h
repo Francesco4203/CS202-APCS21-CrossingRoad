@@ -31,4 +31,5 @@ public:
     void draw(sf::RenderWindow& window);
     void setPosition(double x, double y);
     void output(ofstream& f);
+    Sprite& getSprite();
 };

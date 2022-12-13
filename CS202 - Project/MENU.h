@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <bits/stdc++.h>
-
+#include "CPEOPLE.h"
 using namespace std;
 using namespace sf;
 #define max_menu 4
@@ -11,9 +11,10 @@ class Menu
 {
 public:
 	Menu(float w, float h);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, CPEOPLE a);
 	void moveUp();
 	void moveDown();
+	void MenuSetting(sf::RenderWindow& window, CPEOPLE a);
 	int selectedMenu();
 	void changeMenu(int i);
 	~Menu();

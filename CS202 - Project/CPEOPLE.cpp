@@ -87,3 +87,6 @@ bool CPEOPLE::isImpact(LINE* a) {
     }
     return false;
 }
+Sprite& CPEOPLE::getSprite() {
+    return this->_player;
+}
