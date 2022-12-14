@@ -79,8 +79,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, num * (-300), y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, num * (-300), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-250), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-250), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -105,8 +105,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, 1500 + num * 300, y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, 1500 + num * 300, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 250, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 250, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }

@@ -36,7 +36,16 @@ public:
     void output(ofstream& f);
     void setPosition(double x, double y);
     void sound();
+    int getSpeed();
+    void setSpeed(int speed);
 };
+
+int CENEMY::getSpeed() {
+    return speed;
+}
+void CENEMY::setSpeed(int speed) {
+    this->speed = speed;
+}
 
 void CENEMY::sound() {
     _sound.play();
@@ -286,8 +295,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, num * (-300), y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, num * (-300), y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, num * (-275), y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, num * (-275), y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -312,8 +321,8 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
             CENEMY* enemy = NULL;
             while (num > 0) {
                 int type = rand() % 2;
-                if (type) enemy = new CCAR(direction, 1500 + num * 300, y, mode, randomFactor);
-                else enemy = new CTRUCK(direction, 1500 + num * 300, y, mode, randomFactor);
+                if (type) enemy = new CCAR(direction, 1500 + num * 275, y, mode, randomFactor);
+                else enemy = new CTRUCK(direction, 1500 + num * 275, y, mode, randomFactor);
                 list.push_back(enemy);
                 num--;
             }
@@ -429,10 +438,6 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
 bool CPEOPLE::isImpact(LINE* a) {
     for (int i = 0; i < a->getVectorList().size(); i++) {
         auto player_fix = _player.getGlobalBounds();
-        /*player_fix.top -= 30;
-        player_fix.left += 20;
-        player_fix.height = 30;
-        player_fix.width = 30;*/
         if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
             a->getVectorList()[i]->sound();
             return true;
@@ -825,6 +830,7 @@ public:
     int mode;
     CGAME();
     void GameOver(sf::RenderWindow& window);
+    void winGame(sf::RenderWindow& window);
     void menu();
     void gameSet();
     void newGame();
@@ -917,6 +923,9 @@ void CGAME::GameOver(sf::RenderWindow& window) {
     sound.play();
     window.draw(gameOver);
 }
+void CGAME::winGame(sf::RenderWindow& window) {
+    
+}
 void CGAME::menu() {
     int menuNumber = 0;
     Menu menu(800, 600);
@@ -948,8 +957,10 @@ void CGAME::menu() {
                             while (win) {
                                 isPlaying = 1;
                                 newGame();
-                                mode = min(3, mode + 1);
-                                levelText.setString("LEVEL " + to_string(mode));
+                                mode++;
+                                if (mode == 5 && win) winGame(window);
+                                if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+                                else levelText.setString("CRAZY LEVEL");
                                 while (window.pollEvent(event));
                                 while (win == 0) {
                                     bool next = false;
@@ -977,9 +988,11 @@ void CGAME::menu() {
                             while (win) {
                                 isPlaying = 1;
                                 playGame();
-                                mode = min(3, mode + 1);
+                                mode++;
+                                if (mode == 5 && win) winGame(window);
+                                if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+                                else levelText.setString("CRAZY LEVEL");
                                 gameSet();
-                                levelText.setString("LEVEL " + to_string(mode));
                                 while (window.pollEvent(event));
                                 while (win == 0) {
                                     bool next = false;
@@ -1039,18 +1052,26 @@ void CGAME::newGame() {
 void CGAME::gameSet() {
     Person.setPosition(750, 700);
     Person.update(3, 0);
-    levelText.setString("LEVEL " + to_string(mode));
+    if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+    else levelText.setString("CRAZY LEVEL");
     levelText.setFillColor(Color(255, 255, 0, 255));
     map.clear();
-    for (int i = 0; i < 2 + mode; i++) {
+    for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
         int isLane = rand() % 2;
         int direction = rand() % 2;
         int easier = rand() % 4;
         LINE* a = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction + 1, isLane, min(3, mode + !easier));
         map.push_back(a);
     }
-    time = vector<pair<clock_t, clock_t>>(mode + 2);
-    for (int i = 0; i < mode + 2; ++i) {
+    if (mode > 3) {
+        for (int i = 0; i < map.size(); ++i) {
+            for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 2);
+            }
+        }
+    }
+    time = vector<pair<clock_t, clock_t>>((mode > 3 ? 3 : mode) + 2);
+    for (int i = 0; i < (mode > 3 ? 3 : mode) + 2; ++i) {
         time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
         time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
     }
@@ -1075,10 +1096,10 @@ void CGAME::playGame() {
         window.draw(background);
         window.draw(level);
         window.draw(levelText);
-        for (int i = 0; i < 2 + mode; i++) {
+        for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             map[i]->draw(window, time[i]);
         }
-        for (int i = 0; i < 2 + mode; i++) {
+        for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             if (Person.isImpact(map[i])){
                 win = 0;
                 Person.draw(window);
