@@ -25,6 +25,7 @@ bool CGAME::input(ifstream& f) {
     f >> map_size;
     levelText.setString("LEVEL " + to_string(mode));
     levelText.setFillColor(Color(255, 255, 0, 255));
+    for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {
         int isLane, direction, list_size, laneMode;
@@ -77,9 +78,7 @@ void CGAME::output(ofstream& f) {
     Person.output(f);
 }
 CGAME::CGAME() {
-    for (int i = 0; i < map.size(); i++) {
-        delete map[i];
-    }
+    for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
     mode = 1;
     window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
@@ -111,6 +110,14 @@ CGAME::CGAME() {
     sound.play();
     //levelText.setColor(Color(100, 100, 100, 100));
 }
+
+CGAME::~CGAME() {
+    for (int i = 0; i < map.size(); i++) {
+        delete map[i];
+    }
+    map.clear();
+}
+
 void CGAME::GameOver(sf::RenderWindow& window) {
     sound.setBuffer(BgameOverSound);
     sound.setLoop(false);
@@ -184,13 +191,11 @@ void CGAME::playSession(Event& event) {
         isPlaying = 1;
         playGame();
         mode = min(3, mode + 1);
-        gameSet();
         levelText.setString("LEVEL " + to_string(mode));
-        while (window.pollEvent(event));
         while (win == 0) {
             bool next = false;
             while (window.pollEvent(event)) {
-                if (event.type == Event::KeyPressed) {
+                if (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter) {
                     next = true;
                     break;
                 }
@@ -203,6 +208,7 @@ void CGAME::playSession(Event& event) {
                 break;
             }
         }
+        gameSet();
     }
     isPlaying = 0;
     win = mode = 1;
@@ -212,6 +218,7 @@ void CGAME::gameSet() {
     Person.update(3, 0);
     levelText.setString("LEVEL " + to_string(mode));
     levelText.setFillColor(Color(255, 255, 0, 255));
+    for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
     for (int i = 0; i < 2 + mode; i++) {
         int isLane = rand() % 2;

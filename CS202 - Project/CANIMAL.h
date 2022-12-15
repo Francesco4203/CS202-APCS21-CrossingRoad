@@ -25,10 +25,14 @@ class CDINAUSOR : public CANIMAL {
 public:
     CDINAUSOR() = delete;//default NOT available
     CDINAUSOR(int direction, double x, double y, int mode, int randomFactor);// 1 2 3 -> easy medium hard
+
+    ~CDINAUSOR() {}
 };
 class CBIRD : public CANIMAL {
     //image
 public:
     CBIRD() = delete;//default NOT available
     CBIRD(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard;
+
+    ~CBIRD() {}
 };

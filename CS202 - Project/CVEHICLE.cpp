@@ -10,7 +10,7 @@ CVEHICLE::CVEHICLE(double x, double y, int mode, int randomFactor) {
 }
 
 CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
-    _Bsound.loadFromFile("Resource/Sound/truck.wav");
+    !_Bsound.loadFromFile("Resource/Sound/truck.wav");
     _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rtruck.png");
     else enemy.loadFromFile("Resource/truck.png");

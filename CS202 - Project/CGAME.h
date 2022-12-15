@@ -37,6 +37,7 @@ class CGAME {
 public:
     int mode;
     CGAME();
+    ~CGAME();
     void GameOver(sf::RenderWindow& window);
     void menu();
     void gameSet();

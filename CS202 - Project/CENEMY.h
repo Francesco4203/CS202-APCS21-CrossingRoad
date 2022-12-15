@@ -27,4 +27,6 @@ public:
     void output(ofstream& f);
     void setPosition(double x, double y);
     void sound();
+
+    virtual ~CENEMY() {}
 };

@@ -21,10 +21,14 @@ class CTRUCK : public CVEHICLE {
 public:
     CTRUCK() = delete;//default NOT available
     CTRUCK(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard
+
+    ~CTRUCK() {}
 };
 class CCAR : public CVEHICLE {
     // image
 public:
     CCAR() = delete;//default NOT available
     CCAR(int direction, double x, double y, int mode, int randomFactor);//1 2 3 -> easy medium hard
+
+    ~CCAR() {}
 };

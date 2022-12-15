@@ -1094,6 +1094,7 @@ void CGAME::gameSet() {
     if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
     else levelText.setString("CRAZY LEVEL");
     levelText.setFillColor(Color(255, 255, 0, 255));
+    for (int i = 0; i < map.size(); ++i) delete map[i];
     map.clear();
     for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
         int isLane = rand() % 2;

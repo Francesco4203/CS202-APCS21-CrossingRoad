@@ -74,12 +74,8 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->_player);
 }
 bool CPEOPLE::isImpact(LINE* a) {
+    auto player_fix = _player.getGlobalBounds();
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        auto player_fix = _player.getGlobalBounds();
-        /*player_fix.top -= 30;
-        player_fix.left += 20;
-        player_fix.height = 30;
-        player_fix.width = 30;*/
         if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
             a->getVectorList()[i]->sound();
             return true;
