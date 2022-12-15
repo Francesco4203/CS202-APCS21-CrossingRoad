@@ -38,6 +38,7 @@ public:
     int mode;
     CGAME();
     ~CGAME();
+    void GameWin(sf::RenderWindow& window);
     void GameOver(sf::RenderWindow& window);
     void menu();
     void gameSet();

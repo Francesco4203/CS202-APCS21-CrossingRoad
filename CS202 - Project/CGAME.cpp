@@ -23,11 +23,12 @@ bool CGAME::input(ifstream& f) {
     f >> mode;
     int map_size;
     f >> map_size;
-    levelText.setString("LEVEL " + to_string(mode));
+    if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+    else levelText.setString("CRAZY LEVEL");
     levelText.setFillColor(Color(255, 255, 0, 255));
     for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
-    for (int i = 0; i < 2 + mode; i++) {
+    for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
         int isLane, direction, list_size, laneMode;
         f >> direction >> isLane >> list_size >> laneMode;
         LINE* newLine = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction, isLane, laneMode);
@@ -48,7 +49,14 @@ bool CGAME::input(ifstream& f) {
         newLine->setEnemy(list);
         map.push_back(newLine);
     }
-    time = vector<pair<clock_t, clock_t>>(mode + 2);
+    if (mode > 3) {
+        for (int i = 0; i < map.size(); ++i) {
+            for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 2);
+            }
+        }
+    }
+    time = vector<pair<clock_t, clock_t>>((mode > 3 ? 3 : mode) + 2);
     for (int i = 0; i < time.size(); i++) {
         clock_t delta;
         f >> delta;
@@ -116,6 +124,10 @@ CGAME::~CGAME() {
         delete map[i];
     }
     map.clear();
+}
+
+void CGAME::GameWin(sf::RenderWindow& window) {
+
 }
 
 void CGAME::GameOver(sf::RenderWindow& window) {
@@ -190,8 +202,10 @@ void CGAME::playSession(Event& event) {
     while (win && window.isOpen()) {
         isPlaying = 1;
         playGame();
-        mode = min(3, mode + 1);
-        levelText.setString("LEVEL " + to_string(mode));
+        mode++;
+        if (mode == 5 && win) GameWin(window);
+        if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+        else levelText.setString("CRAZY LEVEL");
         while (win == 0) {
             bool next = false;
             while (window.pollEvent(event)) {
@@ -216,19 +230,27 @@ void CGAME::playSession(Event& event) {
 void CGAME::gameSet() {
     Person.setPosition(750, 700);
     Person.update(3, 0);
-    levelText.setString("LEVEL " + to_string(mode));
+    if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
+    else levelText.setString("CRAZY LEVEL");
     levelText.setFillColor(Color(255, 255, 0, 255));
     for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
-    for (int i = 0; i < 2 + mode; i++) {
+    for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
         int isLane = rand() % 2;
         int direction = rand() % 2;
         int easier = rand() % 4;
         LINE* a = new LINE(50 + (mode == 1 ? 250 : (mode == 2 ? 175 : 150)) * i, direction + 1, isLane, min(3, mode + !easier));
         map.push_back(a);
     }
-    time = vector<pair<clock_t, clock_t>>(mode + 2);
-    for (int i = 0; i < mode + 2; ++i) {
+    if (mode > 3) {
+        for (int i = 0; i < map.size(); ++i) {
+            for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 2);
+            }
+        }
+    }
+    time = vector<pair<clock_t, clock_t>>((mode > 3 ? 3 : mode) + 2);
+    for (int i = 0; i < (mode > 3 ? 3 : mode) + 2; ++i) {
         time[i].first = clock() + rand() % 10 * CLOCKS_PER_SEC;
         time[i].second = clock() + rand() % 10 * CLOCKS_PER_SEC;
     }
@@ -257,10 +279,10 @@ void CGAME::playGame() {
         window.draw(background);
         window.draw(level);
         window.draw(levelText);
-        for (int i = 0; i < 2 + mode; i++) {
+        for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             map[i]->draw(window, time[i]);
         }
-        for (int i = 0; i < 2 + mode; i++) {
+        for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             if (Person.isImpact(map[i])) {
                 win = 0;
                 Person.draw(window);

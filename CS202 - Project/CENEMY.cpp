@@ -7,6 +7,13 @@ void CENEMY::sound() {
     _sound.play();
 }
 
+int CENEMY::getSpeed() {
+    return speed;
+}
+void CENEMY::setSpeed(int speed) {
+    this->speed = speed;
+}
+
 void CENEMY::setPosition(double x, double y) {
     object.setPosition(x, y);
 }
