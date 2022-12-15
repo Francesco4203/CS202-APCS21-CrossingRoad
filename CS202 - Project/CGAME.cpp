@@ -116,8 +116,7 @@ void CGAME::GameOver(sf::RenderWindow& window) {
 }
 void CGAME::menu() {
     int menuNumber = 0;
-    Menu menu(800, 600);
-    MenuSprite menusprite;
+    Menu menu(1500, 900);
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -172,7 +171,6 @@ void CGAME::menu() {
             }
         }
         window.clear();
-        menusprite.drawBG(window);
         menu.draw(window, Person);
         window.display();
     }

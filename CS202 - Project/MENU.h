@@ -18,6 +18,7 @@ public:
 	int selectedMenu();
 	void changeMenu(int i);
 	void OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale);
+	int textsize;
 	~Menu();
 private:
 	int mainMenuSelected;
@@ -32,9 +33,12 @@ class MenuSprite
 private:
 	sf::Texture menubgT;
 	sf::Sprite menubgS;
+	sf::Texture menubgBlankT;
+	sf::Sprite menubgBlankS;
 public:
 	MenuSprite();
 	void drawBG(sf::RenderWindow& window);
+	void drawBGBlank(sf::RenderWindow& window);
 	~MenuSprite();
 };
 
