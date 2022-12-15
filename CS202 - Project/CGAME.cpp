@@ -77,6 +77,9 @@ void CGAME::output(ofstream& f) {
     Person.output(f);
 }
 CGAME::CGAME() {
+    for (int i = 0; i < map.size(); i++) {
+        delete map[i];
+    }
     map.clear();
     mode = 1;
     window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
