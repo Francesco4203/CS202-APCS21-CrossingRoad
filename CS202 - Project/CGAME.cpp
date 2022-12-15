@@ -92,6 +92,10 @@ CGAME::CGAME() {
     window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
     win = 1;
     isPlaying = 0;
+    TlevelUp.loadFromFile("Resource/levelup.png");
+    SlevelUp.setTexture(TlevelUp);
+    SlevelUp.scale(1.0f, 1.0f);
+    SlevelUp.setPosition(0, 0);
     levelImage.loadFromFile("Resource/level.png");
     level.setTexture(levelImage);
     level.setPosition(0, 800);
@@ -292,8 +296,13 @@ void CGAME::playGame() {
             }
         }
         if (Person.isFinish(window)) {
+            window.draw(SlevelUp);
             levelUp.play();
             win = 1;
+            window.display();
+            Clock delay;
+            delay.restart();
+            while (delay.getElapsedTime().asSeconds() < 2.0f);
             return;
         }
         Person.draw(window);

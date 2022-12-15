@@ -18,6 +18,8 @@ using namespace sf;
 class CGAME {
     SoundBuffer BlevelUp;
     Sound levelUp;
+    Texture TlevelUp;
+    Sprite SlevelUp;
     SoundBuffer Bsound;
     SoundBuffer BgameOverSound;
     Sound sound;
