@@ -21,6 +21,10 @@ const int HEIGHT = 900;
 class CENEMY
 {
 protected:
+    float _switchTime;
+    float _totalTime;
+    Vector2u _scale;
+    IntRect _currentImage;
     int type;//0 car, 1 truck, 2 bird, 3 dinausor
     int speed;//step per second, or seconds needed for 1 step
     bool isStop;
@@ -29,7 +33,7 @@ protected:
     SoundBuffer _Bsound;
     Sound _sound;
 public:
-    void Move(bool reverse);
+    void Move(bool reverse, float deltaTime);
     void stop();
     void resume();
     Sprite getObject();
@@ -67,8 +71,28 @@ Sprite CENEMY::getObject() {
     return object;
 }
 
-void CENEMY::Move(bool reverse) {
+void CENEMY::Move(bool reverse, float deltaTime) {
     if (isStop) return;
+    _totalTime += deltaTime;
+    if (_totalTime >= _switchTime) {
+        _totalTime = 0;
+        if (!reverse) {
+            ++_scale.x;
+            if (_scale.x == 4) {
+                _scale.x = 0;
+            }
+        }
+        else {
+            --_scale.x;
+            if (_scale.x == -1) {
+                _scale.x = 3;
+            }
+        }
+    }
+    _currentImage.left = _scale.x * _currentImage.width;
+    _currentImage.top = _scale.y * _currentImage.height;
+    object.setTextureRect(_currentImage);
+
     object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
     if (object.getPosition().x >= 1500 && !reverse) {
         object.setPosition(-350, object.getPosition().y);
@@ -110,18 +134,33 @@ CANIMAL::CANIMAL(double x, double y, int mode, int randomFactor) {
 CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
     _Bsound.loadFromFile("Resource/Sound/dinausor.wav");
     _sound.setBuffer(_Bsound);
-    if (direction == 2) enemy.loadFromFile("Resource/Rdinausor.png");
-    else enemy.loadFromFile("Resource/dinausor.png");
+    if (direction == 2) enemy.loadFromFile("Resource/test/Rdinausor.png");
+    else enemy.loadFromFile("Resource/test/dinausor.png");
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
     object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 3;
 }
 
 CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CANIMAL(x, y, mode, randomFactor) {
     _Bsound.loadFromFile("Resource/Sound/bird.wav");
     _sound.setBuffer(_Bsound);
-    if (direction == 2) enemy.loadFromFile("Resource/Rbird.png");
-    else enemy.loadFromFile("Resource/bird.png");
+    if (direction == 2) enemy.loadFromFile("Resource/test/Rbird.png");
+    else enemy.loadFromFile("Resource/test/bird.png");
     object.setTexture(enemy);
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
+    object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 2;
 }
 
@@ -157,18 +196,34 @@ CVEHICLE::CVEHICLE(double x, double y, int mode, int randomFactor) {
 CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
     _Bsound.loadFromFile("Resource/Sound/truck.wav");
     _sound.setBuffer(_Bsound);
-    if (direction == 2) enemy.loadFromFile("Resource/Rtruck.png");
-    else enemy.loadFromFile("Resource/truck.png");
+    if (direction == 2) enemy.loadFromFile("Resource/test/Rtruck.png");
+    else enemy.loadFromFile("Resource/test/truck.png");
     object.setTexture(enemy);
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
+    object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 1;
 }
 
 CCAR::CCAR(int direction, double x, double y, int mode, int randomFactor) : CVEHICLE(x, y, mode, randomFactor) {
     _Bsound.loadFromFile("Resource/Sound/car.wav");
     _sound.setBuffer(_Bsound);
-    if (direction == 2) enemy.loadFromFile("Resource/Rcar.png");
-    else enemy.loadFromFile("Resource/car.png");
+    if (direction == 2) enemy.loadFromFile("Resource/test/Rcar.png");
+    else enemy.loadFromFile("Resource/test/car.png");
     object.setTexture(enemy);
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
+    object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 0;
 }
 class LIGHT {
@@ -214,7 +269,7 @@ public:
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
-    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime);
     void output(ofstream& f);
     int getMode();
     void setEnemy(vector<CENEMY*> enemyList);
@@ -455,7 +510,7 @@ void LINE::stop() {
     }
 }
 
-void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
+void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime) {
     time.second = clock();
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
@@ -466,7 +521,7 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
     for (auto p : list) {
         p->resume();
         if (this->getLight().getState() == 1 && isLane) p->stop();
-        p->Move(direction == 2);
+        p->Move(direction == 2, deltaTime);
         window.draw(p->getObject());
     }
 
@@ -1137,7 +1192,7 @@ void CGAME::playGame() {
         window.draw(level);
         window.draw(levelText);
         for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
-            map[i]->draw(window, time[i]);
+            map[i]->draw(window, time[i], deltaTime);
         }
         for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             if (Person.isImpact(map[i])){
