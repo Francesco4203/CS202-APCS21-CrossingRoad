@@ -30,8 +30,29 @@ Sprite CENEMY::getObject() {
     return object;
 }
 
-void CENEMY::Move(bool reverse) {
+void CENEMY::Move(bool reverse, float deltaTime) {
     if (isStop) return;
+
+    _totalTime += deltaTime;
+    if (_totalTime >= _switchTime) {
+        _totalTime = 0;
+        if (!reverse) {
+            ++_scale.x;
+            if (_scale.x == 4) {
+                _scale.x = 0;
+            }
+        }
+        else {
+            --_scale.x;
+            if (_scale.x == -1) {
+                _scale.x = 3;
+            }
+        }
+    }
+    _currentImage.left = _scale.x * _currentImage.width;
+    _currentImage.top = _scale.y * _currentImage.height;
+    object.setTextureRect(_currentImage);
+
     object.move((reverse ? -1 : 1) * (speed + 3) / 50.0, 0);
     if (object.getPosition().x >= 1500 && !reverse) {
         object.setPosition(-350, object.getPosition().y);

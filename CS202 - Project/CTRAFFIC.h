@@ -56,7 +56,7 @@ public:
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
-    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time);
+    void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime);
     void output(ofstream& f);
     int getMode();
     void setEnemy(vector<CENEMY*> enemyList);

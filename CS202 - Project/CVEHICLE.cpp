@@ -14,7 +14,14 @@ CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : 
     _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rtruck.png");
     else enemy.loadFromFile("Resource/truck.png");
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
     object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 1;
 }
 
@@ -23,6 +30,13 @@ CCAR::CCAR(int direction, double x, double y, int mode, int randomFactor) : CVEH
     _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rcar.png");
     else enemy.loadFromFile("Resource/car.png");
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
     object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 0;
 }

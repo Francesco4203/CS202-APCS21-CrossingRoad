@@ -134,7 +134,7 @@ void LINE::stop() {
     }
 }
 
-void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
+void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime) {
     time.second = clock();
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
         light.changeLight();
@@ -145,7 +145,7 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time) {
     for (auto p : list) {
         p->resume();
         if (this->getLight().getState() == 1 && isLane) p->stop();
-        p->Move(direction == 2);
+        p->Move(direction == 2, deltaTime);
         window.draw(p->getObject());
     }
 

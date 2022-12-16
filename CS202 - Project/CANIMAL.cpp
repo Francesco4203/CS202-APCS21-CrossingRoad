@@ -15,7 +15,14 @@ CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFact
     _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rdinausor.png");
     else enemy.loadFromFile("Resource/dinausor.png");
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
     object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 3;
 }
 
@@ -24,6 +31,13 @@ CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CA
     _sound.setBuffer(_Bsound);
     if (direction == 2) enemy.loadFromFile("Resource/Rbird.png");
     else enemy.loadFromFile("Resource/bird.png");
+    _currentImage.width = enemy.getSize().x / 4;
+    _currentImage.height = enemy.getSize().y;
     object.setTexture(enemy);
+    object.setTextureRect(_currentImage);
+    _scale.x = 0;
+    _scale.y = 0;
+    _switchTime = 0.3f;
+    _totalTime = 0;
     type = 2;
 }

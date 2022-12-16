@@ -284,7 +284,7 @@ void CGAME::playGame() {
         window.draw(level);
         window.draw(levelText);
         for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
-            map[i]->draw(window, time[i]);
+            map[i]->draw(window, time[i], deltaTime);
         }
         for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
             if (Person.isImpact(map[i])) {
