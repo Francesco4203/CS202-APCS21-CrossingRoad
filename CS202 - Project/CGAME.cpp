@@ -134,7 +134,7 @@ void CGAME::GameWin(sf::RenderWindow& window) {
 
 }
 
-void CGAME::GameOver(vector<pair<clock_t, clock_t>> time, float tmp, CENEMY* enemy, sf::RenderWindow& window) {
+void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
     sound.pause();
     float switchTime = 0.1f;
     float totalTime = 0;
@@ -354,7 +354,7 @@ void CGAME::playGame() {
             if (enemy) {
                 win = 0;
                 Person.draw(window);
-                GameOver(time, deltaTime, enemy ,window);
+                GameOver(enemy ,window);
                 window.display();
                 return;
             }
