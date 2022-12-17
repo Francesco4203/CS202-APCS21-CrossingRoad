@@ -134,7 +134,53 @@ void CGAME::GameWin(sf::RenderWindow& window) {
 
 }
 
-void CGAME::GameOver(sf::RenderWindow& window) {
+void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
+    float switchTime = 0.1f;
+    float totalTime = 0;
+    IntRect _currentImage;
+    Vector2u _scale;
+    Texture Texplosion;
+    Sprite explosion;
+    Texplosion.loadFromFile("Resource/explosion.png");
+    _currentImage.width = Texplosion.getSize().x / 5;
+    _currentImage.height = Texplosion.getSize().y / 5;
+    _scale.x = 0;
+    _scale.y = 0;
+    explosion.setTexture(Texplosion);
+    explosion.setTextureRect(_currentImage);
+    explosion.setPosition(enemy->getObject().getPosition().x - enemy->getObject().getGlobalBounds().width,
+        enemy->getObject().getPosition().y - enemy->getObject().getGlobalBounds().height);
+    window.draw(explosion);
+    window.display();
+    float deltaTime = 0.0f;
+    Clock clock;
+    SoundBuffer Bexplosion;
+    Sound Explosion;
+    Bexplosion.loadFromFile("Resource/Sound/explosion.wav");
+    Explosion.setBuffer(Bexplosion);
+    Explosion.play();
+    while (_scale.x != 5 && _scale.y != 4) {
+        deltaTime = clock.restart().asSeconds();
+        totalTime += deltaTime;
+        if (totalTime >= switchTime) {
+            totalTime = 0;
+            ++_scale.x;
+            if (_scale.x == 5 && _scale.y != 3) {
+                _scale.x = 0;
+                ++_scale.y;
+            }
+            if (_scale.x == 5 && _scale.y == 3) {
+                ++_scale.y;
+            }
+            if (_scale.x != 5 && _scale.y != 4) {
+                _currentImage.left = _scale.x * _currentImage.width;
+                _currentImage.top = _scale.y * _currentImage.height;
+                explosion.setTextureRect(_currentImage);
+                window.draw(explosion);
+            }
+            window.display();
+        }
+    }
     sound.setBuffer(BgameOverSound);
     sound.setLoop(false);
     sound.play();
@@ -287,10 +333,11 @@ void CGAME::playGame() {
             map[i]->draw(window, time[i], deltaTime);
         }
         for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
-            if (Person.isImpact(map[i])) {
+            auto enemy = Person.isImpact(map[i]);
+            if (enemy) {
                 win = 0;
                 Person.draw(window);
-                GameOver(window);
+                GameOver(enemy ,window);
                 window.display();
                 return;
             }

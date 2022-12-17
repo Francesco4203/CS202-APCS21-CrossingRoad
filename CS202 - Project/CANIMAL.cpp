@@ -21,7 +21,7 @@ CDINAUSOR::CDINAUSOR(int direction, double x, double y, int mode, int randomFact
     object.setTextureRect(_currentImage);
     _scale.x = 0;
     _scale.y = 0;
-    _switchTime = 0.3f;
+    _switchTime = 0.1f;
     _totalTime = 0;
     type = 3;
 }
@@ -37,7 +37,7 @@ CBIRD::CBIRD(int direction, double x, double y, int mode, int randomFactor) : CA
     object.setTextureRect(_currentImage);
     _scale.x = 0;
     _scale.y = 0;
-    _switchTime = 0.3f;
+    _switchTime = 0.1f;
     _totalTime = 0;
     type = 2;
 }

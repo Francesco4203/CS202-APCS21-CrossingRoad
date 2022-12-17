@@ -73,16 +73,17 @@ bool CPEOPLE::isFinish(sf::RenderWindow& window) {
 void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->_player);
 }
-bool CPEOPLE::isImpact(LINE* a) {
+CENEMY* CPEOPLE::isImpact(LINE* a) {
     auto player_fix = _player.getGlobalBounds();
     for (int i = 0; i < a->getVectorList().size(); i++) {
         if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
             a->getVectorList()[i]->sound();
-            return true;
+            return a->getVectorList()[i];
         }
     }
-    return false;
+    return NULL;
 }
+
 Sprite& CPEOPLE::getSprite() {
     return this->_player;
 }

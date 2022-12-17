@@ -20,7 +20,7 @@ CTRUCK::CTRUCK(int direction, double x, double y, int mode, int randomFactor) : 
     object.setTextureRect(_currentImage);
     _scale.x = 0;
     _scale.y = 0;
-    _switchTime = 0.3f;
+    _switchTime = 0.1f;
     _totalTime = 0;
     type = 1;
 }
@@ -36,7 +36,7 @@ CCAR::CCAR(int direction, double x, double y, int mode, int randomFactor) : CVEH
     object.setTextureRect(_currentImage);
     _scale.x = 0;
     _scale.y = 0;
-    _switchTime = 0.3f;
+    _switchTime = 0.1f;
     _totalTime = 0;
     type = 0;
 }

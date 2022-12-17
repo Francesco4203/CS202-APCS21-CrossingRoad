@@ -26,7 +26,7 @@ public:
     CPEOPLE(float switchTime, float speed);
     void move(float deltaTime);
     void update(int direction, float deltaTime);
-    bool isImpact(LINE* a);
+    CENEMY* isImpact(LINE* a);
     bool isFinish(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
     void setPosition(double x, double y);
