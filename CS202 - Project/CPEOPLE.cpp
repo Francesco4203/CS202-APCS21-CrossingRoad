@@ -60,10 +60,10 @@ void CPEOPLE::update(int direction, float deltaTime) {
 }
 bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     Texture Finish_line;
-    Finish_line.loadFromFile("Resource/line.png");
+    Finish_line.loadFromFile("Resource/finish_line.png");
     sf::Sprite line(Finish_line);
-    line.scale(4, 0.1);
-    line.setPosition(10, 10);
+    line.scale(1 ,0.7);
+    line.setPosition(0, 0);
     window.draw(line);
     if (_player.getGlobalBounds().intersects(line.getGlobalBounds())) {
         return true;

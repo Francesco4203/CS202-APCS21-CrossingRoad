@@ -96,14 +96,14 @@ CGAME::CGAME() {
     SlevelUp.setTexture(TlevelUp);
     SlevelUp.scale(1.0f, 1.0f);
     SlevelUp.setPosition(0, 0);
-    levelImage.loadFromFile("Resource/level.png");
+    levelImage.loadFromFile("Resource/Baselv.png");
     level.setTexture(levelImage);
     level.setPosition(0, 800);
     levelFont.loadFromFile("font/000OneTwoPunchBB-Regular.otf");
     levelText.setFont(levelFont);
     levelText.setFillColor(Color(255, 255, 0, 255));
-    levelText.setPosition(660, 800);
-    levelText.scale(2.0, 2.0);
+    levelText.setPosition(900, 820);
+    levelText.scale(1.3, 1.3);
     Tbackground.loadFromFile("Resource/background.png");
     background.setTexture(Tbackground);
     background.setPosition(0, 0);
