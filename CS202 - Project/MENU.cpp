@@ -232,16 +232,20 @@ void Menu::OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf
 void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TEST", 600, 150, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 550, 50, sf::Color::White, 70);
-	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG;
+	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD;
 	int cor_XK = 200, cor_XY = 200;
 	TAWSD.loadFromFile("Resource/AWSD.png");
 	TW.loadFromFile("Resource/keyboardW.png");
 	TA.loadFromFile("Resource/keyboardA.png");
 	TS.loadFromFile("Resource/keyboardS.png");
 	TD.loadFromFile("Resource/keyboardD.png");
-	TSG.loadFromFile("Resource/SaveGame.png");
 	TL.loadFromFile("Resource/L.png");
-	sf::Sprite AWSD, W, A, S, D, L, L2, SG;
+	TSG.loadFromFile("Resource/SaveGame.png");
+	TAW.loadFromFile("Resource/AW.png");
+	TWD.loadFromFile("Resource/WD.png");
+	TAS.loadFromFile("Resource/AS.png");
+	TSD.loadFromFile("Resource/SD.png");
+	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD;
 	AWSD.setTexture(TAWSD);
 	AWSD.setPosition(cor_XK, cor_XY);
 	AWSD.setScale(0.2f, 0.2f);
@@ -282,6 +286,59 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		D.setScale(0.2f, 0.2f);
 		window.draw(D);
 	}
+	if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::A)) {
+		OutputText(window, "MOVE UP LEFT", 700, 200, sf::Color::Black, 50);
+		AW.setTexture(TAW);
+		AW.setPosition(cor_XK, cor_XY);
+		AW.setScale(0.2f, 0.2f);
+		window.draw(AW);
+	}
+	else {
+		if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::D)) {
+			OutputText(window, "MOVE UP RIGHT", 700, 200, sf::Color::Black, 50);
+			WD.setTexture(TWD);
+			WD.setPosition(cor_XK, cor_XY);
+			WD.setScale(0.2f, 0.2f);
+			window.draw(WD);
+		}
+		else {
+			if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::S)) {
+				OutputText(window, "MOVE DOWN LEFT", 700, 200, sf::Color::Black, 50);
+				AS.setTexture(TAS);
+				AS.setPosition(cor_XK, cor_XY);
+				AS.setScale(0.2f, 0.2f);
+				window.draw(AS);
+			}
+			else {
+				if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::D)) {
+					OutputText(window, "MOVE DOWN RIGHT", 700, 200, sf::Color::Black, 50);
+					SD.setTexture(TSD);
+					SD.setPosition(cor_XK, cor_XY);
+					SD.setScale(0.2f, 0.2f);
+					window.draw(SD);
+				}
+			}
+		}
+	}
+	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
+		OutputText(window, "MOVE UP", 700, 200, sf::Color::Black, 50);
+	}
+	else {
+		if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
+			OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black, 50);
+		}
+		else {
+			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
+				OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black, 50);
+			}
+			else {
+				if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
+					OutputText(window, "MOVE Right", 700, 200, sf::Color::Black, 50);
+				}
+			}
+		}
+
+	}
 	if (Keyboard::isKeyPressed(Keyboard::L)) {
 		PL.loadFromFile("Resource/KeyboardL.png");
 		L2.setTexture(PL);
@@ -293,25 +350,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(L2);
 		window.draw(SG);
 	}
-	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
-		OutputText(window, "MOVE UP", 700, 200, sf::Color::Black, 70);
-	}
-	else {
-		if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
-			OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black, 70);
-		}
-		else {
-			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
-				OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black, 70);
-			}
-			else {
-				if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
-					OutputText(window, "MOVE Right", 700, 200, sf::Color::Black, 70);
-				}
-			}
-		}
-
-	}
 	a.draw(window);
+
 }
 MenuSprite::~MenuSprite() {};
