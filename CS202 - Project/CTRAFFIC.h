@@ -60,5 +60,6 @@ public:
     void output(ofstream& f);
     int getMode();
     void setEnemy(vector<CENEMY*> enemyList);
+    bool getIsLane();
     ~LINE();
 };

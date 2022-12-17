@@ -41,7 +41,7 @@ public:
     CGAME();
     ~CGAME();
     void GameWin(sf::RenderWindow& window);
-    void GameOver(CENEMY* enemy, sf::RenderWindow& window);
+    void GameOver(vector<pair<clock_t, clock_t>> time, float deltaTime, CENEMY* enemy, sf::RenderWindow& window);
     void menu();
     void gameSet();
     void playSession(Event& event);

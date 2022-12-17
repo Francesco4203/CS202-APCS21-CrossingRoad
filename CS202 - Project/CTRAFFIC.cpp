@@ -151,3 +151,7 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float de
 
     if (isLane) window.draw(this->getLight().getSpriteLight());
 }
+
+bool LINE::getIsLane() {
+    return isLane;
+}

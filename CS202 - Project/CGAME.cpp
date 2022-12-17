@@ -134,24 +134,23 @@ void CGAME::GameWin(sf::RenderWindow& window) {
 
 }
 
-void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
+void CGAME::GameOver(vector<pair<clock_t, clock_t>> time, float tmp, CENEMY* enemy, sf::RenderWindow& window) {
+    sound.pause();
     float switchTime = 0.1f;
     float totalTime = 0;
     IntRect _currentImage;
     Vector2u _scale;
     Texture Texplosion;
     Sprite explosion;
-    Texplosion.loadFromFile("Resource/explosion.png");
-    _currentImage.width = Texplosion.getSize().x / 5;
-    _currentImage.height = Texplosion.getSize().y / 5;
+    Texplosion.loadFromFile("Resource/explosion2.png");
+    _currentImage.width = Texplosion.getSize().x / 4;
+    _currentImage.height = Texplosion.getSize().y / 4;
     _scale.x = 0;
     _scale.y = 0;
     explosion.setTexture(Texplosion);
     explosion.setTextureRect(_currentImage);
-    explosion.setPosition(enemy->getObject().getPosition().x - enemy->getObject().getGlobalBounds().width,
-        enemy->getObject().getPosition().y - enemy->getObject().getGlobalBounds().height);
-    window.draw(explosion);
-    window.display();
+    explosion.setPosition(Person.getSprite().getPosition().x - Person.getSprite().getGlobalBounds().width*2,
+        Person.getSprite().getPosition().y - Person.getSprite().getGlobalBounds().height*2);
     float deltaTime = 0.0f;
     Clock clock;
     SoundBuffer Bexplosion;
@@ -159,20 +158,38 @@ void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
     Bexplosion.loadFromFile("Resource/Sound/explosion.wav");
     Explosion.setBuffer(Bexplosion);
     Explosion.play();
-    while (_scale.x != 5 && _scale.y != 4) {
+    while (_scale.x != 4 && _scale.y != 4) {
+        window.clear();
+        window.draw(background);
+        window.draw(level);
+        window.draw(levelText);
+        Texture Finish_line;
+        Finish_line.loadFromFile("Resource/finish_line.png");
+        sf::Sprite line(Finish_line);
+        line.scale(1, 0.7);
+        line.setPosition(0, 0);
+        window.draw(line);
+        for (int i = 0; i < 2 + (mode > 3 ? 3 : mode); i++) {
+            window.draw(map[i]->getSpriteLine());
+            for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
+                window.draw(map[i]->getVectorList()[j]->getObject());
+            }
+            if (map[i]->getIsLane()) window.draw(map[i]->getLight().getSpriteLight());
+        }
+        window.draw(explosion);
         deltaTime = clock.restart().asSeconds();
         totalTime += deltaTime;
         if (totalTime >= switchTime) {
             totalTime = 0;
             ++_scale.x;
-            if (_scale.x == 5 && _scale.y != 3) {
+            if (_scale.x == 4 && _scale.y != 3) {
                 _scale.x = 0;
                 ++_scale.y;
             }
-            if (_scale.x == 5 && _scale.y == 3) {
+            if (_scale.x == 4 && _scale.y == 3) {
                 ++_scale.y;
             }
-            if (_scale.x != 5 && _scale.y != 4) {
+            if (_scale.x != 4 && _scale.y != 4) {
                 _currentImage.left = _scale.x * _currentImage.width;
                 _currentImage.top = _scale.y * _currentImage.height;
                 explosion.setTextureRect(_currentImage);
@@ -337,7 +354,7 @@ void CGAME::playGame() {
             if (enemy) {
                 win = 0;
                 Person.draw(window);
-                GameOver(enemy ,window);
+                GameOver(time, deltaTime, enemy ,window);
                 window.display();
                 return;
             }
