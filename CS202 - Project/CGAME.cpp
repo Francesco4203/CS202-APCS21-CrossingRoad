@@ -370,12 +370,51 @@ void CGAME::playGame() {
             return;
         }
         Person.draw(window);
-        window.display();
         if (save) {
-            ofstream f("Saved Game.txt");
-            output(f);
+            window.display();
+            saveGame();
             win = 0;
             return;
         }
+        window.display();
     }
+}
+void CGAME::saveGame() {
+    Font font;
+    if (!font.loadFromFile("font/arial.ttf"))
+    {
+        std::cout << "no font loaded";
+    }
+    string getInput;
+    Text inputFile;
+    String inputText;
+    inputFile.setFont(font);
+    inputFile.setFillColor(Color::Red);
+    Event ev;
+    while (window.isOpen()) {
+        bool done = false;
+        while (window.pollEvent(ev)) {
+            if (ev.type == Event::TextEntered) {
+                if (ev.text.unicode == 13) {
+                    done = true;
+                    break;
+                }
+                else if (ev.text.unicode < 128) {
+                    getInput += ev.text.unicode;
+                    inputText += ev.text.unicode;
+                    inputFile.setString(inputText);
+                }
+            }
+            if (ev.type == Event::Closed) {
+                window.close();
+                break;
+            }
+        }
+        window.clear();
+        window.draw(inputFile);
+        window.display();
+        if (done) break;
+    }
+    ofstream f(getInput);
+    output(f);
 }

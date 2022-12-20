@@ -49,4 +49,5 @@ public:
     void output(ofstream& f);
     bool input(ifstream& f);
     bool loadGame();
+    void saveGame();
 };
