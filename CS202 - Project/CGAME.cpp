@@ -52,7 +52,7 @@ bool CGAME::input(ifstream& f) {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 2);
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
             }
         }
     }
@@ -312,7 +312,7 @@ void CGAME::gameSet() {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 2);
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
             }
         }
     }
