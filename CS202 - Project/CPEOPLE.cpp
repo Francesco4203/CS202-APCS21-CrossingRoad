@@ -74,9 +74,12 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->_player);
 }
 CENEMY* CPEOPLE::isImpact(LINE* a) {
-    auto player_fix = _player.getGlobalBounds();
+    auto player_fix = _player;
+    player_fix.scale(0.8, 0.8);
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        if (a->getVectorList()[i]->getObject().getGlobalBounds().intersects(player_fix)) {
+        auto object_fix = a->getVectorList()[i]->getObject();
+        object_fix.scale(0.8, 0.8);
+        if (object_fix.getGlobalBounds().intersects(player_fix.getGlobalBounds())) {
             a->getVectorList()[i]->sound();
             return a->getVectorList()[i];
         }
