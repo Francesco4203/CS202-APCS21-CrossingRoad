@@ -35,7 +35,7 @@ class CGAME {
     Sprite background;
     Texture TgameOver;
     Sprite gameOver;
-    CPEOPLE Person = CPEOPLE(0.3f, 150.0f);
+    CPEOPLE Person = CPEOPLE(0.1f, 150.0f);
 public:
     int mode;
     CGAME();

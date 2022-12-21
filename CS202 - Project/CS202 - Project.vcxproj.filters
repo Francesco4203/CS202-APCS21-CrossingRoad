@@ -39,6 +39,9 @@
     <ClCompile Include="CGAME.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MENU.h">
@@ -63,6 +66,9 @@
       <Filter>Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="CGAME.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

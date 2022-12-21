@@ -148,6 +148,7 @@
     <ClCompile Include="CANIMAL.cpp" />
     <ClCompile Include="CENEMY.cpp" />
     <ClCompile Include="CGAME.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CPEOPLE.cpp" />
     <ClCompile Include="CS202 - Project.cpp" />
     <ClCompile Include="CTRAFFIC.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="CANIMAL.h" />
     <ClInclude Include="CENEMY.h" />
     <ClInclude Include="CGAME.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CTRAFFIC.h" />
     <ClInclude Include="CVEHICLE.h" />

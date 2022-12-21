@@ -74,12 +74,13 @@ void CPEOPLE::draw(sf::RenderWindow& window) {
     window.draw(this->_player);
 }
 CENEMY* CPEOPLE::isImpact(LINE* a) {
-    auto player_fix = _player;
-    player_fix.scale(0.8, 0.8);
+    //auto player_fix = _player;
+    //player_fix.scale(0.8, 0.8);
     for (int i = 0; i < a->getVectorList().size(); i++) {
-        auto object_fix = a->getVectorList()[i]->getObject();
-        object_fix.scale(0.8, 0.8);
-        if (object_fix.getGlobalBounds().intersects(player_fix.getGlobalBounds())) {
+        //auto object_fix = a->getVectorList()[i]->getObject();
+        //object_fix.scale(0.8, 0.8);
+        //if (object_fix.getGlobalBounds().intersects(player_fix.getGlobalBounds())) {
+        if (Collision::PixelPerfectTest(_player, a->getVectorList()[i]->getObject())) {
             a->getVectorList()[i]->sound();
             return a->getVectorList()[i];
         }

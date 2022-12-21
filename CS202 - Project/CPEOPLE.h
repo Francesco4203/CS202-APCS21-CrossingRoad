@@ -8,6 +8,7 @@
 #include <chrono>
 #include <thread>
 #include "CTRAFFIC.h"
+#include "Collision.h"
 using namespace std;
 using namespace sf;
 class CPEOPLE {
