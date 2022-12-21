@@ -65,7 +65,7 @@ bool CPEOPLE::isFinish(sf::RenderWindow& window) {
     line.scale(1 ,0.7);
     line.setPosition(0, 0);
     window.draw(line);
-    if (_player.getGlobalBounds().intersects(line.getGlobalBounds())) {
+    if (Collision::PixelPerfectTest(_player, line)) {
         return true;
     }
     return false;
