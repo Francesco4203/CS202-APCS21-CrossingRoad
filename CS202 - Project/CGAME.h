@@ -36,11 +36,13 @@ class CGAME {
     Texture TgameOver;
     Sprite gameOver;
     CPEOPLE Person = CPEOPLE(0.1f, 150.0f);
+    Sprite backgroundWin;
+    Texture TbackgroundWin;
 public:
     int mode;
     CGAME();
     ~CGAME();
-    void GameWin(sf::RenderWindow& window);
+    void GameWin();
     void GameOver(CENEMY* enemy, sf::RenderWindow& window);
     void menu();
     void gameSet();
@@ -50,4 +52,5 @@ public:
     bool input(ifstream& f);
     bool loadGame();
     void saveGame();
+    string textBox(Sprite& background);
 };

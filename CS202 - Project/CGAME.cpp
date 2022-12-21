@@ -3,12 +3,61 @@ using namespace std;
 using namespace sf;
 const int WIDTH = 1500;
 const int HEIGHT = 900;
+string CGAME::textBox(Sprite& bg) {
+    Font font;
+    if (!font.loadFromFile("font/arial.ttf"))
+    {
+        std::cout << "no font loaded";
+    }
+    string getInput;
+    Text inputFile;
+    String inputText;
+    inputFile.setFont(font);
+    inputFile.scale(1.5, 1.5);
+    inputFile.setFillColor(Color::Red);
+    inputFile.setPosition(350, 580);
+    Event ev;
+    while (window.pollEvent(ev));
+    int maxChar = 30;
+    while (window.isOpen()) {
+        bool done = false;
+        while (window.pollEvent(ev)) {
+            if (ev.type == Event::TextEntered) {
+                if (ev.text.unicode == 13) { //enter
+                    done = true;
+                    break;
+                }
+                else if (32 <= ev.text.unicode && ev.text.unicode <= 126 && getInput.length() <= maxChar) { //printable
+                    getInput += ev.text.unicode;
+                    inputText += ev.text.unicode;
+                    inputFile.setString(inputText);
+                }
+                else if (ev.text.unicode == 8 && getInput.length() >= 1) { //backspace
+                    getInput.pop_back();
+                    inputText.erase(inputText.getSize() - 1);
+                    inputFile.setString(inputText);
+                }
+            }
+            if (ev.type == Event::Closed) {
+                window.close();
+                break;
+            }
+        }
+        window.clear();
+        window.draw(bg);
+        window.draw(inputFile);
+        window.display();
+        if (done) break;
+    }
+    return getInput;
+}
 bool CGAME::loadGame() {
-    ifstream f("Saved Game.txt");
+    string getTextBox = textBox(background);
+    ifstream f(getTextBox);
     bool valid = input(f);
     f.close();
     if (valid) {
-        ofstream fout("Saved Game.txt");
+        ofstream fout(getTextBox);
         fout.clear();
         fout << 0;
         fout.close();
@@ -115,6 +164,9 @@ CGAME::CGAME() {
     gameOver.setTexture(TgameOver);
     gameOver.scale(1.0f, 1.0f);
     gameOver.setPosition(500, 200);
+    TbackgroundWin.loadFromFile("Resource/menuvictory.png");
+    backgroundWin.setTexture(TbackgroundWin);
+    backgroundWin.setPosition(0, 0);
     levelUp.setBuffer(BlevelUp);
     sound.setBuffer(Bsound);
     sound.setLoop(true);
@@ -130,8 +182,8 @@ CGAME::~CGAME() {
     map.clear();
 }
 
-void CGAME::GameWin(sf::RenderWindow& window) {
-
+void CGAME::GameWin() {
+    string getTextBox = textBox(backgroundWin);
 }
 
 void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
@@ -270,7 +322,10 @@ void CGAME::playSession(Event& event) {
         isPlaying = 1;
         playGame();
         mode++;
-        if (mode == 5 && win) GameWin(window);
+        if (mode == 5 && win) {
+            GameWin();
+            break;
+        }
         if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
         else levelText.setString("CRAZY LEVEL");
         while (win == 0) {
@@ -312,7 +367,7 @@ void CGAME::gameSet() {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed());
             }
         }
     }
@@ -359,7 +414,7 @@ void CGAME::playGame() {
                 return;
             }
         }
-        if (Person.isFinish(window)) {
+        if (Person.isFinish(window) && mode != 4) {
             window.draw(SlevelUp);
             levelUp.play();
             win = 1;
@@ -367,6 +422,10 @@ void CGAME::playGame() {
             Clock delay;
             delay.restart();
             while (delay.getElapsedTime().asSeconds() < 2.0f);
+            return;
+        }
+        else if (Person.isFinish(window) && mode == 4) {
+            win = 1;
             return;
         }
         Person.draw(window);
@@ -380,41 +439,7 @@ void CGAME::playGame() {
     }
 }
 void CGAME::saveGame() {
-    Font font;
-    if (!font.loadFromFile("font/arial.ttf"))
-    {
-        std::cout << "no font loaded";
-    }
-    string getInput;
-    Text inputFile;
-    String inputText;
-    inputFile.setFont(font);
-    inputFile.setFillColor(Color::Red);
-    Event ev;
-    while (window.isOpen()) {
-        bool done = false;
-        while (window.pollEvent(ev)) {
-            if (ev.type == Event::TextEntered) {
-                if (ev.text.unicode == 13) {
-                    done = true;
-                    break;
-                }
-                else if (ev.text.unicode < 128) {
-                    getInput += ev.text.unicode;
-                    inputText += ev.text.unicode;
-                    inputFile.setString(inputText);
-                }
-            }
-            if (ev.type == Event::Closed) {
-                window.close();
-                break;
-            }
-        }
-        window.clear();
-        window.draw(inputFile);
-        window.display();
-        if (done) break;
-    }
-    ofstream f(getInput);
+    string getTextBox = textBox(background);
+    ofstream f(getTextBox);
     output(f);
 }

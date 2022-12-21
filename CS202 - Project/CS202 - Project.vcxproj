@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -154,6 +154,7 @@
     <ClCompile Include="CTRAFFIC.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
     <ClCompile Include="MENU.cpp" />
+    <ClCompile Include="SCOREBOARD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CANIMAL.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CTRAFFIC.h" />
     <ClInclude Include="CVEHICLE.h" />
+    <ClInclude Include="SCOREBOARD.h" />
     <ClInclude Include="INCLUDING.h" />
     <ClInclude Include="MENU.h" />
   </ItemGroup>
