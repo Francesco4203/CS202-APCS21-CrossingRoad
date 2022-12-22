@@ -52,7 +52,7 @@ string CGAME::textBox(Sprite& bg) {
     return getInput;
 }
 bool CGAME::loadGame() {
-    string getTextBox = textBox(background);
+    string getTextBox = textBox(backgroundLoad);
     ifstream f(getTextBox);
     bool valid = input(f);
     f.close();
@@ -167,6 +167,12 @@ CGAME::CGAME() {
     TbackgroundWin.loadFromFile("Resource/menuvictory.png");
     backgroundWin.setTexture(TbackgroundWin);
     backgroundWin.setPosition(0, 0);
+    TbackgroundSave.loadFromFile("Resource/menusave.png");
+    backgroundSave.setTexture(TbackgroundSave);
+    backgroundSave.setPosition(0, 0);
+    TbackgroundLoad.loadFromFile("Resource/menuload.png");
+    backgroundLoad.setTexture(TbackgroundLoad);
+    backgroundLoad.setPosition(0, 0);
     levelUp.setBuffer(BlevelUp);
     sound.setBuffer(Bsound);
     sound.setLoop(true);
@@ -367,7 +373,7 @@ void CGAME::gameSet() {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed());
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
             }
         }
     }
@@ -439,7 +445,7 @@ void CGAME::playGame() {
     }
 }
 void CGAME::saveGame() {
-    string getTextBox = textBox(background);
+    string getTextBox = textBox(backgroundSave);
     ofstream f(getTextBox);
     output(f);
 }

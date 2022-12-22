@@ -18,8 +18,12 @@ using namespace sf;
 class SCOREBOARD {
 	Texture texture;
 	Sprite object;
-	vector<pair<clock_t, string>> top;
-	vector<pair<Texture, Sprite>> score;
+	vector<pair<clock_t, string>> topscore;
+	vector<pair<Font, Text>> display;
 public:
-
+	SCOREBOARD() {
+		texture.loadFromFile("resource/menuscoreboard.png");
+		object.setTexture(texture);
+		object.setPosition(0, 0);
+	}
 };
