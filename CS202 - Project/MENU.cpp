@@ -1,7 +1,7 @@
 #pragma once
 #include "MENU.h"
-#define max_menu 4
-#define diff_menu 4
+#define max_menu 5
+#define diff_menu 5
 using namespace std;
 using namespace sf;
 Menu::Menu(float w, float h)
@@ -13,7 +13,7 @@ Menu::Menu(float w, float h)
 	int mmoffset = 500;
 	int mmoffset2 = 450;
 	int transparency = 120;
-	textsize = 50;
+	textsize = 40;
 
 	// New game
 	mainMenu[0].setFont(font);
@@ -33,13 +33,18 @@ Menu::Menu(float w, float h)
 	mainMenu[2].setString("Setting");
 	mainMenu[2].setCharacterSize(textsize);
 	mainMenu[2].setPosition(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 3 + mmoffset2));
-
-	// Quit
+	// Highscore
 	mainMenu[3].setFont(font);
 	mainMenu[3].setFillColor(sf::Color(255, 255, 255, transparency));
-	mainMenu[3].setString("Quit");
+	mainMenu[3].setString("High Score");
 	mainMenu[3].setCharacterSize(textsize);
 	mainMenu[3].setPosition(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 4 + mmoffset2));
+	// Quit
+	mainMenu[4].setFont(font);
+	mainMenu[4].setFillColor(sf::Color(255, 255, 255, transparency));
+	mainMenu[4].setString("Quit");
+	mainMenu[4].setCharacterSize(textsize);
+	mainMenu[4].setPosition(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 5 + mmoffset2));
 
 	int dmoffset = 100;
 

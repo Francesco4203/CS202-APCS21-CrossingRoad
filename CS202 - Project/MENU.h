@@ -5,8 +5,8 @@
 #include "CPEOPLE.h"
 using namespace std;
 using namespace sf;
-#define max_menu 4
-#define diff_menu 4
+#define max_menu 5
+#define diff_menu 5
 class Menu
 {
 public:

@@ -309,7 +309,10 @@ void CGAME::menu() {
                             menuNumber = 2;
                             menu.changeMenu(2);
                             break;
-                        case 3:
+                        case 3: //high score
+                            scoreboard.show(window);
+                            break;
+                        case 4:
                             window.close();
                         }
                         break;
