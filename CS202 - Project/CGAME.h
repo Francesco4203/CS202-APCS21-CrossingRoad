@@ -13,6 +13,7 @@
 #include "CVEHICLE.h"
 #include "CTRAFFIC.h"
 #include "CENEMY.h"
+#include "SCOREBOARD.h"
 using namespace std;
 using namespace sf;
 class CGAME {
@@ -42,6 +43,8 @@ class CGAME {
     Sprite backgroundSave;
     Texture TbackgroundLoad;
     Sprite backgroundLoad;
+    SCOREBOARD scoreboard;
+    clock_t start;
 public:
     int mode;
     CGAME();

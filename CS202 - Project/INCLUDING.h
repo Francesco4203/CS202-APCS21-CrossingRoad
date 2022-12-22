@@ -14,3 +14,4 @@
 #include "CGAME.h"
 #include "CTRAFFIC.h"
 #include "CENEMY.h"
+#include "SCOREBOARD.h"

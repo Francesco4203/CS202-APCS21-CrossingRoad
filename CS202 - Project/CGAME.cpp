@@ -121,6 +121,8 @@ bool CGAME::input(ifstream& f) {
     f >> x >> y;
     Person.setPosition(x, y);
     Person.update(3, 0);
+    f >> start;
+    start = clock() - start;
     return true;
 }
 void CGAME::output(ofstream& f) {
@@ -133,8 +135,10 @@ void CGAME::output(ofstream& f) {
         f << map[i]->getLight().state << '\n';
     }
     Person.output(f);
+    f << clock() - start << '\n';
 }
 CGAME::CGAME() {
+    scoreboard.load();
     for (int i = 0; i < map.size(); i++) delete map[i];
     map.clear();
     mode = 1;
@@ -182,6 +186,7 @@ CGAME::CGAME() {
 }
 
 CGAME::~CGAME() {
+    scoreboard.save();
     for (int i = 0; i < map.size(); i++) {
         delete map[i];
     }
@@ -189,7 +194,10 @@ CGAME::~CGAME() {
 }
 
 void CGAME::GameWin() {
+    int deltaTime = (clock() - start) / CLOCKS_PER_SEC;
     string getTextBox = textBox(backgroundWin);
+    scoreboard.add(deltaTime, getTextBox);
+    scoreboard.show(window);
 }
 
 void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
@@ -289,6 +297,7 @@ void CGAME::menu() {
                         {
                         case 0: //new game
                             gameSet();
+                            start = clock();
                             playSession(event);
                             break;
                         case 1: //load game
