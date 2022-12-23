@@ -14,6 +14,7 @@
 #include "CTRAFFIC.h"
 #include "CENEMY.h"
 #include "SCOREBOARD.h"
+#include "dirent.h"
 using namespace std;
 using namespace sf;
 class CGAME {
@@ -60,4 +61,5 @@ public:
     bool loadGame();
     void saveGame();
     string textBox(Sprite& background);
+    vector<string> getFileName(string directory);
 };

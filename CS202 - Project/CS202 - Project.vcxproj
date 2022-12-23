@@ -164,6 +164,7 @@
     <ClInclude Include="CPEOPLE.h" />
     <ClInclude Include="CTRAFFIC.h" />
     <ClInclude Include="CVEHICLE.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="SCOREBOARD.h" />
     <ClInclude Include="INCLUDING.h" />
     <ClInclude Include="MENU.h" />

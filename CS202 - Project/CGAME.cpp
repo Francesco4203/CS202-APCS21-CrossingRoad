@@ -52,6 +52,8 @@ string CGAME::textBox(Sprite& bg) {
     return getInput;
 }
 bool CGAME::loadGame() {
+    auto v = getFileName("Saved Game");
+    for (auto c : v) cout << c << '\n';
     string getTextBox = textBox(backgroundLoad);
     int countSub = 0;
     for (auto c : getTextBox) countSub += c == '/';
@@ -464,4 +466,19 @@ void CGAME::saveGame() {
     if (!countSub) getTextBox = "Data/" + getTextBox;
     ofstream f(getTextBox);
     output(f);
+}
+vector<string> CGAME::getFileName(string directory) {
+    DIR* dr;
+    struct dirent* en;
+    dr = opendir((directory + "/").c_str());
+    vector<string> fileName;
+    int trash = 0;
+    if (dr) {
+        while ((en = readdir(dr)) != NULL) {
+            if (trash++ >= 2)
+                fileName.push_back(en->d_name);
+        }
+        closedir(dr);
+    }
+    return fileName;
 }
