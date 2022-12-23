@@ -101,9 +101,19 @@ void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 
 	case 2: //setting
 		menusprite.drawBGBlank(window);
-		MenuSetting(window, a);
+		if (MenuSetting(window, a) == 3) {
+			menuNumber = 3;
+			window.clear();
+			draw(window, a);
+		}
 		break;
 	case 3: //game
+		menusprite.drawBGBlank(window);
+		if (MenuSetting2(window, a) == 2) {
+			menuNumber = 2;
+			window.clear();
+			draw(window, a);
+		}
 		break;
 	case 4: //load game
 		break;
@@ -234,7 +244,16 @@ void Menu::OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf
 	cur.setPosition(sf::Vector2f(corX, corY)); /* 800 - 600 = w/h*/
 	window.draw(cur);
 }
-void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
+int PressPage() {
+	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+}
+int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
+	OutputText(window, "GAME RULE", 550, 50, sf::Color::White, 70);
+	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	return -1;
+}
+int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TEST", 600, 150, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 550, 50, sf::Color::White, 70);
 	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD;
@@ -356,6 +375,7 @@ void Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(SG);
 	}
 	a.draw(window);
-
+	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	return -1;
 }
 MenuSprite::~MenuSprite() {};
