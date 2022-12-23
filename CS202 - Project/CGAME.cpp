@@ -53,17 +53,18 @@ string CGAME::textBox(Sprite& bg) {
 }
 bool CGAME::loadGame() {
     string getTextBox = textBox(backgroundLoad);
+    int countSub = 0;
+    for (auto c : getTextBox) countSub += c == '/';
+    if (!countSub) getTextBox = "Data/" + getTextBox;
     ifstream f(getTextBox);
-    bool valid = input(f);
-    f.close();
-    if (valid) {
-        ofstream fout(getTextBox);
-        fout.clear();
-        fout << 0;
-        fout.close();
-        return true;
+    if (!f.good()) {
+        f.close();
+        return false;
     }
-    return false;
+    input(f);
+    f.close();
+    remove(getTextBox.c_str());
+    return true;
 }
 bool CGAME::input(ifstream& f) {
     int valid;
@@ -458,6 +459,9 @@ void CGAME::playGame() {
 }
 void CGAME::saveGame() {
     string getTextBox = textBox(backgroundSave);
+    int countSub = 0;
+    for (auto c : getTextBox) countSub += c == '/';
+    if (!countSub) getTextBox = "Data/" + getTextBox;
     ofstream f(getTextBox);
     output(f);
 }
