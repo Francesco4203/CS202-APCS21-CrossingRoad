@@ -6,7 +6,7 @@ using namespace std;
 using namespace sf;
 Menu::Menu(float w, float h)
 {
-	if (!font.loadFromFile("font/000OneTwoPunchBB-Regular.otf"))
+	if (!font.loadFromFile("font/astrolyt.ttf"))
 	{
 		std::cout << "no font loaded";
 	}
@@ -249,13 +249,14 @@ int PressPage() {
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
 }
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
-	OutputText(window, "GAME RULE", 550, 50, sf::Color::White, 70);
+	OutputText(window, "GAME RULE", 450, 0, sf::Color::White, 70);
+	OutputText(window, "Page 2", 20, 800, sf::Color::White, 30);
 	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
 	return -1;
 }
 int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
-	OutputText(window, "PRESS THE BUTTON TEST", 600, 150, sf::Color::Black, 30);
-	OutputText(window, "GAME SETTING", 550, 50, sf::Color::White, 70);
+	OutputText(window, "PRESS THE BUTTON TEST", 550, 100, sf::Color::Black, 30);
+	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
 	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD;
 	int cor_XK = 200, cor_XY = 200;
 	TAWSD.loadFromFile("Resource/AWSD.png");
@@ -311,7 +312,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(D);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::A)) {
-		OutputText(window, "MOVE UP LEFT", 700, 200, sf::Color::Black, 50);
+		OutputText(window, "MOVE UP LEFT", 700, 200, sf::Color::Black, 30);
 		AW.setTexture(TAW);
 		AW.setPosition(cor_XK, cor_XY);
 		AW.setScale(0.2f, 0.2f);
@@ -319,7 +320,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	}
 	else {
 		if (Keyboard::isKeyPressed(Keyboard::W) && Keyboard::isKeyPressed(Keyboard::D)) {
-			OutputText(window, "MOVE UP RIGHT", 700, 200, sf::Color::Black, 50);
+			OutputText(window, "MOVE UP RIGHT", 700, 200, sf::Color::Black, 30);
 			WD.setTexture(TWD);
 			WD.setPosition(cor_XK, cor_XY);
 			WD.setScale(0.2f, 0.2f);
@@ -327,7 +328,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		}
 		else {
 			if (Keyboard::isKeyPressed(Keyboard::A) && Keyboard::isKeyPressed(Keyboard::S)) {
-				OutputText(window, "MOVE DOWN LEFT", 700, 200, sf::Color::Black, 50);
+				OutputText(window, "MOVE DOWN LEFT", 700, 200, sf::Color::Black, 30);
 				AS.setTexture(TAS);
 				AS.setPosition(cor_XK, cor_XY);
 				AS.setScale(0.2f, 0.2f);
@@ -335,7 +336,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 			}
 			else {
 				if (Keyboard::isKeyPressed(Keyboard::S) && Keyboard::isKeyPressed(Keyboard::D)) {
-					OutputText(window, "MOVE DOWN RIGHT", 700, 200, sf::Color::Black, 50);
+					OutputText(window, "MOVE DOWN RIGHT", 700, 200, sf::Color::Black, 30);
 					SD.setTexture(TSD);
 					SD.setPosition(cor_XK, cor_XY);
 					SD.setScale(0.2f, 0.2f);
@@ -345,19 +346,19 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		}
 	}
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
-		OutputText(window, "MOVE UP", 700, 200, sf::Color::Black, 50);
+		OutputText(window, "MOVE UP", 700, 200, sf::Color::Black, 30);
 	}
 	else {
 		if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down)) {
-			OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black, 50);
+			OutputText(window, "MOVE DOWN", 700, 200, sf::Color::Black, 30);
 		}
 		else {
 			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left)) {
-				OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black, 50);
+				OutputText(window, "MOVE LEFT", 700, 200, sf::Color::Black, 30);
 			}
 			else {
 				if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Right)) {
-					OutputText(window, "MOVE Right", 700, 200, sf::Color::Black, 50);
+					OutputText(window, "MOVE RIGHT", 700, 200, sf::Color::Black, 30);
 				}
 			}
 		}
@@ -375,6 +376,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(SG);
 	}
 	a.draw(window);
+	OutputText(window, "Page 1  - Switch page by press the according number.", 20, 800, sf::Color::White, 30);
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
 	return -1;
 }
