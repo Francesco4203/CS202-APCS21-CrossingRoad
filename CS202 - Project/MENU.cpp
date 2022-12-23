@@ -249,8 +249,32 @@ int PressPage() {
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
 }
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
-	OutputText(window, "GAME RULE", 450, 0, sf::Color::White, 70);
+	Texture TDina,TBird, TCar, TTruck;
+	TDina.loadFromFile("Resource/dinausor.png");
+	TBird.loadFromFile("Resource/bird.png");
+	TCar.loadFromFile("Resource/car.png");
+	TTruck.loadFromFile("Resource/truck.png");
+	sf::Sprite Dina, Bird,Car, Truck;
+	Dina.setTexture(TDina);
+	Dina.setPosition(800, 120);
+	Dina.setScale(0.2f, 0.2f);
+	Bird.setTexture(TBird);
+	Bird.setPosition(1000, 120);
+	Bird.setScale(0.2f, 0.2f);
+	Car.setTexture(TCar);
+	Car.setPosition(800, 200);
+	Car.setScale(0.2f, 0.2f);
+	Truck.setTexture(TTruck);
+	Truck.setPosition(1100, 200);
+	Truck.setScale(0.2f, 0.2f);
+	window.draw(Dina);
+	window.draw(Bird);
+	window.draw(Car);
+	window.draw(Truck);
+	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
 	OutputText(window, "Page 2", 20, 800, sf::Color::White, 30);
+	OutputText(window, "1. Avoid these animals", 200, 120, sf::Color::Black, 40);
+	OutputText(window, "2. Avoid these vehicles", 200, 200, sf::Color::Black, 40);
 	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
 	return -1;
 }
