@@ -52,21 +52,74 @@ string CGAME::textBox(Sprite& bg) {
     return getInput;
 }
 bool CGAME::loadGame() {
-    auto v = getFileName("Saved Game");
-    for (auto c : v) cout << c << '\n';
-    string getTextBox = textBox(backgroundLoad);
-    int countSub = 0;
-    for (auto c : getTextBox) countSub += c == '/';
-    if (!countSub) getTextBox = "Data/" + getTextBox;
-    ifstream f(getTextBox);
-    if (!f.good()) {
-        f.close();
-        return false;
+    auto fileList = getFileName("Saved Game");
+    //string getTextBox = textBox(backgroundLoad);
+    Font font;
+    font.loadFromFile("font/arial.ttf");
+    Texture Tbg;
+    Sprite bg;
+    Tbg.loadFromFile("Resource/select.png");
+    bg.setTexture(Tbg);    
+    int cur = 0, n = fileList.size();
+    int display_size = 6;
+    int left = 0, right = min(5, n - 1);
+    vector<Text> select(display_size);
+    for (int i = 0; i < display_size; i++) {
+        select[i].setFont(font);
+        select[i].setCharacterSize(50);
+        select[i].setFillColor(Color::Yellow);
+        select[i].setPosition(700, 250 + i * 100);
+        select[i].setString("abcde");
     }
-    input(f);
-    f.close();
-    remove(getTextBox.c_str());
-    return true;
+    while (window.isOpen()) {
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+                break;
+            }
+            if (event.type == Event::KeyPressed) {
+                if (event.key.code == Keyboard::Down) cur = min(n - 1, cur + 1);
+                else if (event.key.code == Keyboard::Up) cur = max(0, cur - 1);
+                else if (event.key.code == Keyboard::Enter) {
+                    if (n) {
+                        ifstream f("Saved Game/" + fileList[cur]);
+                        input(f);
+                        f.close();
+                        remove(fileList[cur].c_str());
+                        return true;
+                    }
+                }
+            }
+        }
+        window.clear();
+        window.draw(bg);
+        if (n) {
+            if (cur > right) left++, right++;
+            if (cur < left) left--, right--;
+            for (int i = 0; i < display_size; i++) {
+                select[i].setString(fileList[i + left]);
+                select[i].setFillColor(Color::Yellow);
+            }
+            select[cur - left].setFillColor(Color::Red);
+            for (int i = 0; i < display_size; i++) {
+                window.draw(select[i]);
+            }
+        }
+        window.display();
+    }
+    //int countSub = 0;
+    //for (auto c : getTextBox) countSub += c == '/';
+    //if (!countSub) getTextBox = "Data/" + getTextBox;
+    //ifstream f(getTextBox);
+    //if (!f.good()) {
+    //    f.close();
+    //    return false;
+    //}
+    //input(f);
+    //f.close();
+    //remove(getTextBox.c_str());
+    //return true;
 }
 bool CGAME::input(ifstream& f) {
     int valid;
@@ -463,7 +516,7 @@ void CGAME::saveGame() {
     string getTextBox = textBox(backgroundSave);
     int countSub = 0;
     for (auto c : getTextBox) countSub += c == '/';
-    if (!countSub) getTextBox = "Data/" + getTextBox;
+    if (!countSub) getTextBox = "Saved Game/" + getTextBox;
     ofstream f(getTextBox);
     output(f);
 }
