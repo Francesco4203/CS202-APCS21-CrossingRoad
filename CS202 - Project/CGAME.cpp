@@ -90,6 +90,7 @@ bool CGAME::loadGame() {
                         return true;
                     }
                 }
+                else if (event.key.code == Keyboard::Escape) return false;
             }
         }
         window.clear();
@@ -98,7 +99,7 @@ bool CGAME::loadGame() {
             if (cur > right) left++, right++;
             if (cur < left) left--, right--;
             for (int i = 0; i < display_size; i++) {
-                select[i].setString(fileList[i + left]);
+                select[i].setString((i + left < n ? fileList[i + left] : ""));
                 select[i].setFillColor(Color::Yellow);
             }
             select[cur - left].setFillColor(Color::Red);
@@ -400,6 +401,7 @@ void CGAME::playSession(Event& event) {
             GameWin();
             break;
         }
+        if (esc) break;
         if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
         else levelText.setString("CRAZY LEVEL");
         while (win == 0) {
@@ -424,6 +426,7 @@ void CGAME::playSession(Event& event) {
     win = mode = 1;
 }
 void CGAME::gameSet() {
+    esc = false;
     Person.setPosition(750, 700);
     Person.update(3, 0);
     if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
@@ -465,6 +468,10 @@ void CGAME::playGame() {
                 save = 1;
                 levelText.setString("GAME SAVED");
                 levelText.setFillColor(Color(255, 0, 0, 255));
+            }
+            if (ev.key.code == Keyboard::Escape) {
+                esc = true;
+                return;
             }
             if (ev.type == Event::Closed) {
                 window.close();
@@ -519,6 +526,7 @@ void CGAME::saveGame() {
     if (!countSub) getTextBox = "Saved Game/" + getTextBox;
     ofstream f(getTextBox);
     output(f);
+    f.close();
 }
 vector<string> CGAME::getFileName(string directory) {
     DIR* dr;

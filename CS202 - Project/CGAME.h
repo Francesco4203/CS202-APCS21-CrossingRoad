@@ -28,7 +28,7 @@ class CGAME {
     vector<LINE*> map;
     vector<pair<clock_t, clock_t>> time;
     RenderWindow window;
-    bool win, isPlaying;
+    bool win, isPlaying, esc;
     Sprite level;
     Texture levelImage;
     Text levelText;
