@@ -5,7 +5,7 @@ const int WIDTH = 1500;
 const int HEIGHT = 900;
 string CGAME::textBox(Sprite& bg) {
     Font font;
-    if (!font.loadFromFile("font/arial.ttf"))
+    if (!font.loadFromFile("font/astrolyt.ttf"))
     {
         std::cout << "no font loaded";
     }
@@ -55,7 +55,7 @@ bool CGAME::loadGame() {
     auto fileList = getFileName("Saved Game");
     //string getTextBox = textBox(backgroundLoad);
     Font font;
-    font.loadFromFile("font/arial.ttf");
+    font.loadFromFile("font/astrolyt.ttf");
     Texture Tbg;
     Sprite bg;
     Tbg.loadFromFile("Resource/select.png");
