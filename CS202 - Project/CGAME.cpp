@@ -158,7 +158,7 @@ bool CGAME::input(ifstream& f) {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 3);
             }
         }
     }
@@ -374,15 +374,25 @@ void CGAME::menu() {
                         }
                         break;
                     case 2: // setting
-                        menuNumber = 0;
-                        menu.changeMenu(0);
+                        
                         break;
                     case 3: // game
 
                         break;
                     case 4: // load game
+
                         break;
                     }
+                    break;
+                case sf::Keyboard::Escape:
+                    switch (menuNumber)
+                    {
+                    case 2: // setting
+                        menuNumber = 0;
+                        menu.changeMenu(0);
+                        break;
+                    }
+                    break;
                 }
             }
         }

@@ -32,7 +32,7 @@ void SCOREBOARD::show(RenderWindow& window) {
 			if (event.type == Event::Closed) {
 				window.close();
 			}
-			if (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter) {
+			if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
 				close = true;
 			}
 		}
