@@ -51,7 +51,7 @@ string CGAME::textBox(Sprite& bg) {
     }
     return getInput;
 }
-bool CGAME::loadGame() {
+string CGAME::loadGame() {
     auto fileList = getFileName("Saved Game");
     //string getTextBox = textBox(backgroundLoad);
     Font font;
@@ -86,11 +86,10 @@ bool CGAME::loadGame() {
                         ifstream f("Saved Game/" + fileList[cur]);
                         input(f);
                         f.close();
-                        remove(fileList[cur].c_str());
-                        return true;
+                        return fileList[cur];
                     }
                 }
-                else if (event.key.code == Keyboard::Escape) return false;
+                else if (event.key.code == Keyboard::Escape) return "";
             }
         }
         window.clear();
@@ -109,6 +108,7 @@ bool CGAME::loadGame() {
         }
         window.display();
     }
+    
     //int countSub = 0;
     //for (auto c : getTextBox) countSub += c == '/';
     //if (!countSub) getTextBox = "Data/" + getTextBox;
@@ -202,6 +202,7 @@ CGAME::CGAME() {
     window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
     win = 1;
     isPlaying = 0;
+    curFileGame = "";
     TlevelUp.loadFromFile("Resource/levelup.png");
     SlevelUp.setTexture(TlevelUp);
     SlevelUp.scale(1.0f, 1.0f);
@@ -359,7 +360,8 @@ void CGAME::menu() {
                             break;
                         case 1: //load game
                             //insert code load game heres
-                            if (loadGame())
+                            curFileGame = loadGame();
+                            if (curFileGame != "")
                                 playSession(event);
                             break;
                         case 2: //setting
@@ -408,13 +410,20 @@ void CGAME::playSession(Event& event) {
         playGame();
         mode++;
         if (mode == 5 && win) {
+            remove(("Saved Game/" + curFileGame).c_str());
+            curFileGame = "";
             GameWin();
             break;
         }
-        if (esc) break;
+        if (esc) {
+            curFileGame = "";
+            esc = false;
+            break;
+        }
         if (mode <= 3) levelText.setString("LEVEL " + to_string(mode));
         else levelText.setString("CRAZY LEVEL");
         while (win == 0) {
+            curFileGame = "";
             bool next = false;
             while (window.pollEvent(event)) {
                 if (event.type == Event::KeyPressed && event.key.code == Keyboard::Enter) {
@@ -454,7 +463,7 @@ void CGAME::gameSet() {
     if (mode > 3) {
         for (int i = 0; i < map.size(); ++i) {
             for (int j = 0; j < map[i]->getVectorList().size(); ++j) {
-                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 5);
+                map[i]->getVectorList()[j]->setSpeed(map[i]->getVectorList()[j]->getSpeed() * 3);
             }
         }
     }

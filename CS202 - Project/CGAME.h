@@ -46,6 +46,7 @@ class CGAME {
     Sprite backgroundLoad;
     SCOREBOARD scoreboard;
     clock_t start;
+    string curFileGame;
 public:
     int mode;
     CGAME();
@@ -58,7 +59,7 @@ public:
     void playGame();
     void output(ofstream& f);
     bool input(ifstream& f);
-    bool loadGame();
+    string loadGame();
     void saveGame();
     string textBox(Sprite& background);
     vector<string> getFileName(string directory);
