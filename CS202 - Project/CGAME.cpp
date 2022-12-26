@@ -161,6 +161,8 @@ string CGAME::loadGame() {
                                 }
                             }
                             curPopup = 1;
+                            Tpopup.loadFromFile("Resource/menupopupL.png");
+                            popup.setTexture(Tpopup);
                             isPopup = false;
                             popup.setScale(0.0f, 0.0f);
                             fileName.setScale(0.0f, 0.0f);
