@@ -249,7 +249,7 @@ int PressPage() {
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
 }
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
-	Texture TDina,TBird, TCar, TTruck, TFinishline, TRed;
+	/*Texture TDina, TBird, TCar, TTruck, TFinishline, TRed;
 	TDina.loadFromFile("Resource/dinausor_1.png");
 	TBird.loadFromFile("Resource/bird_1.png");
 	TCar.loadFromFile("Resource/car_1.png");
@@ -281,14 +281,21 @@ int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 	window.draw(Truck);
 	window.draw(Finishline);
 	window.draw(Red);
-	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
-	OutputText(window, "Page 2", 20, 800, sf::Color::White, 30);
 	OutputText(window, "Avoid animals", 200, 120, sf::Color::Black, 50);
 	OutputText(window, "Avoid vehicles", 200, 220, sf::Color::Black, 50);
 	OutputText(window, "There are three normal stages, and one special stage with double speed.", 200, 340, sf::Color::Black, 30);
 	OutputText(window, "Player needs to hit the finish line to move the next level.", 200, 400, sf::Color::Black, 30);
 	OutputText(window, "Player can save the game and choose the suitable load game in the menu.", 200, 460, sf::Color::Black, 30);
-	OutputText(window, "Player can view the scoreboard in the menu", 200, 520, sf::Color::Black, 30);
+	OutputText(window, "Player can view the scoreboard in the menu", 200, 520, sf::Color::Black, 30);*/
+	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
+	OutputText(window, "Page 2", 50, 850, sf::Color::White, 30);
+	Texture TSetting_2;
+	TSetting_2.loadFromFile("Resource/Setting_Page2.png");
+	sf::Sprite Setting_2;
+	Setting_2.setTexture(TSetting_2);
+	Setting_2.setPosition(150, 120);
+	Setting_2.setScale(0.4f, 0.4f);
+	window.draw(Setting_2);
 	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
 	return -1;
 }
@@ -414,7 +421,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(SG);
 	}
 	a.draw(window);
-	OutputText(window, "Page 1  - Switch page by press the according number.", 20, 800, sf::Color::White, 30);
+	OutputText(window, "Page 1  - Switch page by press the according number.", 50, 850, sf::Color::White, 30);
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
 	return -1;
 }
