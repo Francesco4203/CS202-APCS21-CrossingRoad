@@ -564,6 +564,7 @@ void CGAME::playGame() {
                 levelText.setFillColor(Color(255, 0, 0, 255));
             }
             if (ev.key.code == Keyboard::Escape) {
+                win = 0;
                 esc = true;
                 return;
             }
