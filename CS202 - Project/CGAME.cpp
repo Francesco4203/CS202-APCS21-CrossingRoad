@@ -67,10 +67,30 @@ string CGAME::loadGame() {
     for (int i = 0; i < display_size; i++) {
         select[i].setFont(font);
         select[i].setCharacterSize(50);
-        select[i].setFillColor(Color::Yellow);
-        select[i].setPosition(700, 250 + i * 100);
+        select[i].setFillColor(Color::White);
+        select[i].setPosition(650, 250 + i * 100);
         select[i].setString("abcde");
     }
+    Texture Tpopup;
+    Sprite popup;
+    Tpopup.loadFromFile("Resource/menupopupL.png");
+    popup.setTexture(Tpopup);
+    popup.setPosition((WIDTH - 700) / 2, (HEIGHT - 320) / 2);
+    popup.setScale(0.0f, 0.0f);
+    bool isPopup = false;
+    int curPopup = 1; // continue
+    Text fileName;
+    Text lv;
+    fileName.setFont(font);
+    fileName.setCharacterSize(50);
+    fileName.setFillColor(Color::White);
+    fileName.setPosition(popup.getPosition().x + 50, popup.getPosition().y + 25);
+    fileName.setScale(0.0f, 0.0f);
+    lv.setFont(font);
+    lv.setCharacterSize(50);
+    lv.setFillColor(Color::White);
+    lv.setPosition(popup.getPosition().x + 50, popup.getPosition().y + 100);
+    lv.setScale(0.0f, 0.0f);
     while (window.isOpen()) {
         Event event;
         while (window.pollEvent(event)) {
@@ -78,18 +98,85 @@ string CGAME::loadGame() {
                 window.close();
                 break;
             }
-            if (event.type == Event::KeyPressed) {
-                if (event.key.code == Keyboard::Down) cur = min(n - 1, cur + 1);
-                else if (event.key.code == Keyboard::Up) cur = max(0, cur - 1);
-                else if (event.key.code == Keyboard::Enter) {
-                    if (n) {
-                        ifstream f("Saved Game/" + fileList[cur]);
-                        input(f);
-                        f.close();
-                        return fileList[cur];
+            if (!isPopup) {
+                if (event.type == Event::KeyPressed) {
+                    if (event.key.code == Keyboard::Down) cur = min(n - 1, cur + 1);
+                    else if (event.key.code == Keyboard::Up) cur = max(0, cur - 1);
+                    else if (event.key.code == Keyboard::Enter) {
+                        if (n) {
+                            isPopup = true;
+                        }
+                    }
+                    else if (event.key.code == Keyboard::Escape) return "";
+                }
+            }
+            else {
+                popup.setScale(1.0f, 1.0f);
+                fileName.setString(fileList[cur]);
+                fileName.setScale(1.0f, 1.0f);
+                int tmp;
+                ifstream in;
+                in.open("Saved Game/" + fileList[cur]);
+                for (int i = 1; i <= 2; ++i) in >> tmp;
+                in.close();
+                string stringLv = "Level: ";
+                if (tmp <= 3) stringLv.push_back(tmp + 48);
+                else stringLv += "Crazy";
+                lv.setString(stringLv);
+                lv.setScale(1.0f, 1.0f);
+                if (event.type == Event::KeyPressed) {
+                    if (event.key.code == Keyboard::Left) {
+                        if (curPopup != 1) {
+                            curPopup = 1;
+                            Tpopup.loadFromFile("Resource/menupopupL.png");
+                            popup.setTexture(Tpopup);
+                        }
+                    }
+                    else if (event.key.code == Keyboard::Right) {
+                        if (curPopup != 2) {
+                            curPopup = 2;
+                            Tpopup.loadFromFile("Resource/menupopupR.png");
+                            popup.setTexture(Tpopup);
+                        }
+                    }
+                    else if (event.key.code == Keyboard::Enter) {
+                        if (curPopup == 1) {
+                            ifstream f("Saved Game/" + fileList[cur]);
+                            input(f);
+                            f.close();
+                            isPopup = false;
+                            curPopup = 1;
+                            popup.setScale(0.0f, 0.0f);
+                            fileName.setScale(0.0f, 0.0f);
+                            lv.setScale(0.0f, 0.0f);
+                            return fileList[cur];
+                        }
+                        if (curPopup == 2) {
+                            remove(("Saved Game/" + fileList[cur]).c_str());
+                            for (vector<string>::iterator it = fileList.begin(); it != fileList.end(); ++it) {
+                                if (*it == fileList[cur]) {
+                                    fileList.erase(it);
+                                    n--;
+                                    break;
+                                }
+                            }
+                            curPopup = 1;
+                            Tpopup.loadFromFile("Resource/menupopupL.png");
+                            popup.setTexture(Tpopup);
+                            isPopup = false;
+                            popup.setScale(0.0f, 0.0f);
+                            fileName.setScale(0.0f, 0.0f);
+                            lv.setScale(0.0f, 0.0f);
+                            cur = 0;
+                        }
+                    }
+                    else if (event.key.code == Keyboard::Escape) {
+                        isPopup = false;
+                        popup.setScale(0.0f, 0.0f);
+                        fileName.setScale(0.0f, 0.0f);
+                        lv.setScale(0.0f, 0.0f);
                     }
                 }
-                else if (event.key.code == Keyboard::Escape) return "";
             }
         }
         window.clear();
@@ -99,28 +186,18 @@ string CGAME::loadGame() {
             if (cur < left) left--, right--;
             for (int i = 0; i < display_size; i++) {
                 select[i].setString((i + left < n ? fileList[i + left] : ""));
-                select[i].setFillColor(Color::Yellow);
+                select[i].setFillColor(Color::White);
             }
             select[cur - left].setFillColor(Color::Red);
             for (int i = 0; i < display_size; i++) {
                 window.draw(select[i]);
             }
         }
+        window.draw(popup);
+        window.draw(fileName);
+        window.draw(lv);
         window.display();
     }
-    
-    //int countSub = 0;
-    //for (auto c : getTextBox) countSub += c == '/';
-    //if (!countSub) getTextBox = "Data/" + getTextBox;
-    //ifstream f(getTextBox);
-    //if (!f.good()) {
-    //    f.close();
-    //    return false;
-    //}
-    //input(f);
-    //f.close();
-    //remove(getTextBox.c_str());
-    //return true;
 }
 bool CGAME::input(ifstream& f) {
     int valid;
@@ -489,6 +566,7 @@ void CGAME::playGame() {
                 levelText.setFillColor(Color(255, 0, 0, 255));
             }
             if (ev.key.code == Keyboard::Escape) {
+                win = 0;
                 esc = true;
                 return;
             }
