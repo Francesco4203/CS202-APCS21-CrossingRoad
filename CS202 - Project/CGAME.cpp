@@ -512,7 +512,6 @@ void CGAME::playSession(Event& event) {
             if (next) {
                 sound.setBuffer(Bsound);
                 sound.setLoop(true);
-                sound.setVolume(70.f);
                 sound.play();
                 break;
             }
