@@ -86,7 +86,7 @@ Menu::Menu(float w, float h, CGAME* game)
 	_currentImage.left = _scale.x * _currentImage.width;
 	_currentImage.top = _scale.y * _currentImage.height;
 	volume.setTextureRect(_currentImage);
-	volume.setPosition(700, 500);
+	volume.setPosition(700, 600);
 	
 	_game = game;
 };
@@ -315,7 +315,7 @@ int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TO TEST", 500, 100, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
-	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD;
+	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX;
 	int cor_XK = 200, cor_XY = 200;
 	TAWSD.loadFromFile("Resource/AWSD.png");
 	TW.loadFromFile("Resource/keyboardW.png");
@@ -328,7 +328,10 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	TWD.loadFromFile("Resource/WD.png");
 	TAS.loadFromFile("Resource/AS.png");
 	TSD.loadFromFile("Resource/SD.png");
-	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD;
+	TZX.loadFromFile("Resource/XZ.png");
+	TPZ.loadFromFile("Resource/PZX.png");
+	TPX.loadFromFile("Resource/PXZ.png");
+	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX;
 
 	AWSD.setTexture(TAWSD);
 	AWSD.setPosition(cor_XK, cor_XY);
@@ -336,7 +339,11 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	L.setTexture(TL);
 	L.setPosition(cor_XK + 125, cor_XY + 250);
 	L.setScale(0.2f, 0.2f);
+	XZ.setTexture(TZX);
+	XZ.setScale(0.2f, 0.2f);
+	XZ.setPosition(cor_XK+25, cor_XY + 380);
 	window.draw(L);
+	window.draw(XZ);
 	window.draw(AWSD);
 	a.setPosition(1100, 150);
 	a.update(3, 0);
@@ -348,16 +355,24 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 
 	window.draw(volume);
 	if (Keyboard::isKeyPressed(Keyboard::Z) && _scale.x > 1) {
+		PZ.setTexture(TPZ);
+		PZ.setScale(0.2f, 0.2f);
+		PZ.setPosition(cor_XK + 25, cor_XY + 380);
 		_scale.x--;
 		_currentImage.left = _scale.x * _currentImage.width;
 		volume.setTextureRect(_currentImage);
+		window.draw(PZ);
 		window.draw(volume);
 		_game->adjustVolume(-1);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::X) && _scale.x < 10) {
+		PX.setTexture(TPX);
+		PX.setScale(0.2f, 0.2f);
+		PX.setPosition(cor_XK + 25, cor_XY + 380);
 		_scale.x++;
 		_currentImage.left = _scale.x * _currentImage.width;
 		volume.setTextureRect(_currentImage);
+		window.draw(PX);
 		window.draw(volume);
 		_game->adjustVolume(1);
 	}
@@ -451,6 +466,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(L2);
 		window.draw(SG);
 	}
+
 	a.draw(window);
 	OutputText(window, "Page 1  - Switch page by press the according number.", 50, 850, sf::Color::White, 30);
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
