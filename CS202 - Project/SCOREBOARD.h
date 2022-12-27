@@ -7,12 +7,7 @@
 #include <ctime>
 #include <chrono>
 #include <thread>
-#include "MENU.h"
-#include "CANIMAL.h"
-#include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CTRAFFIC.h"
-#include "CENEMY.h"
+
 using namespace std;
 using namespace sf;
 class SCOREBOARD {

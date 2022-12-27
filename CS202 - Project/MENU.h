@@ -3,6 +3,8 @@
 #include <SFML/Window.hpp>
 #include <bits/stdc++.h>
 #include "CPEOPLE.h"
+#include "CGAME.h"
+
 using namespace std;
 using namespace sf;
 #define max_menu 5
@@ -10,7 +12,7 @@ using namespace sf;
 class Menu
 {
 public:
-	Menu(float w, float h);
+	Menu(float w, float h, CGAME* game);
 	void draw(sf::RenderWindow& window, CPEOPLE a);
 	void moveUp();
 	void moveDown();
@@ -27,6 +29,11 @@ private:
 	sf::Font font;
 	sf::Text mainMenu[max_menu];
 	sf::Text difficultyMenu[diff_menu];
+	Texture Tvolume;
+	Sprite volume;
+	IntRect _currentImage;
+	Vector2u _scale;
+	CGAME* _game;
 };
 
 class MenuSprite

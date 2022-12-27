@@ -4,7 +4,7 @@
 #define diff_menu 5
 using namespace std;
 using namespace sf;
-Menu::Menu(float w, float h)
+Menu::Menu(float w, float h, CGAME* game)
 {
 	if (!font.loadFromFile("font/astrolyt.ttf"))
 	{
@@ -76,6 +76,19 @@ Menu::Menu(float w, float h)
 
 	mainMenuSelected = 0;
 	menuNumber = 0;
+
+	Tvolume.loadFromFile("Resource/volume_bar_animation.png");
+	volume.setTexture(Tvolume);
+	_currentImage.width = Tvolume.getSize().x / 11;
+	_currentImage.height = Tvolume.getSize().y;
+	_scale.x = 10;
+	_scale.y = 0;
+	_currentImage.left = _scale.x * _currentImage.width;
+	_currentImage.top = _scale.y * _currentImage.height;
+	volume.setTextureRect(_currentImage);
+	volume.setPosition(700, 500);
+	
+	_game = game;
 };
 void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 {
@@ -316,6 +329,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	TAS.loadFromFile("Resource/AS.png");
 	TSD.loadFromFile("Resource/SD.png");
 	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD;
+
 	AWSD.setTexture(TAWSD);
 	AWSD.setPosition(cor_XK, cor_XY);
 	AWSD.setScale(0.2f, 0.2f);
@@ -331,6 +345,23 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	Clock clock;
 	deltaTime = clock.restart().asSeconds();
 	a.move(deltaTime);
+
+	window.draw(volume);
+	if (Keyboard::isKeyPressed(Keyboard::Z) && _scale.x > 1) {
+		_scale.x--;
+		_currentImage.left = _scale.x * _currentImage.width;
+		volume.setTextureRect(_currentImage);
+		window.draw(volume);
+		_game->adjustVolume(-1);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::X) && _scale.x < 10) {
+		_scale.x++;
+		_currentImage.left = _scale.x * _currentImage.width;
+		volume.setTextureRect(_currentImage);
+		window.draw(volume);
+		_game->adjustVolume(1);
+	}
+
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
 		W.setTexture(TW);
 		W.setPosition(cor_XK, cor_XY);

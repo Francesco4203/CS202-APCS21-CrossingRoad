@@ -1,4 +1,5 @@
 ﻿#include "CGAME.h"
+
 using namespace std;
 using namespace sf;
 const int WIDTH = 1500;
@@ -315,7 +316,7 @@ CGAME::CGAME() {
     levelUp.setBuffer(BlevelUp);
     sound.setBuffer(Bsound);
     sound.setLoop(true);
-    sound.setVolume(70.f);
+    sound.setVolume(100.f);
     sound.play();
     //levelText.setColor(Color(100, 100, 100, 100));
 }
@@ -406,7 +407,7 @@ void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
 }
 void CGAME::menu() {
     int menuNumber = 0;
-    Menu menu(1500, 900);
+    Menu menu(1500, 900, this);
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -639,4 +640,9 @@ vector<string> CGAME::getFileName(string directory) {
         closedir(dr);
     }
     return fileName;
+}
+
+void CGAME::adjustVolume(int x) {
+    if (sound.getVolume() + x * 10.0f > 100.0f || sound.getVolume() + x * 10.0f < 9.0f) return;
+    sound.setVolume(sound.getVolume() + x * 10.0f);
 }

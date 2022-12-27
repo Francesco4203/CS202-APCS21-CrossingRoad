@@ -15,6 +15,7 @@
 #include "CENEMY.h"
 #include "SCOREBOARD.h"
 #include "dirent.h"
+
 using namespace std;
 using namespace sf;
 class CGAME {
@@ -63,4 +64,5 @@ public:
     void saveGame();
     string textBox(Sprite& background);
     vector<string> getFileName(string directory);
+    void adjustVolume(int x);
 };
