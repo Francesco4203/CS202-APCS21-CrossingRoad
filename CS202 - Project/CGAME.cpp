@@ -278,6 +278,9 @@ CGAME::CGAME() {
     map.clear();
     mode = 1;
     window.create(VideoMode(WIDTH, HEIGHT), "Crossing Road Game!");
+    sf::Image icon;
+    icon.loadFromFile("Resource/icon.png");
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     win = 1;
     isPlaying = 0;
     curFileGame = "";
@@ -330,6 +333,11 @@ CGAME::~CGAME() {
 }
 
 void CGAME::GameWin() {
+    SoundBuffer BgameWin;
+    Sound gameWin;
+    BgameWin.loadFromFile("Resource/Sound/gameWin.wav");
+    gameWin.setBuffer(BgameWin);
+    gameWin.play();
     int deltaTime = (clock() - start) / CLOCKS_PER_SEC;
     string getTextBox = textBox(backgroundWin);
     scoreboard.add(deltaTime, getTextBox);
