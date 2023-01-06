@@ -242,6 +242,11 @@ MenuSprite::MenuSprite()
 void MenuSprite::drawBG(sf::RenderWindow& window)
 {
 	window.draw(menubgS);
+	Texture Cur;
+	Cur.loadFromFile("Resource/BG1.png");
+	Sprite TBG_Lay;
+	TBG_Lay.setTexture(Cur);
+	window.draw(TBG_Lay);
 }
 
 void MenuSprite::drawBGBlank(sf::RenderWindow& window) {
