@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 #include "CPEOPLE.h"
 #include "CGAME.h"
+#include "BUTTON.h"
 
 using namespace std;
 using namespace sf;
@@ -27,7 +28,7 @@ private:
 	int mainMenuSelected;
 	int menuNumber;
 	sf::Font font;
-	sf::Text mainMenu[max_menu];
+	Button mainMenu[max_menu];
 	sf::Text difficultyMenu[diff_menu];
 	Texture Tvolume;
 	Sprite volume;

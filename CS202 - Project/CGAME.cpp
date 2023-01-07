@@ -485,7 +485,6 @@ void CGAME::menu() {
         }
         window.clear();
         menu.draw(window, Person);
-        btn1.DrawButton(window);
         window.display();
     }
 }
