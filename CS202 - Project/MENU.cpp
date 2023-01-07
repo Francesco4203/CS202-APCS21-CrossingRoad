@@ -320,7 +320,7 @@ int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TO TEST", 500, 100, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
-	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX;
+	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX, TC, TPC;
 	int cor_XK = 200, cor_XY = 200;
 	TAWSD.loadFromFile("Resource/AWSD.png");
 	TW.loadFromFile("Resource/keyboardW.png");
@@ -336,7 +336,9 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	TZX.loadFromFile("Resource/XZ.png");
 	TPZ.loadFromFile("Resource/PZX.png");
 	TPX.loadFromFile("Resource/PXZ.png");
-	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX;
+	TC.loadFromFile("Resource/C.png");
+	TPC.loadFromFile("Resource/CP.png");
+	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX,C, PC;
 
 	AWSD.setTexture(TAWSD);
 	AWSD.setPosition(cor_XK, cor_XY);
@@ -346,10 +348,14 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	L.setScale(0.2f, 0.2f);
 	XZ.setTexture(TZX);
 	XZ.setScale(0.2f, 0.2f);
-	XZ.setPosition(cor_XK+25, cor_XY + 380);
+	XZ.setPosition(cor_XK - 50, cor_XY + 380);
+	C.setTexture(TC);
+	C.setScale(0.2f, 0.2f);
+	C.setPosition(cor_XK + 300, cor_XY + 380);
 	window.draw(L);
 	window.draw(XZ);
 	window.draw(AWSD);
+	window.draw(C);
 	a.setPosition(1100, 150);
 	a.update(3, 0);
 	a.getSprite().setScale(4, 4);
@@ -362,7 +368,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	if (Keyboard::isKeyPressed(Keyboard::Z) && _scale.x > 1) {
 		PZ.setTexture(TPZ);
 		PZ.setScale(0.2f, 0.2f);
-		PZ.setPosition(cor_XK + 25, cor_XY + 380);
+		PZ.setPosition(cor_XK - 50, cor_XY + 380);
 		_scale.x--;
 		_currentImage.left = _scale.x * _currentImage.width;
 		volume.setTextureRect(_currentImage);
@@ -373,7 +379,7 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	if (Keyboard::isKeyPressed(Keyboard::X) && _scale.x < 10) {
 		PX.setTexture(TPX);
 		PX.setScale(0.2f, 0.2f);
-		PX.setPosition(cor_XK + 25, cor_XY + 380);
+		PX.setPosition(cor_XK - 50, cor_XY + 380);
 		_scale.x++;
 		_currentImage.left = _scale.x * _currentImage.width;
 		volume.setTextureRect(_currentImage);
@@ -382,9 +388,13 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		_game->adjustVolume(1);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::C)) {
+		PC.setTexture(TPC);
+		PC.setScale(0.2f, 0.2f);
+		PC.setPosition(cor_XK + 300, cor_XY + 380);
 		_scale.x = 0;
 		_currentImage.left = _scale.x * _currentImage.width;
 		volume.setTextureRect(_currentImage);
+		window.draw(PC);
 		window.draw(volume);
 		_game->adjustVolume(0);
 	}
