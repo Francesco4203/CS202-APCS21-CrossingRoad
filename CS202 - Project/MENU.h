@@ -22,6 +22,7 @@ public:
 	int selectedMenu();
 	void changeMenu(int i);
 	void OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf::Color a, int scale);
+	void MenuMouseDetect(sf::RenderWindow& window);
 	int textsize;
 	~Menu();
 private:
@@ -35,6 +36,7 @@ private:
 	IntRect _currentImage;
 	Vector2u _scale;
 	CGAME* _game;
+	friend class CGAME;
 };
 
 class MenuSprite

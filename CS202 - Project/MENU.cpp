@@ -20,44 +20,16 @@ Menu::Menu(float w, float h, CGAME* game)
 	mainMenu[0].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1)  + mmoffset2));
 	// Load Game
 	mainMenu[1].SetAll("LOAD GAME", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
-	mainMenu[1].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 2 + mmoffset2));
+	mainMenu[1].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1)*2  + mmoffset2));
 	// Setting
 	mainMenu[2].SetAll("SETTING", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
-	mainMenu[2].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 3 + mmoffset2));
+	mainMenu[2].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) *3 + mmoffset2));
 	// Highscore
 	mainMenu[3].SetAll("HIGHSCORE", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[3].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 4 + mmoffset2));
 	// Quit
 	mainMenu[4].SetAll("QUIT", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[4].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 5 + mmoffset2));
-
-	int dmoffset = 100;
-
-	// Easy
-	difficultyMenu[0].setFont(font);
-	difficultyMenu[0].setFillColor(sf::Color::White);
-	difficultyMenu[0].setString("Easy");
-	difficultyMenu[0].setCharacterSize(35);
-	difficultyMenu[0].setPosition(sf::Vector2f(w / 2 - 100, (h - 200) / (diff_menu + 1) + dmoffset));
-	// Medium
-	difficultyMenu[1].setFont(font);
-	difficultyMenu[1].setFillColor(sf::Color(255, 255, 255, 64));
-	difficultyMenu[1].setString("Medium");
-	difficultyMenu[1].setCharacterSize(30);
-	difficultyMenu[1].setPosition(sf::Vector2f(w / 2 - 100, (h - 200) / (diff_menu + 1) * 2 + dmoffset));
-	// Hard
-	difficultyMenu[2].setFont(font);
-	difficultyMenu[2].setFillColor(sf::Color(255, 255, 255, 64));
-	difficultyMenu[2].setString("Hard");
-	difficultyMenu[2].setCharacterSize(30);
-	difficultyMenu[2].setPosition(sf::Vector2f(w / 2 - 100, (h - 200) / (diff_menu + 1) * 3 + dmoffset));
-
-	// Return
-	difficultyMenu[3].setFont(font);
-	difficultyMenu[3].setFillColor(sf::Color(255, 255, 255, 64));
-	difficultyMenu[3].setString("Return");
-	difficultyMenu[3].setCharacterSize(30);
-	difficultyMenu[3].setPosition(sf::Vector2f(w / 2 - 100, (h - 200) / (diff_menu + 1) * 4 + dmoffset));
 
 	mainMenuSelected = 0;
 	menuNumber = 0;
@@ -118,6 +90,19 @@ void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 	}
 
 };
+void Menu::MenuMouseDetect(sf::RenderWindow& window) {
+	for (int i = 0; i < max_menu; i++) {
+		if (mainMenu[i].isMO(window)) {
+			mainMenu[i].setTColor(sf::Color(255, 255, 255, 255));
+			mainMenu[i].setBG(sf::Color::Red);
+			mainMenuSelected = i;
+		}
+		else {
+			mainMenu[i].setTColor(sf::Color(255, 255, 255, 120));
+			mainMenu[i].setBG(sf::Color::Black);
+		}
+	}
+}
 void Menu::moveUp()
 {
 	switch (menuNumber)

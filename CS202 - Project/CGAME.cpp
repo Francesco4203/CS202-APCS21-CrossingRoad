@@ -419,10 +419,38 @@ void CGAME::menu() {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            switch (event.type) {
+            case sf::Event::Closed:
                 window.close();
-            if (event.type == sf::Event::KeyPressed)
-            {
+                break;
+            case sf::Event::MouseMoved:
+                menu.MenuMouseDetect(window);
+                break;
+            case sf::Event::MouseButtonPressed:
+                if (menu.mainMenu[0].isMO(window)) {
+                    cout << "New game";
+                    gameSet();
+                    start = clock();
+                    playSession(event);
+                }
+                if (menu.mainMenu[1].isMO(window)) {
+                    curFileGame = loadGame();
+                    if (curFileGame != "")
+                        playSession(event);
+                }
+                if (menu.mainMenu[2].isMO(window)) {
+                    menuNumber = 2;
+                    menu.changeMenu(2);
+                    break;
+                }
+                if (menu.mainMenu[3].isMO(window)) {
+                    scoreboard.show(window);
+                }
+                if (menu.mainMenu[4].isMO(window)) {
+                    window.close();
+                }
+                break;
+            case sf::Event::KeyPressed:
                 switch (event.key.code)
                 {
                 case sf::Keyboard::Up:
@@ -461,7 +489,7 @@ void CGAME::menu() {
                         }
                         break;
                     case 2: // setting
-                        
+
                         break;
                     case 3: // game
 
@@ -482,6 +510,7 @@ void CGAME::menu() {
                     break;
                 }
             }
+            break;
         }
         window.clear();
         menu.draw(window, Person);
