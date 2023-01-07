@@ -15,7 +15,7 @@
 #include "CENEMY.h"
 #include "SCOREBOARD.h"
 #include "dirent.h"
-
+#include "BUTTON.h"
 using namespace std;
 using namespace sf;
 class CGAME {

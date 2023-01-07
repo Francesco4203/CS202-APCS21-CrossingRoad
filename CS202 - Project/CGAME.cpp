@@ -1,5 +1,4 @@
 ﻿#include "CGAME.h"
-
 using namespace std;
 using namespace sf;
 const int WIDTH = 1500;
@@ -486,6 +485,7 @@ void CGAME::menu() {
         }
         window.clear();
         menu.draw(window, Person);
+        btn1.DrawButton(window);
         window.display();
     }
 }

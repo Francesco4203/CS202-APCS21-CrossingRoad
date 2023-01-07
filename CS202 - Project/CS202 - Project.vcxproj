@@ -157,6 +157,7 @@
     <ClCompile Include="SCOREBOARD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BUTTON.h" />
     <ClInclude Include="CANIMAL.h" />
     <ClInclude Include="CENEMY.h" />
     <ClInclude Include="CGAME.h" />
