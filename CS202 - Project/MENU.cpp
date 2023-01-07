@@ -16,19 +16,19 @@ Menu::Menu(float w, float h, CGAME* game)
 	textsize = 30;
 
 	// New game
-	mainMenu[0].SetAll("NEW GAME", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
+	mainMenu[0].SetAll("NEW GAME", textsize + 5, { 300,60 }, sf::Color{ 0, 0, 0, 0 }, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[0].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1)  + mmoffset2));
 	// Load Game
-	mainMenu[1].SetAll("LOAD GAME", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
+	mainMenu[1].SetAll("LOAD GAME", textsize + 5, { 300,60 }, sf::Color{ 0, 0, 0, 0 }, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[1].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1)*2  + mmoffset2));
 	// Setting
-	mainMenu[2].SetAll("SETTING", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
+	mainMenu[2].SetAll("SETTING", textsize + 5, { 300,60 }, sf::Color{ 0, 0, 0, 0 }, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[2].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) *3 + mmoffset2));
 	// Highscore
-	mainMenu[3].SetAll("HIGHSCORE", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
+	mainMenu[3].SetAll("HIGHSCORE", textsize + 5, { 300,60 }, sf::Color{ 0, 0, 0, 0 }, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[3].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 4 + mmoffset2));
 	// Quit
-	mainMenu[4].SetAll("QUIT", textsize + 5, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, transparency)), font);
+	mainMenu[4].SetAll("QUIT", textsize + 5, { 300,60 }, sf::Color{ 0, 0, 0, 0 }, (sf::Color(255, 255, 255, transparency)), font);
 	mainMenu[4].setPos(sf::Vector2f(w / 2 - 100, (h - mmoffset) / (max_menu + 1) * 5 + mmoffset2));
 
 	mainMenuSelected = 0;
@@ -94,12 +94,12 @@ void Menu::MenuMouseDetect(sf::RenderWindow& window) {
 	for (int i = 0; i < max_menu; i++) {
 		if (mainMenu[i].isMO(window)) {
 			mainMenu[i].setTColor(sf::Color(255, 255, 255, 255));
-			mainMenu[i].setBG(sf::Color::Red);
+			mainMenu[i].setBG(sf::Color::Black);
 			mainMenuSelected = i;
 		}
 		else {
 			mainMenu[i].setTColor(sf::Color(255, 255, 255, 120));
-			mainMenu[i].setBG(sf::Color::Black);
+			mainMenu[i].setBG(sf::Color{ 0, 0, 0, 0 });
 		}
 	}
 }
@@ -111,7 +111,7 @@ void Menu::moveUp()
 		if (mainMenuSelected - 1 >= -1) //check if not on the first item (new game)
 		{
 			mainMenu[mainMenuSelected].setTColor(sf::Color(255, 255, 255, 120));
-			mainMenu[mainMenuSelected].setBG(sf::Color::Black);//change the previous item's color
+			mainMenu[mainMenuSelected].setBG(sf::Color{ 0, 0, 0, 0 });//change the previous item's color
 			mainMenu[mainMenuSelected].setST(textsize+5); //change the previous item's size
 			mainMenuSelected--; //move to the upper item
 			if (mainMenuSelected == -1)
@@ -119,24 +119,8 @@ void Menu::moveUp()
 				mainMenuSelected = max_menu - 1;
 			}
 			mainMenu[mainMenuSelected].setTColor(sf::Color(255, 255, 255, 255));	//change the new item's color
-			mainMenu[mainMenuSelected].setBG(sf::Color::Red);
+			mainMenu[mainMenuSelected].setBG(sf::Color::Black);
 			mainMenu[mainMenuSelected].setST(textsize + 5); //change the new item's size
-		}
-		break;
-	case 1:
-		if (mainMenuSelected - 1 >= -1) //check if not on the first item (new game)
-		{
-			difficultyMenu[mainMenuSelected].setFillColor(sf::Color(255, 255, 255, 120)); 
-			mainMenu[mainMenuSelected].setBG(sf::Color::Red);//change the pervious item's color
-			difficultyMenu[mainMenuSelected].setCharacterSize(textsize);
-			mainMenuSelected--; //move to the upper item
-			if (mainMenuSelected == -1)
-			{
-				mainMenuSelected = diff_menu - 1;
-			}
-			difficultyMenu[mainMenuSelected].setFillColor(sf::Color(255, 255, 255, 255));
-			mainMenu[mainMenuSelected].setBG(sf::Color::Green);//change the new item's color
-			difficultyMenu[mainMenuSelected].setCharacterSize(textsize + 5);
 		}
 		break;
 	case 2: //setting
@@ -155,7 +139,7 @@ void Menu::moveDown()
 		if (mainMenuSelected + 1 <= max_menu) //check if not on the last item (exit)
 		{
 			mainMenu[mainMenuSelected].setTColor(sf::Color(255, 255, 255, 120)); //change the pervious item's color
-			mainMenu[mainMenuSelected].setBG(sf::Color::Black);
+			mainMenu[mainMenuSelected].setBG(sf::Color{ 0, 0, 0, 0 });
 			mainMenu[mainMenuSelected].setST(textsize+5); //change the previous item's size
 			mainMenuSelected++; //move to the lower item
 			if (mainMenuSelected == max_menu)
@@ -163,23 +147,9 @@ void Menu::moveDown()
 				mainMenuSelected = 0;
 			}
 			mainMenu[mainMenuSelected].setTColor(sf::Color(255, 255, 255, 255));
-			mainMenu[mainMenuSelected].setBG(sf::Color::Red);//change the new item's color
+			mainMenu[mainMenuSelected].setBG(sf::Color::Black);//change the new item's color
 			mainMenu[mainMenuSelected].setST(textsize + 5); //change the new item's size
 
-		}
-		break;
-	case 1:
-		if (mainMenuSelected + 1 <= diff_menu) //check if not on the last item (exit)
-		{
-			difficultyMenu[mainMenuSelected].setFillColor(sf::Color(255, 255, 255, 120)); //change the pervious item's color
-			difficultyMenu[mainMenuSelected].setCharacterSize(textsize);
-			mainMenuSelected++; //move to the lower item
-			if (mainMenuSelected == diff_menu)
-			{
-				mainMenuSelected = 0;
-			}
-			difficultyMenu[mainMenuSelected].setFillColor(sf::Color(255, 255, 255, 255));	//change the new item's color
-			difficultyMenu[mainMenuSelected].setCharacterSize(textsize + 5);
 		}
 		break;
 	case 2: //setting

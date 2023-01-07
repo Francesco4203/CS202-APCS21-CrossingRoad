@@ -413,6 +413,7 @@ void CGAME::GameOver(CENEMY* enemy, sf::RenderWindow& window) {
     window.draw(gameOver);
 }
 void CGAME::menu() {
+    window.setFramerateLimit(60);
     int menuNumber = 0;
     Menu menu(1500, 900, this);
     while (window.isOpen()) {
