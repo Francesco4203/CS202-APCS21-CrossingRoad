@@ -230,7 +230,7 @@ Menu::~Menu()
 
 MenuSprite::MenuSprite()
 {
-	if (!menubgT.loadFromFile("texture/menubg.png") || !menubgBlankT.loadFromFile("texture/menubgBlank.png"))
+	if (!menubgT.loadFromFile("texture/menubg.png") || !menubgBlankT.loadFromFile("Resource/BG.png"))
 	{
 		cout << "load failed" << endl;
 		system("pause");
@@ -380,6 +380,13 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 		window.draw(PX);
 		window.draw(volume);
 		_game->adjustVolume(1);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::C)) {
+		_scale.x = 0;
+		_currentImage.left = _scale.x * _currentImage.width;
+		volume.setTextureRect(_currentImage);
+		window.draw(volume);
+		_game->adjustVolume(0);
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {

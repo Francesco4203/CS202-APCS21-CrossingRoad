@@ -582,6 +582,15 @@ void CGAME::playGame() {
                 window.close();
                 break;
             }
+            if (ev.key.code == Keyboard::C) {
+                adjustVolume(0);
+            }
+            if (ev.key.code == Keyboard::X) {
+                adjustVolume(1);
+            }
+            if (ev.key.code == Keyboard::Z) {
+                adjustVolume(-1);
+            }
         }
         window.clear();
         window.draw(background);
@@ -651,5 +660,14 @@ vector<string> CGAME::getFileName(string directory) {
 
 void CGAME::adjustVolume(int x) {
     if (sound.getVolume() + x * 10.0f > 100.0f || sound.getVolume() + x * 10.0f < 9.0f) return;
-    sound.setVolume(sound.getVolume() + x * 10.0f);
+    if (x == 0) {
+        sound.setVolume(0.f);
+    }
+    else {
+        if (sound.getStatus() == Sound::Status::Paused)
+        {
+            sound.play();
+        }
+        sound.setVolume(sound.getVolume() + x * 10.0f);
+    }
 }
