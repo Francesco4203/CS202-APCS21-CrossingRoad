@@ -65,4 +65,5 @@ public:
     string textBox(Sprite& background);
     vector<string> getFileName(string directory);
     void adjustVolume(int x);
+    void SetPp(float switchTime, float speed, int t);
 };

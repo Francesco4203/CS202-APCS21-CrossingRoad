@@ -33,6 +33,5 @@ public:
     void sound();
     int getSpeed();
     void setSpeed(int speed);
-
     virtual ~CENEMY() {}
 };

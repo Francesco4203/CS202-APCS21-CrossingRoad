@@ -32,5 +32,6 @@ public:
     void draw(sf::RenderWindow& window);
     void setPosition(double x, double y);
     void output(ofstream& f);
+    void setPeople(float switchTime, float speed, int t);
     Sprite& getSprite();
 };

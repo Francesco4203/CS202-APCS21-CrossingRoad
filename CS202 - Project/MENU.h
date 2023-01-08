@@ -17,6 +17,7 @@ public:
 	void draw(sf::RenderWindow& window, CPEOPLE a);
 	void moveUp();
 	void moveDown();
+	int MenuSettingChara(sf::RenderWindow& window);
 	int MenuSetting(sf::RenderWindow& window, CPEOPLE a);
 	int MenuSetting2(sf::RenderWindow& window, CPEOPLE a);
 	int selectedMenu();

@@ -71,21 +71,48 @@ void Menu::draw(sf::RenderWindow& window, CPEOPLE a)
 
 	case 2: //setting
 		menusprite.drawBGBlank(window);
-		if (MenuSetting(window, a) == 3) {
+		if (MenuSettingChara(window) == 3) {
 			menuNumber = 3;
 			window.clear();
 			draw(window, a);
 		}
+		else {
+			if (MenuSettingChara(window) == 4) {
+				menuNumber = 4;
+				window.clear();
+				draw(window, a);
+			}
+		}
 		break;
 	case 3: //game
+		menusprite.drawBGBlank(window);
+		if (MenuSetting(window, a) == 4) {
+			menuNumber = 4;
+			window.clear();
+			draw(window, a);
+		}
+		else {
+			if (MenuSetting(window, a) == 2) {
+				menuNumber = 2;
+				window.clear();
+				draw(window, a);
+			}
+		}
+		break;
+	case 4: //Character
 		menusprite.drawBGBlank(window);
 		if (MenuSetting2(window, a) == 2) {
 			menuNumber = 2;
 			window.clear();
 			draw(window, a);
 		}
-		break;
-	case 4: //load game
+		else {
+			if (MenuSetting2(window, a) == 3) {
+				menuNumber = 3;
+				window.clear();
+				draw(window, a);
+			}
+		}
 		break;
 	}
 
@@ -211,48 +238,24 @@ void Menu::OutputText(sf::RenderWindow& window, string s, int corX, int corY, sf
 int PressPage() {
 	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
 	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	if (Keyboard::isKeyPressed(Keyboard::Num3)) return 4;
+}
+int Menu::MenuSettingChara(sf::RenderWindow & window) {
+	OutputText(window, "CHARACTER SELECTION", 270, 0, sf::Color::White, 70);
+	OutputText(window, "Page 1", 50, 850, sf::Color::White, 30);
+
+	if (Keyboard::isKeyPressed(Keyboard::F)) {
+		_game->SetPp(0.1f, 150.0f, 2);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::M)) {
+		_game->SetPp(0.1f, 150.0f, 1);
+	}
+	return PressPage();
+	return -1;
 }
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
-	/*Texture TDina, TBird, TCar, TTruck, TFinishline, TRed;
-	TDina.loadFromFile("Resource/dinausor_1.png");
-	TBird.loadFromFile("Resource/bird_1.png");
-	TCar.loadFromFile("Resource/car_1.png");
-	TTruck.loadFromFile("Resource/truck_1.png");
-	TFinishline.loadFromFile("Resource/finish_line.png");
-	TRed.loadFromFile("Resource/red_light.png");
-	sf::Sprite Dina, Bird,Car, Truck, Finishline, Red;
-	Dina.setTexture(TDina);
-	Dina.setPosition(800, 120);
-	Dina.setScale(0.3f, 0.3f);
-	Bird.setTexture(TBird);
-	Bird.setPosition(900, 120);
-	Bird.setScale(0.3f, 0.3f);
-	Car.setTexture(TCar);
-	Car.setPosition(800, 220);
-	Car.setScale(0.3f, 0.3f);
-	Truck.setTexture(TTruck);
-	Truck.setPosition(900, 220);
-	Truck.setScale(0.3f, 0.3f);
-	Red.setTexture(TRed);
-	Red.setPosition(1000, 220);
-	Red.setScale(0.2f, 0.2f);
-	Finishline.setTexture(TFinishline);
-	Finishline.setPosition(1120, 415);
-	Finishline.setScale(0.3f, 0.3f);
-	window.draw(Dina);
-	window.draw(Bird);
-	window.draw(Car);
-	window.draw(Truck);
-	window.draw(Finishline);
-	window.draw(Red);
-	OutputText(window, "Avoid animals", 200, 120, sf::Color::Black, 50);
-	OutputText(window, "Avoid vehicles", 200, 220, sf::Color::Black, 50);
-	OutputText(window, "There are three normal stages, and one special stage with double speed.", 200, 340, sf::Color::Black, 30);
-	OutputText(window, "Player needs to hit the finish line to move the next level.", 200, 400, sf::Color::Black, 30);
-	OutputText(window, "Player can save the game and choose the suitable load game in the menu.", 200, 460, sf::Color::Black, 30);
-	OutputText(window, "Player can view the scoreboard in the menu", 200, 520, sf::Color::Black, 30);*/
 	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
-	OutputText(window, "Page 2", 50, 850, sf::Color::White, 30);
+	OutputText(window, "Page 3", 50, 850, sf::Color::White, 30);
 	Texture TSetting_2;
 	TSetting_2.loadFromFile("Resource/Setting_Page2.png");
 	sf::Sprite Setting_2;
@@ -260,10 +263,10 @@ int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 	Setting_2.setPosition(150, 120);
 	Setting_2.setScale(0.4f, 0.4f);
 	window.draw(Setting_2);
-	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	return PressPage();
 	return -1;
 }
-int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
+int Menu::MenuSetting(sf::RenderWindow& window,CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TO TEST", 500, 100, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
 	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX, TC, TPC;
@@ -436,8 +439,8 @@ int Menu::MenuSetting(sf::RenderWindow& window, CPEOPLE a) {
 	}
 
 	a.draw(window);
-	OutputText(window, "Page 1  - Switch page by press the according number.", 50, 850, sf::Color::White, 30);
-	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	OutputText(window, "Page 2 - Switch page by press the according number.", 50, 850, sf::Color::White, 30);
+	return PressPage();
 	return -1;
 }
 MenuSprite::~MenuSprite() {};

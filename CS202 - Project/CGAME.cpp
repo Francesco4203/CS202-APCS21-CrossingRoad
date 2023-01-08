@@ -699,3 +699,6 @@ void CGAME::adjustVolume(int x) {
         sound.setVolume(sound.getVolume() + x * 10.0f);
     }
 }
+void CGAME::SetPp(float switchTime, float speed, int t) {
+    Person.setPeople(switchTime, speed,t);
+}

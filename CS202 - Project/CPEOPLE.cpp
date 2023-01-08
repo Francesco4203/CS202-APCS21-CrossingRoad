@@ -21,6 +21,32 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _scale.x = 0;
     _scale.y = 0;
 }
+void CPEOPLE::setPeople(float switchTime, float speed, int t) {
+    if (t == 1) {
+        _Tplayer.loadFromFile("Resource/man.png");
+        _currentImage.width = _Tplayer.getSize().x / 4;
+        _currentImage.height = _Tplayer.getSize().y / 4;
+        _player.setTexture(_Tplayer);
+        _player.setTextureRect(_currentImage);
+        _switchTime = switchTime;
+        _speed = speed;
+        _totalTime = 0;
+        _scale.x = 0;
+        _scale.y = 0;
+    }
+    if (t == 2) {
+        _Tplayer.loadFromFile("Resource/woman2.png");
+        _currentImage.width = _Tplayer.getSize().x / 4;
+        _currentImage.height = _Tplayer.getSize().y / 4;
+        _player.setTexture(_Tplayer);
+        _player.setTextureRect(_currentImage);
+        _switchTime = switchTime;
+        _speed = speed;
+        _totalTime = 0;
+        _scale.x = 0;
+        _scale.y = 0;
+    }
+}
 void CPEOPLE::move(float deltaTime) {
     float dis = deltaTime * _speed;
     if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
