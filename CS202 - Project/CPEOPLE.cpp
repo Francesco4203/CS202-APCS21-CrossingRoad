@@ -35,7 +35,7 @@ void CPEOPLE::setPeople(float switchTime, float speed, int t) {
         _scale.y = 0;
     }
     if (t == 2) {
-        _Tplayer.loadFromFile("Resource/woman2.png");
+        _Tplayer.loadFromFile("Resource/woman.png");
         _currentImage.width = _Tplayer.getSize().x / 4;
         _currentImage.height = _Tplayer.getSize().y / 4;
         _player.setTexture(_Tplayer);
