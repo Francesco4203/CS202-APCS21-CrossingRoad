@@ -61,6 +61,7 @@ public:
 		}
 		return false;
 	}
+	~Button(){}
 private:
 	sf::RectangleShape button;
 	sf::Text text;
