@@ -37,8 +37,8 @@ private:
 	IntRect _currentImage;
 	Vector2u _scale;
 	CGAME* _game;
-	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX, TC, TPC, TSetting_2;
-	Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX, C, PC, Setting_2;
+	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX, TC, TPC, TSetting_2, MICON1, FMCON2, TMCH, TFCH;
+	Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX, C, PC, Setting_2, ML, FML, MCH, FCH;
 
 	friend class CGAME;
 };

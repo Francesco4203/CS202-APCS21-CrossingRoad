@@ -700,5 +700,5 @@ void CGAME::adjustVolume(int x) {
     }
 }
 void CGAME::SetPp(float switchTime, float speed, int t) {
-    Person.setPeople(switchTime, speed,t);
+    Person.setPeople(switchTime, speed, t);
 }

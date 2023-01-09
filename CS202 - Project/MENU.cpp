@@ -24,6 +24,10 @@ Menu::Menu(float w, float h, CGAME* game)
 	TPC.loadFromFile("Resource/CP.png");
 	PL.loadFromFile("Resource/KeyboardL.png");
 	TSetting_2.loadFromFile("Resource/Setting_Page2.png");
+	MICON1.loadFromFile("Resource/icon.png");
+	FMCON2.loadFromFile("Resource/womanicon.png");
+	TMCH.loadFromFile("Resource/Mch.png");
+	TFCH.loadFromFile("Resource/FMch.png");
 	
 	int cor_XK = 200, cor_XY = 200;
 
@@ -48,6 +52,13 @@ Menu::Menu(float w, float h, CGAME* game)
 	Setting_2.setTexture(TSetting_2);
 	Setting_2.setPosition(150, 120);
 	Setting_2.setScale(0.4f, 0.4f);
+	ML.setTexture(MICON1);
+	ML.setPosition(525, 120);
+	ML.setScale(4.f, 4.f);
+	FML.setTexture(FMCON2);
+	FML.setPosition(975, 120);
+	FML.setScale(4.f, 4.f);
+
 	
 
 	if (!font.loadFromFile("font/astrolyt.ttf"))
@@ -297,18 +308,7 @@ int Menu::MenuSettingChara(sf::RenderWindow & window) {
 	F.setPos(sf::Vector2f{ 900, 360 });
 	M.DrawButton(window);
 	F.DrawButton(window);
-	Texture MICON1, FMCON2, TMCH, TFCH;
-	MICON1.loadFromFile("Resource/icon.png");
-	FMCON2.loadFromFile("Resource/womanicon.png");
-	TMCH.loadFromFile("Resource/Mch.png");
-	TFCH.loadFromFile("Resource/FMch.png");
-	sf::Sprite ML, FML, MCH, FCH;
-	ML.setTexture(MICON1);
-	ML.setPosition(525, 120);
-	ML.setScale(4.f, 4.f);
-	FML.setTexture(FMCON2);
-	FML.setPosition(975, 120);
-	FML.setScale(4.f, 4.f);
+	
 	window.draw(ML);
 	window.draw(FML);
 	if (Keyboard::isKeyPressed(Keyboard::F)) {
