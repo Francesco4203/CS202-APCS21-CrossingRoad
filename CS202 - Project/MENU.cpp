@@ -6,6 +6,50 @@ using namespace std;
 using namespace sf;
 Menu::Menu(float w, float h, CGAME* game)
 {
+	TAWSD.loadFromFile("Resource/AWSD.png");
+	TW.loadFromFile("Resource/keyboardW.png");
+	TA.loadFromFile("Resource/keyboardA.png");
+	TS.loadFromFile("Resource/keyboardS.png");
+	TD.loadFromFile("Resource/keyboardD.png");
+	TL.loadFromFile("Resource/L.png");
+	TSG.loadFromFile("Resource/SaveGame.png");
+	TAW.loadFromFile("Resource/AW.png");
+	TWD.loadFromFile("Resource/WD.png");
+	TAS.loadFromFile("Resource/AS.png");
+	TSD.loadFromFile("Resource/SD.png");
+	TZX.loadFromFile("Resource/XZ.png");
+	TPZ.loadFromFile("Resource/PZX.png");
+	TPX.loadFromFile("Resource/PXZ.png");
+	TC.loadFromFile("Resource/C.png");
+	TPC.loadFromFile("Resource/CP.png");
+	PL.loadFromFile("Resource/KeyboardL.png");
+	TSetting_2.loadFromFile("Resource/Setting_Page2.png");
+	
+	int cor_XK = 200, cor_XY = 200;
+
+	AWSD.setTexture(TAWSD);
+	AWSD.setPosition(cor_XK, cor_XY);
+	AWSD.setScale(0.2f, 0.2f);
+	L.setTexture(TL);
+	L.setPosition(cor_XK + 125, cor_XY + 250);
+	L.setScale(0.2f, 0.2f);
+	XZ.setTexture(TZX);
+	XZ.setScale(0.2f, 0.2f);
+	XZ.setPosition(cor_XK - 50, cor_XY + 380);
+	C.setTexture(TC);
+	C.setScale(0.2f, 0.2f);
+	C.setPosition(cor_XK + 300, cor_XY + 380);
+	L2.setTexture(PL);
+	L2.setPosition(cor_XK + 125, cor_XY + 250);
+	L2.setScale(0.2f, 0.2f);
+	SG.setTexture(TSG);
+	SG.setPosition(750, cor_XY + 200);
+	SG.setScale(0.3f, 0.3f);
+	Setting_2.setTexture(TSetting_2);
+	Setting_2.setPosition(150, 120);
+	Setting_2.setScale(0.4f, 0.4f);
+	
+
 	if (!font.loadFromFile("font/astrolyt.ttf"))
 	{
 		std::cout << "no font loaded";
@@ -215,9 +259,9 @@ MenuSprite::MenuSprite()
 void MenuSprite::drawBG(sf::RenderWindow& window)
 {
 	window.draw(menubgS);
-	Texture Cur;
+	sf::Texture Cur;
 	Cur.loadFromFile("Resource/BG1.png");
-	Sprite TBG_Lay;
+	sf::Sprite TBG_Lay;
 	TBG_Lay.setTexture(Cur);
 	window.draw(TBG_Lay);
 }
@@ -256,12 +300,6 @@ int Menu::MenuSettingChara(sf::RenderWindow & window) {
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
 	OutputText(window, "Page 3", 50, 850, sf::Color::White, 30);
-	Texture TSetting_2;
-	TSetting_2.loadFromFile("Resource/Setting_Page2.png");
-	sf::Sprite Setting_2;
-	Setting_2.setTexture(TSetting_2);
-	Setting_2.setPosition(150, 120);
-	Setting_2.setScale(0.4f, 0.4f);
 	window.draw(Setting_2);
 	return PressPage();
 	return -1;
@@ -269,38 +307,9 @@ int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
 int Menu::MenuSetting(sf::RenderWindow& window,CPEOPLE a) {
 	OutputText(window, "PRESS THE BUTTON TO TEST", 500, 100, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
-	Texture TAWSD, TW, TA, TS, TD, TL, PL, TSG, TAW, TWD, TAS, TSD, TZX, TPZ, TPX, TC, TPC;
-	int cor_XK = 200, cor_XY = 200;
-	TAWSD.loadFromFile("Resource/AWSD.png");
-	TW.loadFromFile("Resource/keyboardW.png");
-	TA.loadFromFile("Resource/keyboardA.png");
-	TS.loadFromFile("Resource/keyboardS.png");
-	TD.loadFromFile("Resource/keyboardD.png");
-	TL.loadFromFile("Resource/L.png");
-	TSG.loadFromFile("Resource/SaveGame.png");
-	TAW.loadFromFile("Resource/AW.png");
-	TWD.loadFromFile("Resource/WD.png");
-	TAS.loadFromFile("Resource/AS.png");
-	TSD.loadFromFile("Resource/SD.png");
-	TZX.loadFromFile("Resource/XZ.png");
-	TPZ.loadFromFile("Resource/PZX.png");
-	TPX.loadFromFile("Resource/PXZ.png");
-	TC.loadFromFile("Resource/C.png");
-	TPC.loadFromFile("Resource/CP.png");
-	sf::Sprite AWSD, W, A, S, D, L, L2, SG, AW, WD, AS, SD, XZ, PZ, PX,C, PC;
 
-	AWSD.setTexture(TAWSD);
-	AWSD.setPosition(cor_XK, cor_XY);
-	AWSD.setScale(0.2f, 0.2f);
-	L.setTexture(TL);
-	L.setPosition(cor_XK + 125, cor_XY + 250);
-	L.setScale(0.2f, 0.2f);
-	XZ.setTexture(TZX);
-	XZ.setScale(0.2f, 0.2f);
-	XZ.setPosition(cor_XK - 50, cor_XY + 380);
-	C.setTexture(TC);
-	C.setScale(0.2f, 0.2f);
-	C.setPosition(cor_XK + 300, cor_XY + 380);
+	int cor_XK = 200, cor_XY = 200;
+
 	window.draw(L);
 	window.draw(XZ);
 	window.draw(AWSD);
@@ -427,13 +436,6 @@ int Menu::MenuSetting(sf::RenderWindow& window,CPEOPLE a) {
 
 	}
 	if (Keyboard::isKeyPressed(Keyboard::L)) {
-		PL.loadFromFile("Resource/KeyboardL.png");
-		L2.setTexture(PL);
-		L2.setPosition(cor_XK + 125, cor_XY + 250);
-		L2.setScale(0.2f, 0.2f);
-		SG.setTexture(TSG);
-		SG.setPosition(750, cor_XY + 200);
-		SG.setScale(0.3f, 0.3f);
 		window.draw(L2);
 		window.draw(SG);
 	}
