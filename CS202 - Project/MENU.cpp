@@ -285,26 +285,65 @@ int PressPage() {
 	if (Keyboard::isKeyPressed(Keyboard::Num3)) return 4;
 }
 int Menu::MenuSettingChara(sf::RenderWindow & window) {
+	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	if (Keyboard::isKeyPressed(Keyboard::Num3)) return 4;
 	OutputText(window, "CHARACTER SELECTION", 270, 0, sf::Color::White, 70);
 	OutputText(window, "Page 1", 50, 850, sf::Color::White, 30);
-
+	Button M, F;
+	M.SetAll("M", 45, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, 255)), font);
+	M.setPos(sf::Vector2f{ 450, 360 });
+	F.SetAll("F", 45, { 300,60 }, sf::Color::Black, (sf::Color(255, 255, 255, 255)), font);
+	F.setPos(sf::Vector2f{ 900, 360 });
+	M.DrawButton(window);
+	F.DrawButton(window);
+	Texture MICON1, FMCON2, TMCH, TFCH;
+	MICON1.loadFromFile("Resource/icon.png");
+	FMCON2.loadFromFile("Resource/womanicon.png");
+	TMCH.loadFromFile("Resource/Mch.png");
+	TFCH.loadFromFile("Resource/FMch.png");
+	sf::Sprite ML, FML, MCH, FCH;
+	ML.setTexture(MICON1);
+	ML.setPosition(525, 120);
+	ML.setScale(4.f, 4.f);
+	FML.setTexture(FMCON2);
+	FML.setPosition(975, 120);
+	FML.setScale(4.f, 4.f);
+	window.draw(ML);
+	window.draw(FML);
 	if (Keyboard::isKeyPressed(Keyboard::F)) {
+		F.setBG(sf::Color::Red);
+		F.DrawButton(window);
 		_game->SetPp(0.1f, 150.0f, 2);
+		FCH.setTexture(TFCH);
+		FCH.setPosition(450, 450);
+		FCH.setScale(0.3f, 0.3f);
+		window.draw(FCH);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::M)) {
+		M.setBG(sf::Color::Red);
+		M.DrawButton(window);
 		_game->SetPp(0.1f, 150.0f, 1);
+		MCH.setTexture(TMCH);
+		MCH.setPosition(450, 450);
+		MCH.setScale(0.3f, 0.3f);
+		window.draw(MCH);
 	}
-	return PressPage();
 	return -1;
 }
 int Menu::MenuSetting2(sf::RenderWindow& window, CPEOPLE a) {
+	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	if (Keyboard::isKeyPressed(Keyboard::Num3)) return 4;
 	OutputText(window, "GAME RULE", 480, 0, sf::Color::White, 70);
 	OutputText(window, "Page 3", 50, 850, sf::Color::White, 30);
 	window.draw(Setting_2);
-	return PressPage();
 	return -1;
 }
 int Menu::MenuSetting(sf::RenderWindow& window,CPEOPLE a) {
+	if (Keyboard::isKeyPressed(Keyboard::Num1)) return 2;
+	if (Keyboard::isKeyPressed(Keyboard::Num2)) return 3;
+	if (Keyboard::isKeyPressed(Keyboard::Num3)) return 4;
 	OutputText(window, "PRESS THE BUTTON TO TEST", 500, 100, sf::Color::Black, 30);
 	OutputText(window, "GAME SETTING", 450, 0, sf::Color::White, 70);
 
@@ -442,7 +481,6 @@ int Menu::MenuSetting(sf::RenderWindow& window,CPEOPLE a) {
 
 	a.draw(window);
 	OutputText(window, "Page 2 - Switch page by press the according number.", 50, 850, sf::Color::White, 30);
-	return PressPage();
 	return -1;
 }
 MenuSprite::~MenuSprite() {};
