@@ -36,7 +36,6 @@ public:
     const bool isPressed() const;
 
     Vector2f getPosition();
-    string getName();
 
     void setPosition(int x, int y);
     void render(RenderTarget* target);

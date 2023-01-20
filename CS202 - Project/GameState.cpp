@@ -245,8 +245,8 @@ void GameState::endState() {
 }
 
 void GameState::gameOver() {
-	explosion.setPosition(person->getSprite().getPosition().x - person->getSprite().getGlobalBounds().width * 2,
-		person->getSprite().getPosition().y - person->getSprite().getGlobalBounds().height * 2);
+	explosion.setPosition(person->getSprite().getPosition().x - 65,
+		person->getSprite().getPosition().y - 60);
 	
 	totalTimeExplosion += delta_time;
 	if (totalTimeExplosion >= switchTimeExplosion) {

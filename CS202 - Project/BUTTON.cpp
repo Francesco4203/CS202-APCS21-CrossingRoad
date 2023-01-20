@@ -70,9 +70,7 @@ void Button::setPosition(int x, int y) {
     shape.setPosition(x, y);
     Tname.setPosition(x + (shape.getSize().x - name.length() * 45) / 2, y);
 }
-string Button::getName() {
-    return name;
-}
+
 void Button::render(RenderTarget* target)
 {
     target->draw(this->shape);

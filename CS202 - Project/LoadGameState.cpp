@@ -5,7 +5,7 @@ State(app, states)
 {
 	fileList = getListFileName("Saved Game");
     for (int i = 0; i < fileList.size(); ++i) {
-        this->fileButtons[fileList[i]] = make_pair(i, new Button("Resource/sub_load_game_btn/sub_load_game_btn", 287, 250 + i * 100, 926, 90, fileList[i], true));
+        this->fileButtons[fileList[i]] = new Button("Resource/sub_load_game_btn/sub_load_game_btn", 287, 250 + i * 100, 926, 90, fileList[i], true);
     }
 	undo = new Button("Resource/sub_load_game_btn", 0, 900 - 60, 60, 60, "undo_btn", false);
 
@@ -27,7 +27,7 @@ State(app, states)
 LoadGameState::~LoadGameState() {
 	for (auto& it : this->fileButtons)
 	{
-		delete it.second.second;
+		delete it.second;
 	}
 	delete undo;
 	delete popup;
@@ -44,16 +44,16 @@ void LoadGameState::updateButtons() {
 	if (!popup) {
 		for (auto& it : this->fileButtons)
 		{
-			it.second.second->update(this->mousePosView);
+			it.second->update(this->mousePosView);
 		}
 		undo->update(this->mousePosView);
 		if (undo->isPressed()) {
 			endState();
 		}
 		for (int i = top; i < min(top + display_size,(int) fileList.size()); ++i) {
-			if (this->fileButtons[fileList[i]].second->isPressed())
+			if (this->fileButtons[fileList[i]]->isPressed())
 			{
-				popup = new PopUp(fileButtons[fileList[i]].second->getName());
+				popup = new PopUp(fileList[i]);
 			}
 		}
 		while (app->pollEvent(ev))
@@ -62,13 +62,13 @@ void LoadGameState::updateButtons() {
 				if (ev.mouseWheel.delta > 0 && top > 0) {
 					top--;
 					for (int i = 0; i < fileList.size(); ++i) {
-						fileButtons[fileList[i]].second->setPosition(fileButtons[fileList[i]].second->getPosition().x, fileButtons[fileList[i]].second->getPosition().y + 100);
+						fileButtons[fileList[i]]->setPosition(fileButtons[fileList[i]]->getPosition().x, fileButtons[fileList[i]]->getPosition().y + 100);
 					}
 				}
 				if (ev.mouseWheel.delta < 0 && top < fileList.size() - display_size) {
 					top++;
 					for (int i = 0; i < fileList.size(); ++i) {
-						fileButtons[fileList[i]].second->setPosition(fileButtons[fileList[i]].second->getPosition().x, fileButtons[fileList[i]].second->getPosition().y - 100);
+						fileButtons[fileList[i]]->setPosition(fileButtons[fileList[i]]->getPosition().x, fileButtons[fileList[i]]->getPosition().y - 100);
 					}
 				}
 			}
@@ -91,14 +91,13 @@ void LoadGameState::updateButtons() {
 					break;
 				}
 			}
-			for (map<string, pair<int, Button*>>::iterator it = fileButtons.begin(); it != fileButtons.end(); ++it) {
-				if (it->second.second->getName() == popup->stringName) {
+			for (map<string, Button*>::iterator it = fileButtons.begin(); it != fileButtons.end(); ++it) {
+				if (it->first == popup->stringName) {
 					auto tmp = it;
 					it++;
 					fileButtons.erase(tmp);
 					for (; it != fileButtons.end(); ++it) {
-						it->second.second->setPosition(it->second.second->getPosition().x, it->second.second->getPosition().y - 100);
-						it->second.first--;
+						it->second->setPosition(it->second->getPosition().x, it->second->getPosition().y - 100);
 					}
 					break;
 				}
@@ -120,7 +119,7 @@ void LoadGameState::update() {
 void LoadGameState::render() {
     app->draw(bg);
 	for (int i = top; i < min(top + display_size,(int) fileList.size()); ++i) {
-		fileButtons[fileList[i]].second->render(app);
+		fileButtons[fileList[i]]->render(app);
 	}
 
 	undo->render(app);

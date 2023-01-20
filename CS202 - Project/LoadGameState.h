@@ -47,7 +47,7 @@ private:
 	Event ev;
 
 	vector<string> fileList;
-	map< string, pair<int, Button*>> fileButtons;
+	map< string, Button*> fileButtons;
 
 	Button* undo;
 public:
