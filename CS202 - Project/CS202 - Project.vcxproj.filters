@@ -18,70 +18,118 @@
     <ClCompile Include="CS202 - Project.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MENU.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BUTTON.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CANIMAL.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CENEMY.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CTRAFFIC.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CVEHICLE.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CPEOPLE.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CGAME.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CPEOPLE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTRAFFIC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CVEHICLE.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SCOREBOARD.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelUpState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWinState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HighscoreState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadGameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveGameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MENU.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CANIMAL.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CENEMY.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CTRAFFIC.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CVEHICLE.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="INCLUDING.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CPEOPLE.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CGAME.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SCOREBOARD.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dirent.h">
-      <Filter>Resource Files</Filter>
+    <ClInclude Include="State.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BUTTON.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CANIMAL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CENEMY.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGAME.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPEOPLE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CTRAFFIC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CVEHICLE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCOREBOARD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUpState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWinState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighscoreState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadGameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveGameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

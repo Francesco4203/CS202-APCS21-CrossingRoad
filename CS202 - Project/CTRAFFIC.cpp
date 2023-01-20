@@ -30,6 +30,7 @@ LIGHT::LIGHT(int mode) {
     time = 2 * (4 - mode);
     this->mode = mode;
     state = 3;
+    isStopForever = false;
 }
 
 int LIGHT::getTime() {
@@ -43,6 +44,7 @@ Sprite LIGHT::getSpriteLight() {
 }
 
 void LIGHT::changeLight() {
+    if (isStopForever) return;
     if (state == 1) {
         state = 3;
         light.setTexture(green_light);
@@ -55,13 +57,21 @@ void LIGHT::changeLight() {
         time = 2 * (4 - mode) + rand() % 3;
         return;
     }
-    time = 2 * (4 - mode);
+    time = 3;
     state = 2;
     light.setTexture(yellow_light);
 }
 
 void LIGHT::setPosition(double x, double y) {
     light.setPosition(x, y);
+}
+
+void LIGHT::stopForever() {
+    isStopForever = true;
+}
+
+void LIGHT::resume() {
+    isStopForever = false;
 }
 
 LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
@@ -71,6 +81,7 @@ LINE::LINE(int y, int direction, bool isLane, int mode) : light(mode) {
     line.setTexture(Tline);
     line.setPosition(0, y);
     this->direction = direction;
+    this->isStopForever = false;
     int randomFactor = rand() % 200;
     if (direction == 1) {
         list.clear();
@@ -134,6 +145,19 @@ void LINE::stop() {
     }
 }
 
+void LINE::stopForever() {
+    for (auto p : list) {
+        p->stop();
+    }
+    light.stopForever();
+    this->isStopForever = true;
+}
+
+void LINE::resume() {
+    isStopForever = false;
+    light.resume();
+}
+
 void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime) {
     time.second = clock();
     if ((time.second - time.first) / CLOCKS_PER_SEC >= light.getTime()) {
@@ -143,9 +167,11 @@ void LINE::draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float de
     window.draw(line);
 
     for (auto p : list) {
-        p->resume();
-        if (this->getLight().getState() == 1 && isLane) p->stop();
-        p->Move(direction == 2, deltaTime);
+        if (!isStopForever) {
+            p->resume();
+            if (this->getLight().getState() == 1 && isLane) p->stop();
+            p->Move(direction == 2, deltaTime);
+        }
         window.draw(p->getObject());
     }
 

@@ -1,4 +1,5 @@
-﻿#include "INCLUDING.h"
+﻿#include "CGAME.h"
+
 using namespace std;
 using namespace sf;
 
@@ -6,6 +7,6 @@ int main()
 {
     srand(time(NULL));
     CGAME game;
-    game.menu();
+    game.run();
     return 0;
 }

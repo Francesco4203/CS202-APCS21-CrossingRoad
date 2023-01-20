@@ -1,3 +1,4 @@
+#pragma once
 /*
  * Dirent interface for Microsoft Visual Studio
  *

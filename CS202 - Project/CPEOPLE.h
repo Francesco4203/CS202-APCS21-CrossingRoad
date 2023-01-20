@@ -9,8 +9,10 @@
 #include <thread>
 #include "CTRAFFIC.h"
 #include "Collision.h"
+
 using namespace std;
 using namespace sf;
+
 class CPEOPLE {
     Vector2u _scale;
     IntRect _currentImage;
@@ -20,7 +22,8 @@ class CPEOPLE {
     float _totalTime;
     float _speed = 30;
     int _direction;
-    bool _mState; //live - die
+    bool isDie;
+    bool isMan;
 
     friend class CGAME;
 public:
@@ -28,10 +31,11 @@ public:
     void move(float deltaTime);
     void update(int direction, float deltaTime);
     CENEMY* isImpact(LINE* a);
-    bool isFinish(sf::RenderWindow& window);
+    bool isFinish(Sprite& finishLine);
     void draw(sf::RenderWindow& window);
     void setPosition(double x, double y);
     void output(ofstream& f);
     void setPeople(float switchTime, float speed, int t);
     Sprite& getSprite();
+    bool getIsMan();
 };

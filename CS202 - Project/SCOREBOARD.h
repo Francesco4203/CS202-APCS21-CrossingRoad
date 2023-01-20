@@ -19,7 +19,7 @@ class SCOREBOARD {
 public:
 	SCOREBOARD();
 	void add(int time, string name);
-	void show(RenderWindow& window);
+	void show(RenderWindow* app);
 	void load();
 	void save();
 };

@@ -25,7 +25,9 @@ private:
     Texture green_light;
     Texture yellow_light;
     Sprite light;
-    friend class CGAME;
+    bool isStopForever;
+
+    friend class GameState;
 public:
     LIGHT() = delete;//default NOT available
     LIGHT(int mode);// 1 2 3 - easy medium hard
@@ -36,6 +38,8 @@ public:
     void changeLight();
     void setPosition(double x, double y);
     int getMode();
+    void stopForever();
+    void resume();
 };
 
 
@@ -49,6 +53,7 @@ private:
     Texture Tline;
     Sprite line;
     bool isLane;
+    bool isStopForever;
 public:
     LINE() = delete;//default NOT available
     LINE(int y, int dirction, bool isLane, int mode);// 1 2 3 - easy medium hard
@@ -56,6 +61,8 @@ public:
     LIGHT& getLight();
     Sprite getSpriteLine();
     void stop();
+    void stopForever();
+    void resume();
     void draw(sf::RenderWindow& window, pair<clock_t, clock_t>& time, float deltaTime);
     void output(ofstream& f);
     int getMode();

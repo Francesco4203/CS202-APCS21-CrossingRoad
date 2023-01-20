@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BUTTON.cpp" />
     <ClCompile Include="CANIMAL.cpp" />
     <ClCompile Include="CENEMY.cpp" />
     <ClCompile Include="CGAME.cpp" />
@@ -153,8 +154,16 @@
     <ClCompile Include="CS202 - Project.cpp" />
     <ClCompile Include="CTRAFFIC.cpp" />
     <ClCompile Include="CVEHICLE.cpp" />
-    <ClCompile Include="MENU.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameWinState.cpp" />
+    <ClCompile Include="HighscoreState.cpp" />
+    <ClCompile Include="LevelUpState.cpp" />
+    <ClCompile Include="LoadGameState.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="SaveGameState.cpp" />
     <ClCompile Include="SCOREBOARD.cpp" />
+    <ClCompile Include="SettingState.cpp" />
+    <ClCompile Include="State.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BUTTON.h" />
@@ -166,9 +175,16 @@
     <ClInclude Include="CTRAFFIC.h" />
     <ClInclude Include="CVEHICLE.h" />
     <ClInclude Include="dirent.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameWinState.h" />
+    <ClInclude Include="HighscoreState.h" />
+    <ClInclude Include="LevelUpState.h" />
+    <ClInclude Include="LoadGameState.h" />
+    <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="SaveGameState.h" />
     <ClInclude Include="SCOREBOARD.h" />
-    <ClInclude Include="INCLUDING.h" />
-    <ClInclude Include="MENU.h" />
+    <ClInclude Include="SettingState.h" />
+    <ClInclude Include="State.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,28 +24,11 @@ void SCOREBOARD::add(int time, string name) {
 		playTime[i].setString(to_string(topscore[i].first) + "s");
 	}
 }
-void SCOREBOARD::show(RenderWindow& window) {
-	while (window.isOpen()) {
-		bool close = false;
-		Event event;
-		while (window.pollEvent(event)) {
-			if (event.type == Event::Closed) {
-				window.close();
-			}
-			if (event.type == Event::KeyPressed && event.key.code == Keyboard::Escape) {
-				close = true;
-			}
-		}
-		window.clear();
-		window.draw(object);
-		for (int i = 0; i < playerName.size(); i++) {
-			window.draw(playerName[i]);
-			window.draw(playTime[i]);
-		}
-		window.display();
-		if (close) {
-			break;
-		}
+void SCOREBOARD::show(RenderWindow* app) {
+	app->draw(object);
+	for (int i = 0; i < playerName.size(); i++) {
+		app->draw(playerName[i]);
+		app->draw(playTime[i]);
 	}
 }
 void SCOREBOARD::load() {

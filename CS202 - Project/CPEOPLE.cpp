@@ -10,7 +10,13 @@ void CPEOPLE::setPosition(double x, double y) {
     _player.setPosition(x, y);
 }
 CPEOPLE::CPEOPLE(float switchTime, float speed) {
-    _Tplayer.loadFromFile("Resource/man.png");
+    string characterPath;
+    ifstream fin("Data/character_path");
+    fin >> characterPath;
+    fin.close();
+    if (characterPath == "Resource/man.png") isMan = true;
+    else isMan = false;
+    _Tplayer.loadFromFile(characterPath);
     _currentImage.width = _Tplayer.getSize().x / 4;
     _currentImage.height = _Tplayer.getSize().y / 4;
     _player.setTexture(_Tplayer);
@@ -20,6 +26,7 @@ CPEOPLE::CPEOPLE(float switchTime, float speed) {
     _totalTime = 0;
     _scale.x = 0;
     _scale.y = 0;
+    isDie = false;
 }
 void CPEOPLE::setPeople(float switchTime, float speed, int t) {
     if (t == 1) {
@@ -48,6 +55,7 @@ void CPEOPLE::setPeople(float switchTime, float speed, int t) {
     }
 }
 void CPEOPLE::move(float deltaTime) {
+    if (isDie) return;
     float dis = deltaTime * _speed;
     if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up)) {
         if (_player.getPosition().y - dis >= 0) _player.move(Vector2f(0, -dis));
@@ -84,14 +92,8 @@ void CPEOPLE::update(int direction, float deltaTime) {
     _currentImage.top = _scale.y * _currentImage.height;
     _player.setTextureRect(_currentImage);
 }
-bool CPEOPLE::isFinish(sf::RenderWindow& window) {
-    Texture Finish_line;
-    Finish_line.loadFromFile("Resource/finish_line.png");
-    sf::Sprite line(Finish_line);
-    line.scale(1 ,0.7);
-    line.setPosition(0, 0);
-    window.draw(line);
-    if (Collision::PixelPerfectTest(_player, line)) {
+bool CPEOPLE::isFinish(Sprite& finishLine) {
+    if (Collision::PixelPerfectTest(_player, finishLine)) {
         return true;
     }
     return false;
@@ -108,6 +110,7 @@ CENEMY* CPEOPLE::isImpact(LINE* a) {
         //if (object_fix.getGlobalBounds().intersects(player_fix.getGlobalBounds())) {
         if (Collision::PixelPerfectTest(_player, a->getVectorList()[i]->getObject())) {
             a->getVectorList()[i]->sound();
+            isDie = true;
             return a->getVectorList()[i];
         }
     }
@@ -116,4 +119,8 @@ CENEMY* CPEOPLE::isImpact(LINE* a) {
 
 Sprite& CPEOPLE::getSprite() {
     return this->_player;
+}
+
+bool CPEOPLE::getIsMan() {
+    return isMan;
 }
