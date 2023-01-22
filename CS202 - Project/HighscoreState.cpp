@@ -19,6 +19,7 @@ HighscoreState::HighscoreState(RenderWindow* app, stack<State*>* states, int tim
 	add();
 
 	undo = new Button("Resource/sub_load_game_btn", 0, 900 - 60, 60, 60, "undo_btn", false);
+	clear = new Button("Réource/sub_highscore_btn", 1300, 700, 281, 75, "clear_board_btn", false);
 }
 HighscoreState::HighscoreState(RenderWindow* app, stack<State*>* states) : State(app, states) {
 	int vol;
@@ -38,10 +39,13 @@ HighscoreState::HighscoreState(RenderWindow* app, stack<State*>* states) : State
 	name = "";
 
 	undo = new Button("Resource/sub_load_game_btn", 0, 900 - 60, 60, 60, "undo_btn", false);
+	clear = new Button("Resource/sub_highscore_btn", 953, 130, 281, 75, "clear_board_btn", false);
+
 }
 HighscoreState::~HighscoreState() {
 	delete board;
 	delete undo;
+	delete clear;
 }
 
 void HighscoreState::add() {
@@ -58,10 +62,14 @@ void HighscoreState::resumeSound() {
 void HighscoreState::update() {
 	this->updateMousePositions();
 	undo->update(this->mousePosView);
+	clear->update(this->mousePosView);
 	if (undo->isPressed()) {
 		board->save();
 		sound.stop();
 		endState();
+	}
+	if (clear->isPressed()) {
+		board->clear();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Escape)) {
 		board->save();
@@ -72,4 +80,5 @@ void HighscoreState::update() {
 void HighscoreState::render() {
 	board->show(app);
 	undo->render(app);
+	clear->render(app);
 }

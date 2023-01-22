@@ -307,22 +307,22 @@ void SettingState2::update() {
 			if (ev.key.code == Keyboard::C) {
 				PC.setScale(0.0f, 0.0f);
 			}
-			if (ev.key.code == Keyboard::W) {
+			if (ev.key.code == Keyboard::W || ev.key.code == Keyboard::Up) {
 				W.setScale(0.0f, 0.0f);
 				description.setFillColor(Color(121, 162, 107));
 				person->update(0, 0);
 			}
-			if (ev.key.code == Keyboard::S) {
+			if (ev.key.code == Keyboard::S || ev.key.code == Keyboard::Down) {
 				S.setScale(0.0f, 0.0f);
 				description.setFillColor(Color(121, 162, 107));
 				person->update(0, 0);
 			}
-			if (ev.key.code == Keyboard::A) {
+			if (ev.key.code == Keyboard::A || ev.key.code == Keyboard::Left) {
 				A.setScale(0.0f, 0.0f);
 				description.setFillColor(Color(121, 162, 107));
 				person->update(0, 0);
 			}
-			if (ev.key.code == Keyboard::D) {
+			if (ev.key.code == Keyboard::D || ev.key.code ==  Keyboard::Right) {
 				D.setScale(0.0f, 0.0f);
 				description.setFillColor(Color(121, 162, 107));
 				person->update(0, 0);

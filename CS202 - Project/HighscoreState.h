@@ -8,6 +8,7 @@ class HighscoreState : public State
 private:
 	SCOREBOARD* board;
 	Button* undo;
+	Button* clear;
 
 	int time;
 	string name;

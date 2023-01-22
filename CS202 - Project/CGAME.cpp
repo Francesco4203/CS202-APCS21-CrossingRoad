@@ -6,6 +6,9 @@ void CGAME::initWindow()
 
     VideoMode Size(1500, 900);
     this->app = new RenderWindow(Size, title);
+    Image icon;
+    icon.loadFromFile("Resource/icon.png");
+    this->app->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 void CGAME::initStates()
 {

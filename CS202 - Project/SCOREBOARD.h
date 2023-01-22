@@ -18,8 +18,10 @@ class SCOREBOARD {
 	vector<Text> playerName, playTime;
 public:
 	SCOREBOARD();
+	~SCOREBOARD();
 	void add(int time, string name);
 	void show(RenderWindow* app);
 	void load();
 	void save();
+	void clear();
 };

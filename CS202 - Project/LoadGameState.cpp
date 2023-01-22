@@ -59,13 +59,13 @@ void LoadGameState::updateButtons() {
 		while (app->pollEvent(ev))
 		{
 			if (ev.type == Event::MouseWheelMoved) {
-				if (ev.mouseWheel.delta > 0 && top > 0) {
+				if (ev.mouseWheel.delta > 0 && top > 0 && fileList.size() > display_size) {
 					top--;
 					for (int i = 0; i < fileList.size(); ++i) {
 						fileButtons[fileList[i]]->setPosition(fileButtons[fileList[i]]->getPosition().x, fileButtons[fileList[i]]->getPosition().y + 100);
 					}
 				}
-				if (ev.mouseWheel.delta < 0 && top < fileList.size() - display_size) {
+				if (ev.mouseWheel.delta < 0 && top < fileList.size() - display_size && fileList.size() > display_size) {
 					top++;
 					for (int i = 0; i < fileList.size(); ++i) {
 						fileButtons[fileList[i]]->setPosition(fileButtons[fileList[i]]->getPosition().x, fileButtons[fileList[i]]->getPosition().y - 100);
@@ -95,9 +95,18 @@ void LoadGameState::updateButtons() {
 				if (it->first == popup->stringName) {
 					auto tmp = it;
 					it++;
-					fileButtons.erase(tmp);
-					for (; it != fileButtons.end(); ++it) {
-						it->second->setPosition(it->second->getPosition().x, it->second->getPosition().y - 100);
+					if (it == fileButtons.end() && top > 0) {
+						fileButtons.erase(tmp);
+						top--;
+						for (map<string, Button*>::iterator it1 = fileButtons.begin(); it1 != fileButtons.end(); ++it1) {
+							it1->second->setPosition(it1->second->getPosition().x, it1->second->getPosition().y + 100);
+						}
+					}
+					else {
+						fileButtons.erase(tmp);
+						for (; it != fileButtons.end(); ++it) {
+							it->second->setPosition(it->second->getPosition().x, it->second->getPosition().y - 100);
+						}
 					}
 					break;
 				}

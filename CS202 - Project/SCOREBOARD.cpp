@@ -15,6 +15,9 @@ SCOREBOARD::SCOREBOARD() {
 		playTime[i].setPosition(1050, 290 + 100 * i);
 	}
 }
+SCOREBOARD::~SCOREBOARD() {
+
+}
 void SCOREBOARD::add(int time, string name) {
 	topscore.push_back({ time, name });
 	sort(topscore.begin(), topscore.end());
@@ -50,4 +53,12 @@ void SCOREBOARD::save() {
 		f << c.first << ' ' << c.second << '\n';
 	}
 	f.close();
+}
+void SCOREBOARD::clear() {
+	ofstream f("Data/scoreboard.txt");
+	f << 0;
+	f.close();
+	topscore.clear();
+	playerName.clear();
+	playTime.clear();
 }

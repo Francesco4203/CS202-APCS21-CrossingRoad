@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CS202 - Project", "CS202 - 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interface Testing", "..\Interface Testing\Interface Testing.vcxproj", "{EC8CF7A5-4AA1-4448-B360-5624390FCD38}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "..\Setup1\Setup1.vdproj", "{BBF56B2A-0D5C-4A06-8614-69B11419E894}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,10 @@ Global
 		{EC8CF7A5-4AA1-4448-B360-5624390FCD38}.Release|x64.Build.0 = Release|x64
 		{EC8CF7A5-4AA1-4448-B360-5624390FCD38}.Release|x86.ActiveCfg = Release|Win32
 		{EC8CF7A5-4AA1-4448-B360-5624390FCD38}.Release|x86.Build.0 = Release|Win32
+		{BBF56B2A-0D5C-4A06-8614-69B11419E894}.Debug|x64.ActiveCfg = Debug
+		{BBF56B2A-0D5C-4A06-8614-69B11419E894}.Debug|x86.ActiveCfg = Debug
+		{BBF56B2A-0D5C-4A06-8614-69B11419E894}.Release|x64.ActiveCfg = Release
+		{BBF56B2A-0D5C-4A06-8614-69B11419E894}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
